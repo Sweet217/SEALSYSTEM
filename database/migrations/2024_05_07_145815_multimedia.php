@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('multimedia', function (Blueprint $table) {
             $table->id('multimedia_id'); // Use id() for auto-incrementing primary key
             $table->string('tipo', 12); // Se refiere al tipo de multimedia (video, imagen o enlace)
-            $table->unsignedBigInteger('id_lista_reproduccion'); // Use unsignedBigInteger for foreign keys
-            $table->foreign('id_lista_reproduccion')->references('id_lista_reproduccion')->on('listas_reproduccion')->onDelete('cascade'); // Define foreign key relationship
+            $table->unsignedBigInteger('id_lista'); // Use unsignedBigInteger for foreign keys
+            $table->foreign('id_lista')->references('id_lista')->on('listas')->onDelete('cascade'); // Define foreign key relationship
             $table->timestamps();
         });
     }
