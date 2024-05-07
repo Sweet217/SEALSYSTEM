@@ -1,0 +1,30 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('multimedia', function (Blueprint $table) {
+            $table->id('multimedia_id'); // Use id() for auto-incrementing primary key
+            $table->string('tipo', 12); // Se refiere al tipo de multimedia (video, imagen o enlace)
+            $table->unsignedBigInteger('id_lista_reproduccion'); // Use unsignedBigInteger for foreign keys
+            $table->foreign('id_lista_reproduccion')->references('id_lista_reproduccion')->on('listas_reproduccion')->onDelete('cascade'); // Define foreign key relationship
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('multimedia');
+    }
+};
