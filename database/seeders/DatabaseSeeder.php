@@ -10,7 +10,7 @@ use App\Models\listas;
 use App\Models\multimedia;
 use App\Models\videos;
 use App\Models\imagenes;
-use App\Models\enlaceYoutube;
+use App\Models\enlace_youtube;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,7 +21,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        
-
+        $this->call([
+            UsuarioSeeder::class,
+            
+            EquipoSeeder::class,
+            LicenciaSeeder::class,
+            ListaSeeder::class,
+            MultimediaSeeder::class,
+            ImagenSeeder::class,
+            EnlaceSeeder::class,
+            VideoSeeder::class
+        ]);
     }
 }

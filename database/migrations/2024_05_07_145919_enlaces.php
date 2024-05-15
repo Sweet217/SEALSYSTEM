@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('enlace_youtube', function (Blueprint $table) {
+        Schema::create('enlaces', function (Blueprint $table) {
             $table->id('enlace_id'); // Use id() for auto-incrementing primary key
             $table->string('data', 255); // VARCHAR(255) to store the YouTube link (Puede ser muy largo)
             $table->unsignedBigInteger('multimedia_id')->nullable(); // Use unsignedBigInteger for foreign keys
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('enlace_youtube');
+        Schema::dropIfExists('enlaces');
     }
 };

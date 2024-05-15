@@ -3,16 +3,14 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\ListasController;
 
 Route::get('/', function () {
     return Inertia::render('PaginaPrincipal', [
     ]);
 });
 
-Route::get('/Listas', function () {
-    return Inertia::render('Listas', [
-    ]);
-});
+Route::get('/Listas', [ListasController::class, 'showListas']);
 
 Route::get('/Perfil', function () {
     return Inertia::render('Perfil', [
@@ -28,6 +26,7 @@ Route::get('/Signup', function () {
     return Inertia::render('SignUp', [
     ]);
 });
+
 
 Route::get('/Loginsignup', function () {
     return Inertia::render('LoginSignUp', [
