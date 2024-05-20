@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\usuarios;
+use App\Models\Users;
 use App\Models\equipos;
 use App\Models\licencias;
 use App\Models\listas;

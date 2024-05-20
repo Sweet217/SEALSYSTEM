@@ -1,13 +1,44 @@
 <script>
+import axios from 'axios';
+
 export default {
   name: 'LoginComponent',
 
-  mounted() {
-    const backButton = document.querySelector('.backButton');
-
-    backButton.addEventListener('click', this.irAPaginaAnterior);
-
+  mounted() { //Nada por ahora.
   },
+
+  data() {
+    return {
+      correo: '',
+      contrasena: '',
+      errors: null,
+      token: null,
+    }
+  },
+
+  methods: {
+    async submitLogin() {
+      try {
+        const response = await axios.post('loginsolytec', {
+          correo: this.correo,
+          contrasena: this.contrasena,
+        });
+
+        // Handle successful login
+        this.token = response.data;
+        console.log('Login successful!', this.token);
+
+        window.location.href = ('/listas');
+      } catch (error) {
+        // Handle login errors
+        if (error.response && error.response.data && error.response.data.errors) {
+          this.errors = error.response.data.errors;
+        } else {
+          console.error('Login failed:', error.message);
+        }
+      }
+    },
+  }
 };
 </script>
 
@@ -23,8 +54,7 @@ export default {
               <div class="col-md-6 col-lg-7 d-flex align-items-center">
                 <div class="card-body p-4 p-lg-5 text-black">
 
-                  <form>
-
+                  <form @submit.prevent="submitLogin">
 
                     <div class="d-flex align-items-center mb-3 pb-1">
                       <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
@@ -33,27 +63,33 @@ export default {
 
                     <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Entra a tu cuenta</h5>
 
-                    <div data-mdb-input-init class="form-outline mb-4">
-                      <input type="email" id="form2Example17" class="form-control form-control-lg" />
+                    <div class="form-outline mb-4">
+                      <input type="email" v-model="correo" id="form2Example17" class="form-control form-control-lg"
+                        required />
                       <label class="form-label" for="form2Example17">Direccion de correo electronico</label>
                     </div>
 
-                    <div data-mdb-input-init class="form-outline mb-4">
-                      <input type="password" id="form2Example27" class="form-control form-control-lg" />
+                    <div class="form-outline mb-4">
+                      <input type="password" v-model="contrasena" id="form2Example27"
+                        class="form-control form-control-lg" required />
                       <label class="form-label" for="form2Example27">Contrasena</label>
                     </div>
 
                     <div class="pt-1 mb-4">
-                      <button data-mdb-button-init data-mdb-ripple-init
-                        class=" color-boton login-boton btn btn-lg btn-block" type="button">Logeate</button>
+                      <button type="submit" class="color-boton login-boton btn btn-lg btn-block">Logeate</button>
+                    </div>
+
+                    <div class="text-danger" v-if="errors">
+                      <ul>
+                        <li v-for="error in errors" :key="error">{{ error }}</li>
+                      </ul>
                     </div>
 
                     <a class="small text-muted" href="#!">Olvidate tu contrasena?</a>
                     <p class="mb-5 pb-lg-2" style="color: #393f81;">No tienes una cuenta? <a href="#!"
-                        style="color: #393f81;">Registrate
-                        aqui!</a></p>
+                        style="color: #393f81;">Registrate aqui!</a></p>
                     <a href="#!" class="small text-muted">Terminos de uso</a>
-                    <br> <!--Salto de parrafo pequeno-->
+                    <br>
                     <a href="#!" class="small text-muted">Politica de privacidad</a>
 
                   </form>
@@ -67,6 +103,7 @@ export default {
     </div>
   </section>
 </template>
+
 
 <style>
 .contenedor-imagen {

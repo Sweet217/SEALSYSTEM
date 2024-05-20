@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('estado', 50);
             $table->string('telefono', 20);
             $table->string('tipo_usuario', 50)->default('Usuario');
+            $table->string('remember_token')->nullable();
             $table->timestamps();
         });
 
@@ -43,6 +44,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('create_usuarios_tables');
+        Schema::dropIfExists('usuarios');
     }
 };

@@ -9,10 +9,10 @@ export default {
       window.location.href = `${window.location.origin}${ruta}`;
     }
     registrarseButton.addEventListener('click', () => {
-      redireccionar('/Loginsolydec');
+      redireccionar('/registrarse');
     });
     iniciarSesionButton.addEventListener('click', () => {
-      redireccionar('/Signup');
+      redireccionar('/loginsolytec');
     });
   }
 

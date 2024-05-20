@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\usuarios;
+use App\Models\Users;
 use App\Models\equipos;
 use App\Models\licencias;
 use App\Models\listas;
@@ -22,7 +22,7 @@ class EquipoSeeder extends Seeder
      
     public function run(): void
     {
-        $user1 = usuarios::first(); // Assuming UsuarioSeeder runs first
+        $user1 = Users::first(); // Assuming UsuarioSeeder runs first
         
         equipos::create([
             'usuario_id' => $user1->usuario_id,
