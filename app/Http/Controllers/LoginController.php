@@ -17,10 +17,7 @@ class LoginController extends Controller
         $credentials = $request->validate([
             'correo' => ['required', 'email'],
             'password' => ['required'],
-        ]);
-
-        dump($credentials);
-    
+        ]);    
 
         if (Auth::attempt($credentials)) {
             return response()->json(['autenticacion_correcta' => true]);

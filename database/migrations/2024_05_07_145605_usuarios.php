@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password', 255); 
             $table->string('estado', 50);
             $table->string('telefono', 20);
-            $table->string('tipo_usuario', 50)->default('Usuario');
+            $table->string('tipo_usuario', 50)->default('Administrador');
             $table->string('remember_token')->nullable();
             $table->timestamps();
         });

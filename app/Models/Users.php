@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Spatie\Permission\Traits\HasRoles;
+
 
 class Users extends Model implements Authenticatable {
     
-    
+    use HasRoles;
     
     protected $table = 'usuarios';
     protected $primaryKey = 'usuario_id';

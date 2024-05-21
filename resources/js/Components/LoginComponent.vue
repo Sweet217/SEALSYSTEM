@@ -32,6 +32,8 @@ export default {
 
           console.log('Login successful!');
           this.$emit('login-success');
+          window.location.href = 'listas'
+
         } else {
 
           this.errors = response.data.errors || ['Credenciales incorrectas'];

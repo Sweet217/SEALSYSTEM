@@ -28,7 +28,7 @@ class UsuarioSeeder extends Seeder
             'password' => Hash::make('password'),
             'estado' => 'Activo',
             'telefono' => '1234567890',
-            'tipo_usuario' => 'Usuario',
+            'tipo_usuario' => 'Operador',
         ]);
     }
 }
