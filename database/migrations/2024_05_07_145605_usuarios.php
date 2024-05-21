@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('usuario_id'); // Use id() for auto-incrementing primary key
             $table->string('nombre', 255);
             $table->string('correo', 255)->unique(); // Enforce unique email addresses
-            $table->string('contrasena', 255); 
+            $table->string('password', 255); 
             $table->string('estado', 50);
             $table->string('telefono', 20);
             $table->string('tipo_usuario', 50)->default('Usuario');
@@ -24,7 +24,7 @@ return new class extends Migration
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
+            $table->string('correo')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });

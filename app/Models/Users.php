@@ -5,20 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\CanResetPassword;
 
-class Users extends Model implements Authenticatable
-{
+class Users extends Model implements Authenticatable {
+    
+    
+    
     protected $table = 'usuarios';
     protected $primaryKey = 'usuario_id';
 
+    protected $fillable = ['correo', 'password'];
+    
+    protected $hidden = ['password'];
+    
     public function getAuthIdentifier()
     {
-        return $this->usuario_id;
+        return $this->correo;
     }
 
     public function getAuthPassword()
     {
-        return $this->contrasena; 
+        return $this->password; 
     }
 
     public function getRememberToken()
@@ -28,17 +35,17 @@ class Users extends Model implements Authenticatable
 
     public function setRememberToken($value)
     {
-        
+        return null;
     }
 
     public function getAuthIdentifierName()
     {
-        return 'usuario_id'; 
+        return 'correo'; 
     }
 
     public function getAuthPasswordName()
     {
-        return 'contrasena'; 
+        return 'password'; 
     }
 
     public function getRememberTokenName()

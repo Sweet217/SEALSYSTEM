@@ -15,13 +15,11 @@ export default {
       redireccionar('/loginsolytec');
     });
   }
-
 };
 // Wait for the gradient animation to finish (2 seconds) HEADER COMPONENT EFFECT
 setTimeout(() => {
   // Unhide the navbar element
   document.getElementById('mainNavigation').style.display = 'block';
-
   // Apply the bounce animation
   document.getElementById('mainNavigation').style.animationName = 'bounce';
   document.getElementById('mainNavigation').style.animationDuration = '1s';

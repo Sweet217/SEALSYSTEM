@@ -23,17 +23,16 @@ class ImagenSeeder extends Seeder
      */
     public function run(): void
     {
-        $multimedia1 = Multimedia::first(); // Assuming ListaSeeder runs first
-
-        $imagePath = 'resources/js/images/kioskogobierno.jpg'; // Adjust the path if needed
+        $multimedia1 = Multimedia::first(); 
         
+        $imagePath = 'resources/js/images/kioskogobierno.jpg';
         if (file_exists($imagePath)) {
-            $imageName = 'kioskogobierno.jpg'; // Adjust the filename if needed
+            $imageName = 'kioskogobierno.jpg';
 
             try {
                 $imageContent = file_get_contents($imagePath);
                 Storage::disk('public')->put('images/pruebas/' . $imageName, $imageContent);
-                // Create Imagenes record (replace with your logic)
+                // Create Imagenes record 
                 Imagenes::create([
                   'nombre_archivo' => $imageName,
                   'tiempo' => 10,
@@ -41,7 +40,7 @@ class ImagenSeeder extends Seeder
                   'multimedia_id' => $multimedia1->multimedia_id,
                 ]);
               } catch (Exception $e) {
-                echo "Error: Image processing failed! " . $e->getMessage();
+                echo "Error: Image processxing failed! " . $e->getMessage();
               }
             
         } else {

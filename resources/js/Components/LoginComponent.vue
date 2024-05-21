@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios';
 
+
 export default {
   name: 'LoginComponent',
 
@@ -10,7 +11,7 @@ export default {
   data() {
     return {
       correo: '',
-      contrasena: '',
+      password: '',
       errors: null,
       token: null,
     }
@@ -19,25 +20,30 @@ export default {
   methods: {
     async submitLogin() {
       try {
-        const response = await axios.post('loginsolytec', {
+        const response = await axios.post('/loginPOST', {
           correo: this.correo,
-          contrasena: this.contrasena,
+          password: this.password,
         });
 
-        // Handle successful login
-        this.token = response.data;
-        console.log('Login successful!', this.token);
 
-        window.location.href = ('/listas');
+        const isAuthenticated = response.data && response.data.autenticacion_correcta;
+
+        if (isAuthenticated) {
+
+          console.log('Login successful!');
+          this.$emit('login-success');
+        } else {
+
+          this.errors = response.data.errors || ['Credenciales incorrectas'];
+        }
       } catch (error) {
-        // Handle login errors
         if (error.response && error.response.data && error.response.data.errors) {
           this.errors = error.response.data.errors;
         } else {
           console.error('Login failed:', error.message);
         }
       }
-    },
+    }
   }
 };
 </script>
@@ -70,8 +76,8 @@ export default {
                     </div>
 
                     <div class="form-outline mb-4">
-                      <input type="password" v-model="contrasena" id="form2Example27"
-                        class="form-control form-control-lg" required />
+                      <input type="password" v-model="password" id="form2Example27" class="form-control form-control-lg"
+                        required />
                       <label class="form-label" for="form2Example27">Contrasena</label>
                     </div>
 

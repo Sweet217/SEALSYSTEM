@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+
 use App\Models\Users;
 use App\Models\equipos;
 use App\Models\licencias;
@@ -22,8 +24,8 @@ class UsuarioSeeder extends Seeder
     {
         Users::create([
             'nombre' => 'John Doe',
-            'correo' => 'john.doe@example.com',
-            'contrasena' => bcrypt('johndoe'),
+            'correo' => 'john@john.com',
+            'password' => Hash::make('password'),
             'estado' => 'Activo',
             'telefono' => '1234567890',
             'tipo_usuario' => 'Usuario',

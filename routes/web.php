@@ -41,7 +41,7 @@ Route::get('/loginsolytec', function () {
   });
   
 // Handle Login Logic (POST request)
-Route::post('/loginsolytec', [LoginController::class, 'login']);
+Route::post('/loginPOST', [LoginController::class, 'login']);
 
 
 Route::get('/registrarse', function () {
