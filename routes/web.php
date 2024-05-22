@@ -44,11 +44,12 @@ Route::get('/loginsolytec', function () {
 Route::post('/loginPOST', [LoginController::class, 'login']);
 
 
-Route::get('/registrarse', function () {
+Route::get('/signupsolytec', function () {
     return Inertia::render('SignUp', [
     ]);
 });
 
+Route::post('signupPOST', [SignupController::class, 'register']);
 
 Route::middleware([
     'auth:sanctum',

@@ -16,7 +16,7 @@ class Users extends Model implements Authenticatable {
     protected $table = 'usuarios';
     protected $primaryKey = 'usuario_id';
 
-    protected $fillable = ['correo', 'password'];
+    protected $fillable = ['correo', 'password', 'tipo_usuario', 'telefono'];
     
     protected $hidden = ['password'];
     

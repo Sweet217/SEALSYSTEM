@@ -23,11 +23,20 @@ class UsuarioSeeder extends Seeder
     public function run(): void
     {
         Users::create([
-            'nombre' => 'John Doe',
-            'correo' => 'john@john.com',
+            'nombre' => 'Juan Hernandez',
+            'correo' => 'JuanHernandez@solytec.com',
             'password' => Hash::make('password'),
             'estado' => 'Activo',
             'telefono' => '1234567890',
+            'tipo_usuario' => 'Administrador',
+        ]);
+
+        Users::create([
+            'nombre' => 'Gabriel Velazquez',
+            'correo' => 'GabrielVelazquez@solytec.com',
+            'password' => Hash::make('password'),
+            'estado' => 'Activo',
+            'telefono' => '312 595 3394',
             'tipo_usuario' => 'Operador',
         ]);
     }

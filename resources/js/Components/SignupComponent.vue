@@ -23,8 +23,18 @@ export default {
                                             <img class="solytec-logo" src="@/images/SOLYTEC LOGO.jpg">
                                         </div>
 
-                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Registrate
+                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Registrar Usuario
                                         </h5>
+
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="" id="form2Example17" class="form-control form-control-lg" />
+                                            <label class="form-label" for="form2Example17">Nombre completo</label>
+                                        </div>
+
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="" id="form2Example17" class="form-control form-control-lg" />
+                                            <label class="form-label" for="form2Example17">Num celular</label>
+                                        </div>
 
                                         <div data-mdb-input-init class="form-outline mb-4">
                                             <input type="email" id="form2Example17"
@@ -38,11 +48,21 @@ export default {
                                                 class="form-control form-control-lg" />
                                             <label class="form-label" for="form2Example27">Contrasena</label>
                                         </div>
+
                                         <div data-mdb-input-init class="form-outline mb-4">
                                             <input type="password" id="form2ConfirmPassword27"
                                                 class="form-control form-control-lg" />
                                             <label class="form-label" for="form2ConfirmPassword27">Confirmar
                                                 Contrasena</label>
+                                        </div>
+
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <select class="form-control form-control-lg" id="form2Example17"
+                                                aria-label="Tipo de Usuario">
+                                                <option value="Operador">Operador</option>
+                                                <option value="Administrador">Administrador</option>
+                                            </select>
+                                            <label class="form-label" for="form2Example17">Tipo de Usuario</label>
                                         </div>
 
                                         <div class="pt-1 mb-4">

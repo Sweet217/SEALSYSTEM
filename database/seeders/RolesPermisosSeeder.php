@@ -25,8 +25,8 @@ class RolesPermisosSeeder extends Seeder
 
         // Crear roles y asignar permisos Operador
         
-        $role = Role::create(['name' => 'Operador']);
-        $role->givePermissionTo('');
+        $operadorRole = Role::create(['name' => 'Operador']);
+        $operadorRole->givePermissionTo('');
         
     }
 }
