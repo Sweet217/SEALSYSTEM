@@ -27,6 +27,9 @@ Route::get('/listas/{id_lista}', function ($id_lista) {
         return abort(404); // Handle not found case
     }
 });
+
+Route::get('/listasPOST', [ListasController::class, 'crearLista']);
+
   
 
 

@@ -17,5 +17,9 @@ class ListasController extends Controller
         'listas' => $data
     ]);
   }
+
+  public function crearLista(Request $request) {
+    
+  }
   
 }

@@ -1,6 +1,7 @@
 <script setup>
 import FooterComponent from '@/Components/FooterComponent.vue'
 import NavbarComponent from '@/Components/NavbarComponent.vue'
+import CrearListaComponent from '@/Components/CrearListaComponent.vue'
 
 const props = defineProps({
   listas: Object,
@@ -10,6 +11,28 @@ let currentListId = null;
 </script>
 
 <script>
+export default {
+  data() {
+    return {
+      nombre: '',
+    };
+  },
+  methods: {
+    crearLista() {
+      axios.post('/listasPOST', {
+        nombre: this.nombre,
+      })
+        .then(() => {
+          this.nombre = ''; // Limpiar el campo de nombre
+          alert('Lista creada correctamente');
+        })
+        .catch(error => {
+          console.error('Error al crear la lista:', error);
+        });
+    },
+  },
+};
+
 function handleListClick(listId) {
   currentListId = listId;
   // Simulate navigation (no actual endpoint created)
@@ -17,7 +40,11 @@ function handleListClick(listId) {
 }
 </script>
 
-<template>  
+<template>
+
+  <CrearListaComponent></CrearListaComponent>
+
+
   <NavbarComponent></NavbarComponent>
 
   <div class="container mx-auto mt-4">
