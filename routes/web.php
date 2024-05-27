@@ -31,6 +31,7 @@ Route::get('/listas/{id_lista}', function ($id_lista) {
 //Listas
 Route::post('/listasPOST', [ListasController::class, 'crearLista']);
 Route::delete('/listasDELETE/{id_lista}', [ListasController::class, 'borrarLista']);
+Route::put('/listasPUT/{id_lista}', [ListasController::class, 'editarLista']);
 
   
 

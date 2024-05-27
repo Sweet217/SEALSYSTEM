@@ -2,16 +2,19 @@
 export default {
   name: 'NavbarComponent',
   mounted() {
-    const registrarseButton = document.querySelector('.registrate');
+    const usuariosButton = document.querySelector('.registrate');
     const iniciarSesionButton = document.querySelector('.inicia-sesion');
 
     function redireccionar(ruta) {
       window.location.href = `${window.location.origin}${ruta}`;
     }
-    registrarseButton.addEventListener('click', () => {
+    usuariosButton.addEventListener('click', () => {
       redireccionar('/registrarse');
     });
-    iniciarSesionButton.addEventListener('click', () => {
+    listasButton.addEventListener('click', () => {
+      redireccionar('/loginsolytec');
+    });
+    equiposButton.addEventListener('click', () => {
       redireccionar('/loginsolytec');
     });
   }
@@ -42,8 +45,9 @@ setTimeout(() => {
           <button class="whiteLink siteLink"><i class="fas fa-search"></i></button>
         </div>
         <div class="button-container">
-          <button class="siteLink registrate">REGISTRATE</button>
-          <button class="siteLink inicia-sesion">INICIAR SESION</button>
+          <button class="siteLink usuarios">USUARIOS</button>
+          <button class="siteLink listas">LISTAS</button>
+          <button class="siteLink equipos">EQUIPOS</button>
         </div>
       </div>
     </div>

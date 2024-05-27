@@ -38,13 +38,30 @@ class ListasController extends Controller
     }
 }
 
-  public function borrarLista($id_lista) {
+  public function borrarLista(Request $request, $id_lista) {
     
     $lista = Listas::where('id_lista', $id_lista)->first();
     $lista->delete();
 
     return response()->json(['message' => 'Lista eliminada correctamente'], 205);
   }
+  
+  public function editarLista(Request $request, $id_lista) {
+    //Validar se haya proporcionado un nombre
+    $request->validate([
+      'nombre' => 'required'
+    ]);
+    //Encontrar el id de la lista   
+    $lista = Listas::where('id_lista', $id_lista)->first();
+
+    //Actualizar el nombre de la lista
+    $lista->nombre = $request->input('nombre');
+    $lista->save();
+
+    return response()->json(['message' => 'Lista editada `correctamente'], 205);
+  }
+
+  
 
   
 }

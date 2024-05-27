@@ -2,6 +2,7 @@
 import FooterComponent from '@/Components/FooterComponent.vue'
 import NavbarComponent from '@/Components/NavbarComponent.vue'
 import CrearListaComponent from '@/Components/CrearListaComponent.vue'
+import axios from 'axios';
 
 const props = defineProps({
   listas: Object,
@@ -15,9 +16,27 @@ export default {
   data() {
     return {
       nombre: '',
+      modalVisible: false,
+      listaSeleccionada: {
+        id_lista: null,
+        nombre: '',
+      },
+      error: null,
     };
   },
   methods: {
+    abrirModal(lista) {
+      this.listaSeleccionada = { ...lista };
+      this.modalVisible = true;
+    },
+    cerrarModal() {
+      this.modalVisible = false;
+      this.listaSeleccionada = {
+        id_lista: null,
+        nombre: '',
+      };
+      this.error = null;
+    },
     eliminarLista(id_lista) {
       axios.delete(`/listasDELETE/${id_lista}`, {
         //id_lista: this.id,
@@ -30,6 +49,19 @@ export default {
           console.error('Error al eliminar la lista:', error);
         });
     },
+    editarLista(id_lista) {
+      axios.put(`/listasPUT/${id_lista}`, {
+        nombre: this.listaSeleccionada.nombre,
+      })
+        .then(() => {
+          alert('Lista editada correctamente');
+          this.cerrarModal();
+          window.location.reload()
+        })
+        .catch(error => {
+          console.error('Error al editar la lista:', error)
+        });
+    }
   }
 };
 
@@ -54,12 +86,24 @@ export default {
               {{ lista.nombre }}
             </button>
             <div class="flex space-x-2">
-              <button class="btn editar-btn" @click="handleEditList(lista.id_lista)">
-                Editar
-              </button>
+              <button class="btn editar-btn" @click="abrirModal(lista)">Editar</button>
               <button class="btn eliminar-btn" @click="eliminarLista(lista.id_lista)">
                 Eliminar
               </button>
+
+              <div v-if="modalVisible" class="modal">
+                <div class="modal-content">
+                  <span class="close" @click="cerrarModal">&times;</span>
+                  <h2>Editar Lista</h2>
+                  <form @submit.prevent="editarLista(listaSeleccionada.id_lista)">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" v-model="listaSeleccionada.nombre" id="nombre" class="form-control rounded-pill">
+                    <div class="text-center">
+                      <button type="submit">Guardar Cambios</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
         </li>
@@ -109,6 +153,93 @@ export default {
 }
 
 .eliminar-btn:hover {
+  background-color: #e3671f;
+  border-color: #d4551a;
+}
+
+/* Estilos para el modal */
+/* Modal container */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+}
+
+/* Modal content */
+.modal-content {
+  background-color: #fdfcfa;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Close button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.modal-content h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+  padding: 20px 0;
+}
+
+.close:hover,
+.close:focus {
+  color: #f78433;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .modal-content {
+    width: 90%;
+    padding: 15px;
+  }
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Custom button styles (optional) */
+.modal-content button {
+  background-color: #f78433;
+  color: #fdfcfa;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 15px;
+  margin-top: 10px;
+}
+
+.modal-content button:hover {
   background-color: #e3671f;
   border-color: #d4551a;
 }

@@ -51,6 +51,7 @@ export default {
     margin-left: 5px;
     padding-top: 15px;
     padding-left: 10px;
+    margin-right: 20px;
 }
 
 .registro-lista h2 {
