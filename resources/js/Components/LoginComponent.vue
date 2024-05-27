@@ -84,7 +84,7 @@ export default {
                     </div>
 
                     <div class="pt-1 mb-4">
-                      <button type="submit" class="color-boton login-boton btn btn-lg btn-block">Logeate</button>
+                      <button type="submit" class="color-boton login-boton btn btn-lg btn-block">Iniciar Sesion</button>
                     </div>
 
                     <div class="text-danger" v-if="errors">

@@ -16,7 +16,10 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/listas', [ListasController::class, 'showListas'])->name('listas');
+Route::get('/pantallaprincipal', function() {
+    return Inertia::render('PaginaPrincipal', [
+    ]);
+});
 
 Route::get('/listas/{id_lista}', function ($id_lista) {
     $lista = Listas::where('id_lista', $id_lista)->first(); // Fetch the list by ID
@@ -29,11 +32,17 @@ Route::get('/listas/{id_lista}', function ($id_lista) {
 });
 
 //Listas
+Route::get('/listas', [ListasController::class, 'showListas'])->name('listas');
 Route::post('/listasPOST', [ListasController::class, 'crearLista']);
 Route::delete('/listasDELETE/{id_lista}', [ListasController::class, 'borrarLista']);
 Route::put('/listasPUT/{id_lista}', [ListasController::class, 'editarLista']);
 
   
+//Usuarios
+Route::get('/usuarios', [UserController::class, 'showUsuarios'])->name('usuarios');
+Route::post('/usuariosPOST', [UserController::class, 'crearUsuario']);
+Route::delete('/usuariosDELETE/{id_lista}', [UserController::class, 'borrarUsuario']);
+Route::put('/usuariosPUT/{id_lista}', [UserController::class, 'editarUsuario']);
 
 
 Route::get('/Perfil', function () {

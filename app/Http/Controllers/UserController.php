@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Login;
 use Spatie\Permission\Models\Role;
+use Inertia\Inertia;
+use Inertia\Response;
 use App\Models\Users;
 
 class UserController extends Controller
@@ -17,6 +19,53 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     public function showUsuarios(Request $request)
+        {
+            $data = Users::all();
+
+            return Inertia::render('Usuarios', [
+                'usuarios' => $data
+            ]);
+        }
+ 
+     public function borrarUsuario(Request $request, $usuario_id)
+     {
+         $usuario = Users::find($usuario_id);
+ 
+         if (!$usuario) {
+             return response()->json(['message' => 'Usuario no encontrado'], 404);
+         }
+ 
+         $usuario->delete();
+ 
+         return response()->json(['message' => 'Usuario eliminado correctamente'], 200);
+     }
+ 
+     public function editarUsuario(Request $request, $usuario_id)
+     {
+         $request->validate([
+             'nombre' => 'required',
+             'correo' => 'required|email|unique:users,correo,'.$usuario_id,
+             'telefono' => 'required',
+             // Puedes agregar más validaciones según tus requisitos
+         ]);
+ 
+         $usuario = Users::find($usuario_id);
+ 
+         if (!$usuario) {
+             return response()->json(['message' => 'Usuario no encontrado'], 404);
+         }
+ 
+         $usuario->nombre = $request->nombre;
+         $usuario->correo = $request->correo;
+         $usuario->telefono = $request->telefono;
+         // Actualiza otros campos según sea necesario
+ 
+         $usuario->save();
+ 
+         return response()->json(['message' => 'Usuario editado correctamente'], 200);
+     }
 
      public function AsignarRolesAUsuarios(Request $request)
      {
