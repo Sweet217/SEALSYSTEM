@@ -2,20 +2,21 @@
 export default {
   name: 'NavbarComponent',
   mounted() {
-    const usuariosButton = document.querySelector('.registrate');
-    const iniciarSesionButton = document.querySelector('.inicia-sesion');
+    const usuariosButton = document.querySelector('.usuarios');
+    const listasButton = document.querySelector('.listas');
+    const equiposButton = document.querySelector('.equipos');
 
     function redireccionar(ruta) {
       window.location.href = `${window.location.origin}${ruta}`;
     }
     usuariosButton.addEventListener('click', () => {
-      redireccionar('/registrarse');
+      redireccionar('/usuarios');
     });
     listasButton.addEventListener('click', () => {
-      redireccionar('/loginsolytec');
+      redireccionar('/listas');
     });
     equiposButton.addEventListener('click', () => {
-      redireccionar('/loginsolytec');
+      redireccionar('/equipos');
     });
   }
 };
@@ -39,7 +40,7 @@ setTimeout(() => {
         </div>
         <div class="flex3 text-center" id="siteBrand">
 
-          <img class="solytec-logo" src="@/images/SOLYTEC LOGO.jpg">
+          <img class="solytec-logo text-center" src="@/images/SOLYTEC LOGO.jpg">
         </div>
         <div class="flex2 text-end d-block d-md-none">
           <button class="whiteLink siteLink"><i class="fas fa-search"></i></button>

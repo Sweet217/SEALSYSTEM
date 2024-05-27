@@ -94,8 +94,7 @@ export default {
                     </div>
 
                     <a class="small text-muted" href="#!">Olvidate tu contrasena?</a>
-                    <p class="mb-5 pb-lg-2" style="color: #393f81;">No tienes una cuenta? <a href="#!"
-                        style="color: #393f81;">Registrate aqui!</a></p>
+                    <br>
                     <a href="#!" class="small text-muted">Terminos de uso</a>
                     <br>
                     <a href="#!" class="small text-muted">Politica de privacidad</a>

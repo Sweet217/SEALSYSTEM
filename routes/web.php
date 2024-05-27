@@ -12,7 +12,7 @@ use App\Http\Controllers\LoginController;
 use App\Models\listas;
 
 Route::get('/', function () {
-    return Inertia::render('PaginaPrincipal', [
+    return Inertia::render('Login', [
     ]);
 });
 
@@ -56,6 +56,8 @@ Route::get('/signupsolytec', function () {
 });
 
 Route::post('signupPOST', [SignupController::class, 'register']);
+
+
 
 Route::middleware([
     'auth:sanctum',
