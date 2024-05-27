@@ -16,7 +16,6 @@ class RolesPermisosSeeder extends Seeder
     {
         //Crear permisos
         Permission::create(['name' => 'Registrar usuarios']);
-        Permission::create(['name' => 'Registrar usuarios']);
 
         // Crear roles y asignar permisos Administrador
         $adminstratorRole = Role::create(['name' => 'Administrador']);

@@ -11,7 +11,7 @@ class ListasController extends Controller
 {
     public function showListas(Request $request)
   {
-    $data = Listas::all();
+    $data = listas::all();
 
     return Inertia::render('Listas', [
         'listas' => $data
@@ -19,7 +19,32 @@ class ListasController extends Controller
   }
 
   public function crearLista(Request $request) {
+    // Valida los datos del formulario
+    $request->validate([
+        'nombre' => 'required', // Asegura que el nombre sea obligatorio y tenga como máximo 255 caracteres
+    ]);
+
+    // Crea una nueva instancia del modelo Lista
+    $lista = new listas();
+    $lista->nombre = $request->nombre; // Asigna el nombre de la lista desde el formulario
+
+    try {
+        $lista->save();
+        // Si la lista se guarda correctamente, retorna una respuesta de éxito
+        return response()->json(['message' => 'Lista creada correctamente'], 201);
+    } catch (\Exception $e) {
+        // Si ocurre un error al guardar la lista, retorna un mensaje de error
+        return response()->json(['error' => 'Error al crear la lista'], 500);
+    }
+}
+
+  public function borrarLista($id_lista) {
     
+    $lista = Listas::where('id_lista', $id_lista)->first();
+    $lista->delete();
+
+    return response()->json(['message' => 'Lista eliminada correctamente'], 205);
   }
+
   
 }

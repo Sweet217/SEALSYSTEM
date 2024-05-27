@@ -28,7 +28,9 @@ Route::get('/listas/{id_lista}', function ($id_lista) {
     }
 });
 
-Route::get('/listasPOST', [ListasController::class, 'crearLista']);
+//Listas
+Route::post('/listasPOST', [ListasController::class, 'crearLista']);
+Route::delete('/listasDELETE/{id_lista}', [ListasController::class, 'borrarLista']);
 
   
 
