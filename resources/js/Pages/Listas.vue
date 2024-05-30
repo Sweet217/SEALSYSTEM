@@ -24,6 +24,7 @@ export default {
       error: null,
     };
   },
+
   methods: {
     abrirModal(lista) {
       this.listaSeleccionada = { ...lista };

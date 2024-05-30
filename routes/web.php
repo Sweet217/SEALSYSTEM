@@ -8,6 +8,7 @@ use App\Http\Controllers\ListasController;
 use App\Http\Controllers\MultimediaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\EquiposController;
 
 use App\Models\listas;
 use App\Models\Users;
@@ -63,7 +64,7 @@ Route::put('/equiposPUT/{equipo_id}', [EquiposController::class, 'editarEquipos'
 Route::get('/equipos/{equipo_id}', function ($equipo_id) {
     $equipo = Equipos::where('equipo_id', $equipo_id)->first(); // Saca el equipo por ID
 
-    if ($usuario_id) {
+    if ($equipo_id) {
         return "Mi nombre es $equipo->nombre"; // ReturnA EL NOMBRE DEL EQUIPO
     } else {
         return abort(404); // Handle not found case

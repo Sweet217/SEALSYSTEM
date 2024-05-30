@@ -23,9 +23,20 @@ class EquipoSeeder extends Seeder
     public function run(): void
     {
         $user1 = Users::first(); // Assuming UsuarioSeeder runs first
+        $licencia1 = Licencias::first();
         
+        if($licencia1){
         equipos::create([
+            'nombre' => 'Kiosko Sonora',
+            'licencia_id' => $licencia1->licencia_id,
             'usuario_id' => $user1->usuario_id,
         ]);
+        } else {
+            equipos::create([
+                'nombre' => 'Kiosko Sonora',
+                'usuario_id' => $user1->usuario_id,
+            ]);
+        
+    }
     }
 }

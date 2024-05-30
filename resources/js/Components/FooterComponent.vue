@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-    <footer>
+    <!-- <footer>
         <div class="container py-4 py-lg-5">
             <div class="row row-cols-2 row-cols-md-4">
                 <div class="col-12 col-md-3">
@@ -63,5 +63,5 @@ export default {
                 </ul>
             </div>
         </div>
-    </footer>
+    </footer> -->
 </template>
