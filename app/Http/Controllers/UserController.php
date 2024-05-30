@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Login;
 use Spatie\Permission\Models\Role;
 use Inertia\Inertia;
-use Inertia\Response;
 use App\Models\Users;
 
 class UserController extends Controller
@@ -46,8 +45,10 @@ class UserController extends Controller
      {
          $request->validate([
              'nombre' => 'required',
-             'correo' => 'required|email|unique:users,correo,'.$usuario_id,
+             'correo' => 'required|email',
              'telefono' => 'required',
+             'estado' => 'required',
+             'tipo_usuario' => 'required'
              // Puedes agregar más validaciones según tus requisitos
          ]);
  
@@ -60,6 +61,8 @@ class UserController extends Controller
          $usuario->nombre = $request->nombre;
          $usuario->correo = $request->correo;
          $usuario->telefono = $request->telefono;
+         $usuario->estado = $request->estado;
+         $usuario->tipo_usuario = $request->tipo_usuario;
          // Actualiza otros campos según sea necesario
  
          $usuario->save();

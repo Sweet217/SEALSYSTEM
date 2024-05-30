@@ -14,10 +14,12 @@ export default {
         return {
             modalVisible: false,
             usuarioSeleccionado: {
-                usuario_id: null,
+                usuario_id: '',
                 nombre: '',
                 correo: '',
-                telefono: ''
+                telefono: '',
+                estado: '',
+                tipo_usuario: ''
                 // Agrega más campos según sea necesario
             }
         };
@@ -33,12 +35,15 @@ export default {
                 usuario_id: null,
                 nombre: '',
                 correo: '',
-                telefono: ''
+                telefono: '',
+                estado: '',
+                tipo_usuario: ''
                 // Agrega más campos según sea necesario
             };
         },
         eliminarUsuario(usuario_id) {
-            axios.delete(`/usuarios/${usuario_id}`)
+            console.log(usuario_id);
+            axios.delete(`/usuariosDELETE/${usuario_id}`)
                 .then(() => {
                     alert('Usuario eliminado correctamente');
                     window.location.reload(); // Recarga la página después de eliminar
@@ -48,10 +53,12 @@ export default {
                 });
         },
         editarUsuario(usuario_id) {
-            axios.put(`/usuarios/${usuario_id}`, {
+            axios.put(`/usuariosPUT/${usuario_id}`, {
                 nombre: this.usuarioSeleccionado.nombre,
                 correo: this.usuarioSeleccionado.correo,
-                telefono: this.usuarioSeleccionado.telefono
+                telefono: this.usuarioSeleccionado.telefono,
+                estado: this.usuarioSeleccionado.estado,
+                tipo_usuario: this.usuarioSeleccionado.tipo_usuario
                 // Agrega más campos según sea necesario
             })
                 .then(() => {
@@ -79,23 +86,26 @@ export default {
 
         <div v-else>
             <ul class="list-disc space-y-2">
-                <li v-for="usuario in usuarios" :key="usuario.id">
+                <li v-for="usuario in usuarios" :key="usuario.usuario_id">
                     <div class="flex items-center justify-between">
                         <div>
                             <h3>{{ usuario.nombre }}</h3>
                             <p>{{ usuario.correo }}</p>
                             <p>{{ usuario.telefono }}</p>
+                            <p>{{ usuario.estado }}</p>
+                            <p>{{ usuario.tipo_usuario }}</p>
                         </div>
                         <div class="flex space-x-2">
                             <button class="btn editar-btn" @click="abrirModal(usuario)">Editar</button>
-                            <button class="btn eliminar-btn" @click="eliminarUsuario(usuario.id)">Eliminar</button>
+                            <button class="btn eliminar-btn"
+                                @click="eliminarUsuario(usuario.usuario_id)">Eliminar</button>
 
                             <!-- Modal para editar usuario -->
                             <div v-if="modalVisible" class="modal">
                                 <div class="modal-content">
                                     <span class="close" @click="cerrarModal">&times;</span>
                                     <h2>Editar Usuario</h2>
-                                    <form @submit.prevent="editarUsuario(usuarioSeleccionado.id)">
+                                    <form @submit.prevent="editarUsuario(usuarioSeleccionado.usuario_id)">
                                         <label for="nombre">Nombre:</label>
                                         <input type="text" v-model="usuarioSeleccionado.nombre" id="nombre"
                                             class="form-control rounded-pill">
@@ -106,6 +116,14 @@ export default {
 
                                         <label for="telefono">Teléfono:</label>
                                         <input type="tel" v-model="usuarioSeleccionado.telefono" id="telefono"
+                                            class="form-control rounded-pill">
+
+                                        <label for="estado">Estado:</label>
+                                        <input type="tel" v-model="usuarioSeleccionado.estado" id="estado"
+                                            class="form-control rounded-pill">
+
+                                        <label for="tipo_usuario">Rol:</label>
+                                        <input type="tel" v-model="usuarioSeleccionado.tipo_usuario" id="tipo_usuario"
                                             class="form-control rounded-pill">
 
                                         <!-- Agrega más campos de formulario según sea necesario -->
