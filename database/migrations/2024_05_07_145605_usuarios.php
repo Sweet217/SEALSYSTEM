@@ -12,26 +12,28 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('usuarios', function (Blueprint $table) {
-            $table->id('usuario_id'); // Use id() for auto-incrementing primary key
+            $table->id('user_id'); // Auto-incrementing primary key
             $table->string('nombre', 255);
-            $table->string('correo', 255)->unique(); // Enforce unique email addresses
+            $table->string('email', 255)->unique(); // Enforce unique email addresses
             $table->string('password', 255); 
             $table->string('estado', 50);
             $table->string('telefono', 20);
-            $table->string('tipo_usuario', 50)->default('Administrador');
+            $table->string('tipo_usuario', 50)->default('Operador');
             $table->string('remember_token')->nullable();
             $table->timestamps();
+
+            $table->index('email');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('correo')->primary();
+            $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->foreignId('user_id')->nullable()->constrained('usuarios', 'user_id')->onDelete('cascade')->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
@@ -44,6 +46,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('usuarios');
     }
 };

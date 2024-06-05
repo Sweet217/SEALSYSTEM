@@ -1,7 +1,6 @@
 <script setup>
-import FooterComponent from '@/Components/FooterComponent.vue'
-import NavbarComponent from '@/Components/NavbarComponent.vue'
-//import CrearEquiposComponent from '@Components/CrearEquiposComponent.vue'
+import FooterComponent from '@/Components/FooterComponent.vue';
+import NavbarComponent from '@/Components/NavbarComponent.vue';
 import axios from 'axios';
 
 const props = defineProps({
@@ -15,27 +14,84 @@ export default {
         return {
             nombre: '',
             modalVisible: false,
+            crearModalVisible: false,
             equipoSeleccionado: {
-                id_equipo: null,
-                nombre: ''
+                equipo_id: null,
+                nombre: '',
+                numero_licencia: '',
+                nombre_usuario: ''
             },
-            error: null
+            nuevoEquipo: {
+                nombre: '',
+                numero_licencia: '',
+                nombre_usuario: ''
+            },
+            nombreUsuario: '',
+            tipoUsuario: '',
+            error: null,
         };
     },
-
+    mounted() {
+        axios.get('/api/usuario_actual')
+            .then(response => {
+                this.nuevoEquipo.user_id = response.data.user_id;
+                this.nombreUsuario = response.data.nombre;
+                this.tipoUsuario = response.data.tipo_usuario;
+            })
+            .catch(error => {
+                console.error('Error al obtener el usuario actual:', error);
+                // Redirigir a la página de inicio de sesión si no está autenticado
+                if (error.response && error.response.status === 401) {
+                    window.location.href = '/';
+                } else {
+                    this.error = 'Error al obtener el usuario actual.';
+                }
+            });
+    },
     methods: {
-        abrirModal(equipo) {
-            console.log('clicleando')
-            equipoSeleccionado = { ...equipo };
-            modalVisible = true;
+        filtrarEquipos() {
+            if (this.tipoUsuario == 'Administrador') {
+                // Si el usuario no es un operador, mostrar todos los equipos
+                return this.equipos;
+            } else {
+                // Si el usuario es un operador, filtrar solo los equipos que son suyos
+                return this.equipos.filter(equipo => equipo.usuarios.nombre === this.nombreUsuario);
+            }
         },
 
+        abrirModal(equipo) {
+            this.equipoSeleccionado = {
+                equipo_id: equipo.equipo_id,
+                nombre: equipo.nombre,
+                numero_licencia: equipo.licencias ? equipo.licencias.licencia : '',
+                nombre_usuario: equipo.usuarios ? equipo.usuarios.nombre : ''
+            };
+            this.modalVisible = true;
+        },
         cerrarModal() {
-            modalVisible = false;
-            equipoSeleccionado = {
+            this.modalVisible = false;
+            this.equipoSeleccionado = {
                 equipo_id: null,
-                nombre: ''
-                // Reinicia las demás propiedades según sea necesario
+                nombre: '',
+                numero_licencia: '',
+                nombre_usuario: ''
+            };
+        },
+
+        abrirCrearModal() {
+            this.crearModalVisible = true;
+            this.nuevoEquipo = {
+                nombre: '',
+                numero_licencia: '',
+                nombre_usuario: this.nombreUsuario // Asigna el nombre del usuario actual
+            };
+        },
+        cerrarCrearModal() {
+            this.crearModalVisible = false;
+            this.nuevoEquipo = {
+                nombre: '',
+                numero_licencia: '',
+                nombre_usuario: this.nombreUsuario
             };
         },
 
@@ -51,29 +107,53 @@ export default {
         },
 
         editarEquipo(equipo_id) {
+            console.log('Numero de licencia:', this.nuevoEquipo.numero_licencia);
             axios.put(`/equiposPUT/${equipo_id}`, {
-                nombre: equipoSeleccionado.nombre
-                // Agrega más propiedades según sea necesario
+                nombre: this.equipoSeleccionado.nombre,
+                numero_licencia: this.equipoSeleccionado.numero_licencia,
+                nombre_usuario: this.equipoSeleccionado.nombre_usuario
             })
                 .then(() => {
                     alert('Equipo editado correctamente');
-                    cerrarModal();
+                    this.cerrarModal();
                     window.location.reload();
                 })
                 .catch(error => {
-                    console.error('Error al editar el equipo:', error);
+                    if (error.response && error.response.data.message) {
+                        alert(error.response.data.message);
+                    } else {
+                        console.error('Error al editar el equipo:', error);
+                    }
                 });
         },
-    }
-}
 
+        crearEquipo() {
+            axios.post('/equiposPOST', {
+                nombre: this.nuevoEquipo.nombre,
+                numero_licencia: this.nuevoEquipo.numero_licencia,
+                nombre_usuario: this.nuevoEquipo.nombre_usuario
+            })
+                .then(response => {
+                    alert('Equipo creado correctamente');
+                    this.cerrarCrearModal();
+                    this.equipos.push(response.data.equipo); // Agregar el nuevo equipo a la lista sin recargar la página
+                    window.location.reload(); //Recargar la pagina para que jale de nuevo la informacion de los usuarios (si no sale sin licencia y sin usuario asignado)
+                })
+                .catch(error => {
+                    console.error('Error al crear el equipo:', error);
+                });
+        }
+    }
+};
 </script>
+
 <template>
     <div>
         <NavbarComponent></NavbarComponent>
 
         <div class="container mx-auto mt-4">
             <h1 class="text-2xl font-bold mb-4">Todos los Equipos</h1>
+            <button class="btn morado-btn" @click="abrirCrearModal">Crear Nuevo Equipo</button>
 
             <div v-if="equipos.length === 0" class="text-gray-500">
                 No hay equipos disponibles.
@@ -81,40 +161,64 @@ export default {
 
             <div v-else>
                 <ul class="list-disc space-y-2">
-                    <li v-for="equipo in equipos" :key="equipo.equipo_id">
+                    <li v-for="equipo in filtrarEquipos()" :key="equipo.equipo_id">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3>{{ equipo.nombre }}</h3>
-                                <p>{{ equipo.licencia_id }}</p>
-                                <p>{{ equipo.usuario_id }}</p>
-
+                                <h3>Equipo: {{ equipo.nombre }}</h3>
+                                <p>Licencia: {{ equipo.licencias ? equipo.licencias.licencia : 'Sin Licencia' }}</p>
+                                <p>Usuario: {{ equipo.usuarios ? equipo.usuarios.nombre : 'Sin Usuario' }}</p>
                             </div>
                             <div class="flex space-x-2">
                                 <button class="btn editar-btn" @click="abrirModal(equipo)">Editar</button>
                                 <button class="btn eliminar-btn"
                                     @click="eliminarEquipo(equipo.equipo_id)">Eliminar</button>
-
-                                <!-- Modal para editar equipo -->
-                                <div v-if="modalVisible" class="modal">
-                                    <div class="modal-content">
-                                        <span class="close" @click="cerrarModal">&times;</span>
-                                        <h2>Editar Equipo</h2>
-                                        <form @submit.prevent="editarEquipo(equipoSeleccionado.equipo_id)">
-                                            <label for="nombre">Nombre:</label>
-                                            <input type="text" v-model="equipoSeleccionado.nombre" id="nombre"
-                                                class="form-control rounded-pill">
-                                            <!-- Agrega más campos del formulario según sea necesario -->
-
-                                            <div class="text-center">
-                                                <button type="submit">Guardar Cambios</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </li>
                 </ul>
+            </div>
+        </div>
+
+        <!-- Modal para editar equipo -->
+        <div v-if="modalVisible" class="modal">
+            <div class="modal-content">
+                <span class="close" @click="cerrarModal">&times;</span>
+                <h2>Editar Equipo</h2>
+                <form @submit.prevent="editarEquipo(equipoSeleccionado.equipo_id)">
+                    <label for="nombre">Nombre del Equipo:</label>
+                    <input type="text" v-model="equipoSeleccionado.nombre" id="nombre"
+                        class="form-control rounded-pill">
+                    <label for="numero_licencia">Número de Licencia:</label>
+                    <input type="text" v-model="equipoSeleccionado.numero_licencia" id="numero_licencia"
+                        class="form-control rounded-pill">
+                    <label for="nombre_usuario">Nombre del Usuario Responsable:</label>
+                    <input type="text" v-model="equipoSeleccionado.nombre_usuario" id="nombre_usuario"
+                        class="form-control rounded-pill">
+                    <div class="text-center">
+                        <button type="submit">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal para crear equipo -->
+        <div v-if="crearModalVisible" class="modal">
+            <div class="modal-content">
+                <span class="close" @click="cerrarCrearModal">&times;</span>
+                <h2>Crear Nuevo Equipo</h2>
+                <form @submit.prevent="crearEquipo">
+                    <label for="nombre">Nombre del Equipo:</label>
+                    <input type="text" v-model="nuevoEquipo.nombre" id="nombre" class="form-control rounded-pill">
+                    <label for="numero_licencia">Número de Licencia:</label>
+                    <input type="text" v-model="nuevoEquipo.numero_licencia" id="numero_licencia"
+                        class="form-control rounded-pill">
+                    <label for="nombre_usuario">Nombre del Usuario Responsable:</label>
+                    <input type="text" v-model="nuevoEquipo.nombre_usuario" id="nombre_usuario"
+                        class="form-control rounded-pill" disabled>
+                    <div class="text-center">
+                        <button type="submit">Guardar Cambios</button>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -134,6 +238,8 @@ export default {
     background-color: #302f51;
     border: 1px solid #302f51;
     color: white;
+    margin-bottom: 10px;
+    margin-top: -10px;
 }
 
 .morado-btn:hover {

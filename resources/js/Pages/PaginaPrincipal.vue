@@ -3,7 +3,9 @@ import FooterComponent from '@/Components/FooterComponent.vue'
 import NavbarComponent from '@/Components/NavbarComponent.vue'
 import HeaderComponent from '@/Components/HeaderComponent.vue'
 </script>
+<script>
 
+</script>
 <template>
     <!DOCTYPE html>
     <html data-bs-theme="light" lang="en">

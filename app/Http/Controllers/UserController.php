@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Login;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
 use Spatie\Permission\Models\Role;
 use Inertia\Inertia;
 use App\Models\Users;
@@ -27,6 +29,21 @@ class UserController extends Controller
                 'usuarios' => $data
             ]);
         }
+        
+    public function usuarioActual(Request $request): JsonResponse
+        {
+            $user = $request->user();
+            
+            if ($user) {
+                return response()->json([
+                    'user_id' => $user->user_id,
+                    'nombre' => $user->nombre,
+                    'tipo_usuario' => $user->tipo_usuario
+                ]);
+            } else {
+                return response()->json(['message' => 'Usuario no autenticado'], 401);
+            }
+        }
  
      public function borrarUsuario(Request $request, $usuario_id)
      {
@@ -45,7 +62,7 @@ class UserController extends Controller
      {
          $request->validate([
              'nombre' => 'required',
-             'correo' => 'required|email',
+             'email' => 'required|email',
              'telefono' => 'required',
              'estado' => 'required',
              'tipo_usuario' => 'required'
@@ -59,7 +76,7 @@ class UserController extends Controller
          }
  
          $usuario->nombre = $request->nombre;
-         $usuario->correo = $request->correo;
+         $usuario->email = $request->email;
          $usuario->telefono = $request->telefono;
          $usuario->estado = $request->estado;
          $usuario->tipo_usuario = $request->tipo_usuario;

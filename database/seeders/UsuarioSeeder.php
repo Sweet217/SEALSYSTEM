@@ -24,7 +24,7 @@ class UsuarioSeeder extends Seeder
     {
         Users::create([
             'nombre' => 'Juan Hernandez',
-            'correo' => 'JuanHernandez@solytec.com',
+            'email' => 'JuanHernandez@solytec.com',
             'password' => Hash::make('password'),
             'estado' => 'Activo',
             'telefono' => '1234567890',
@@ -33,7 +33,7 @@ class UsuarioSeeder extends Seeder
 
         Users::create([
             'nombre' => 'Gabriel Velazquez',
-            'correo' => 'GabrielVelazquez@solytec.com',
+            'email' => 'GabrielVelazquez@solytec.com',
             'password' => Hash::make('password'),
             'estado' => 'Activo',
             'telefono' => '312 595 3394',

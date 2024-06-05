@@ -1,8 +1,43 @@
 <script>
+import axios from 'axios';
+
 export default {
     name: 'SignupComponent',
+    data() {
+        return {
+            nombre: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            tipo_usuario: 'Operador',
+            telefono: '',
+            estado: 'Activo'
+        };
+    },
+    methods: {
+        async submitForm() {
+            try {
+                const response = await axios.post('/signupPOST', {
+                    nombre: this.nombre,
+                    email: this.email,
+                    password: this.password,
+                    password_confirmation: this.confirmPassword,
+                    tipo_usuario: this.tipo_usuario,
+                    telefono: this.telefono,
+                    estado: this.estado
+                });
+
+                console.log('User created successfully:', response.data);
+                alert('User created successfully!');
+            } catch (error) {
+                console.error('Error creating user:', error.response.data);
+                alert('Error creating user. Please try again.');
+            }
+        }
+    }
 };
 </script>
+
 
 <template>
     <section class="vh-100 main-section">
@@ -12,73 +47,67 @@ export default {
                     <div class="card" style="border-radius: 1rem;">
                         <div class="row g-0">
                             <div class="contenedor-imagen col-md-6 col-lg-5 d-none d-md-block">
+                                <!-- Image content here -->
                             </div>
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                 <div class="card-body p-4 p-lg-5 text-black">
-
-                                    <form>
-
+                                    <form @submit.prevent="submitForm">
                                         <div class="d-flex align-items-center mb-3 pb-1">
                                             <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
                                             <img class="solytec-logo" src="@/images/SOLYTEC LOGO.jpg">
                                         </div>
 
-                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Registrar Usuario
+                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">
+                                            Registrar Usuario
                                         </h5>
 
                                         <div data-mdb-input-init class="form-outline mb-4">
-                                            <input type="" id="form2Example17" class="form-control form-control-lg" />
-                                            <label class="form-label" for="form2Example17">Nombre completo</label>
-                                        </div>
-
-                                        <div data-mdb-input-init class="form-outline mb-4">
-                                            <input type="" id="form2Example17" class="form-control form-control-lg" />
-                                            <label class="form-label" for="form2Example17">Num celular</label>
-                                        </div>
-
-                                        <div data-mdb-input-init class="form-outline mb-4">
-                                            <input type="email" id="form2Example17"
+                                            <input type="text" id="nombre" v-model="nombre"
                                                 class="form-control form-control-lg" />
-                                            <label class="form-label" for="form2Example17">Direccion de correo
+                                            <label class="form-label" for="nombre">Nombre completo</label>
+                                        </div>
+
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="text" id="telefono" v-model="telefono"
+                                                class="form-control form-control-lg" />
+                                            <label class="form-label" for="telefono">Num celular</label>
+                                        </div>
+
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="email" id="email" v-model="email"
+                                                class="form-control form-control-lg" />
+                                            <label class="form-label" for="email">Direccion de correo
                                                 electronico</label>
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-4">
-                                            <input type="password" id="form2Example27"
+                                            <input type="password" id="password" v-model="password"
                                                 class="form-control form-control-lg" />
-                                            <label class="form-label" for="form2Example27">Contrasena</label>
+                                            <label class="form-label" for="password">Contrasena</label>
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-4">
-                                            <input type="password" id="form2ConfirmPassword27"
+                                            <input type="password" id="confirmPassword" v-model="confirmPassword"
                                                 class="form-control form-control-lg" />
-                                            <label class="form-label" for="form2ConfirmPassword27">Confirmar
-                                                Contrasena</label>
+                                            <label class="form-label" for="confirmPassword">Confirmar Contrasena</label>
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-4">
-                                            <select class="form-control form-control-lg" id="form2Example17"
-                                                aria-label="Tipo de Usuario">
+                                            <select class="form-control form-control-lg" id="tipo_usuario"
+                                                v-model="tipo_usuario" aria-label="Tipo de Usuario">
                                                 <option value="Operador">Operador</option>
                                                 <option value="Administrador">Administrador</option>
                                             </select>
-                                            <label class="form-label" for="form2Example17">Tipo de Usuario</label>
+                                            <label class="form-label" for="tipo_usuario">Tipo de Usuario</label>
                                         </div>
 
                                         <div class="pt-1 mb-4">
                                             <button data-mdb-button-init data-mdb-ripple-init
-                                                class=" color-boton login-boton btn btn-lg btn-block"
-                                                type="button">Registrate</button>
+                                                class="color-boton login-boton btn btn-lg btn-block" type="submit">
+                                                Registrate
+                                            </button>
                                         </div>
-
-                                        <a class="small text-muted" href="#!">Olvidate tu contrasena?</a>
-                                        <p class="mb-5 pb-lg-2" style="color: #393f81;">Ya tienes una cuenta? <a
-                                                href="#!" style="color: #393f81;">Inicia sesion aqui!</a></p>
-                                        <a href="#!" class="small text-muted">Terminos de uso</a>
-                                        <br>
-                                        <a href="#!" class="small text-muted">Politica de privacidad</a>
                                     </form>
-
                                 </div>
                             </div>
                         </div>
@@ -88,6 +117,7 @@ export default {
         </div>
     </section>
 </template>
+
 
 <style>
 .contenedor-imagen {

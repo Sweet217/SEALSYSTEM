@@ -10,10 +10,10 @@ export default {
 
   data() {
     return {
-      correo: '',
+      email: '',
       password: '',
       errors: null,
-      token: null,
+      token: '',
     }
   },
 
@@ -21,18 +21,29 @@ export default {
     async submitLogin() {
       try {
         const response = await axios.post('/loginPOST', {
-          correo: this.correo,
+          email: this.email,
           password: this.password,
+          token: this.token
         });
 
 
         const isAuthenticated = response.data && response.data.autenticacion_correcta;
 
         if (isAuthenticated) {
-
+          sessionStorage.clear();
           console.log('Login successful!');
           this.$emit('login-success');
-          window.location.href = 'listas'
+          this.token = response.data.token;
+          axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
+          sessionStorage.setItem('token', this.token);
+
+          axios.get('/api/pantallaprincipal')
+            .then(response => {
+              window.location.href = '/pantallaprincipal';
+            })
+            .catch(error => {
+              console.error('Error al acceder a pantallaprincipal:', error);
+            });
 
         } else {
 
@@ -72,7 +83,7 @@ export default {
                     <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Entra a tu cuenta</h5>
 
                     <div class="form-outline mb-4">
-                      <input type="email" v-model="correo" id="form2Example17" class="form-control form-control-lg"
+                      <input type="email" v-model="email" id="form2Example17" class="form-control form-control-lg"
                         required />
                       <label class="form-label" for="form2Example17">Direccion de correo electronico</label>
                     </div>
@@ -118,7 +129,7 @@ export default {
   /* Ajusta el ancho según tus necesidades */
   height: 600px;
   /* Ajusta la altura según tus necesidades */
-  background-image: url('@/images/kioskogobierno.jpg');
+  background-image: url('@/images/imagen_ejemplo.jpg');
   /* Ruta de la imagen */
   background-size: cover;
   background-repeat: no-repeat;

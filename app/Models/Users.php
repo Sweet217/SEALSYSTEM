@@ -7,22 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Spatie\Permission\Traits\HasRoles;
+use Laravel\Sanctum\HasApiTokens;
 
 
 class Users extends Model implements Authenticatable {
     
-    use HasRoles;
+    
+    use hasFactory, hasApiTokens, HasRoles;
     
     protected $table = 'usuarios';
-    protected $primaryKey = 'usuario_id';
+    protected $primaryKey = 'user_id';
 
-    protected $fillable = ['correo', 'password', 'tipo_usuario', 'telefono', 'estado', 'tipo_usuario'];
+    protected $fillable = ['nombre','email', 'password', 'tipo_usuario', 'telefono', 'estado'];
     
-    protected $hidden = ['password'];
+    protected $hidden = ['password', 'remember_token'];
+
+    public function equipos()
+    {
+        return $this->hasMany(Equipo::class, 'user_id');
+    }
     
     public function getAuthIdentifier()
     {
-        return $this->correo;
+        return $this->email;
     }
 
     public function getAuthPassword()
@@ -42,7 +49,7 @@ class Users extends Model implements Authenticatable {
 
     public function getAuthIdentifierName()
     {
-        return 'correo'; 
+        return 'email'; 
     }
 
     public function getAuthPasswordName()

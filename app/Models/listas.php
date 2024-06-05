@@ -13,6 +13,6 @@ class listas extends Model
     protected $table = 'listas';
     protected $primaryKey = 'id_lista';
     
-    protected $fillable = ['nombre'];
+    protected $fillable = ['nombre', 'id_lista'];
     
 }

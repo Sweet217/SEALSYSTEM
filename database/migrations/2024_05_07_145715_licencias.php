@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('licencias', function (Blueprint $table) {
             $table->id('licencia_id'); // Use id() for auto-incrementing primary key
-            $table->string('licencia', 32);
+            $table->string('licencia');
             $table->date('licencia_inicio')->default(now()); // Use 'now()' for current date
             $table->date('licencia_final')->default(now()->addMonth()); // Add one month to current date (Para crear licencias rapido, puedes tu poner la fecha que necesites desde los seeders o al crear valores en la tabla)
-            $table->unsignedBigInteger('equipo_id'); // Use unsignedBigInteger for foreign keys (Requerimiento)
+            $table->unsignedBigInteger('equipo_id')->nullable(); // Use unsignedBigInteger for foreign keys (Requerimiento)
             $table->foreign('equipo_id')->references('equipo_id')->on('equipos')->onDelete('cascade'); // Define foreign key relationship
             $table->timestamps();
         });

@@ -14,18 +14,18 @@ class RolesPermisosSeeder extends Seeder
      */
     public function run(): void
     {
-        //Crear permisos
-        Permission::create(['name' => 'Registrar usuarios']);
+        // //Crear permisos
+        // Permission::create(['name' => 'Registrar usuarios']);
 
-        // Crear roles y asignar permisos Administrador
-        $adminstratorRole = Role::create(['name' => 'Administrador']);
-        $administratorRole->givePermissionTo('Registrar usuarios');
-        $administratorRole->givePermissionTo('Acceder a la seccion de registro');
+        // // Crear roles y asignar permisos Administrador
+        // $adminstratorRole = Role::create(['name' => 'Administrador']);
+        // $administratorRole->givePermissionTo('Registrar usuarios');
+        // $administratorRole->givePermissionTo('Acceder a la seccion de registro');
 
-        // Crear roles y asignar permisos Operador
+        // // Crear roles y asignar permisos Operador
         
-        $operadorRole = Role::create(['name' => 'Operador']);
-        $operadorRole->givePermissionTo('');
+        // $operadorRole = Role::create(['name' => 'Operador']);
+        // $operadorRole->givePermissionTo('');
         
     }
 }

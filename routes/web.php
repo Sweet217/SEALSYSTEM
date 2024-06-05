@@ -9,88 +9,153 @@ use App\Http\Controllers\MultimediaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\EquiposController;
+use App\Http\Controllers\SignupController;
 
 use App\Models\listas;
 use App\Models\Users;
+use App\Models\equipos;
+
+//Login & register
+Route::post('/loginPOST', [LoginController::class, 'login']);
+Route::post('/signupPOST', [SignupController::class, 'signup']);
+
 Route::get('/', function () {
     return Inertia::render('Login', [
     ]);
 });
 
-Route::get('/pantallaprincipal', function() {
-    return Inertia::render('PaginaPrincipal', [
-    ]);
-});
+Route::post('/signupPOST', [SignupController::class, 'signup']);
+    Route::get('/register', function () {
+        return Inertia::render('SignUp', [
+        ]);
+    });
+    
+    // Rutas para la página principal
+    Route::get('/pantallaprincipal', function() {
+        return Inertia::render('PaginaPrincipal', []);
+    });
 
-Route::get('/listas/{id_lista}', function ($id_lista) {
-    $lista = Listas::where('id_lista', $id_lista)->first(); // Fetch the list by ID
+    // Rutas para Listas
+    Route::get('/listas/{id_lista}', function ($id_lista) {
+        $lista = Listas::where('id_lista', $id_lista)->first(); // Fetch the list by ID
 
-    if ($lista) {
-        return "Mi nombre es $lista->nombre"; // Return list name
-    } else {
-        return abort(404); // Handle not found case
-    }
-});
+        if ($lista) {
+            return "Mi nombre es $lista->nombre"; // Return list name
+        } else {
+            return abort(404); // Handle not found case
+        }
+    });
 
-//Listas
-Route::get('/listas', [ListasController::class, 'showListas'])->name('listas');
-Route::post('/listasPOST', [ListasController::class, 'crearLista']);
-Route::delete('/listasDELETE/{id_lista}', [ListasController::class, 'borrarLista']);
-Route::put('/listasPUT/{id_lista}', [ListasController::class, 'editarLista']);
+    Route::get('/listas', [ListasController::class, 'showListas'])->name('listas');
+    Route::post('/listasPOST', [ListasController::class, 'crearLista']);
+    Route::delete('/listasDELETE/{id_lista}', [ListasController::class, 'borrarLista']);
+    Route::put('/listasPUT/{id_lista}', [ListasController::class, 'editarLista']);
 
-  
-//Usuarios
-Route::get('/usuarios', [UserController::class, 'showUsuarios'])->name('usuarios');
-Route::post('/usuariosPOST', [UserController::class, 'crearUsuario']);
-Route::delete('/usuariosDELETE/{usuario_id}', [UserController::class, 'borrarUsuario']);
-Route::put('/usuariosPUT/{usuario_id}', [UserController::class, 'editarUsuario']);
-////////////////////////////////////////////////////////////////////////////////////////////
-Route::get('/usuarios/{usuario_id}', function ($usuario_id) {
-    $usuario = Users::where('usuario_id', $usuario_id)->first(); // Saca el usuario por ID
+    // Rutas para Usuarios
+    Route::get('/usuarios', [UserController::class, 'showUsuarios'])->name('usuarios');
+    Route::post('/usuariosPOST', [UserController::class, 'crearUsuario']);
+    Route::delete('/usuariosDELETE/{user_id}', [UserController::class, 'borrarUsuario']);
+    Route::put('/usuariosPUT/{user_id}', [UserController::class, 'editarUsuario']);
 
-    if ($usuario_id) {
-        return "Mi nombre es $usuario->nombre"; // Retorna el nombre del usuario
-    } else {
-        return abort(404); 
-    }
-});
+    Route::get('/usuarios/{user_id}', function ($user_id) {
+        $usuario = Users::where('user_id', $user_id)->first(); // Saca el usuario por ID
 
-//Equipos
-Route::get('/equipos', [EquiposController::class, 'showEquipos'])->name('equipos');
-Route::post('/equiposPOST', [EquiposController::class, 'crearEquipos']);
-Route::delete('/equiposDELETE/{equipo_id}', [EquiposController::class, 'borrarEquipos']);
-Route::put('/equiposPUT/{equipo_id}', [EquiposController::class, 'editarEquipos']);
-////////////////////////////////////////////////////////////////////////////////////////////
-Route::get('/equipos/{equipo_id}', function ($equipo_id) {
-    $equipo = Equipos::where('equipo_id', $equipo_id)->first(); // Saca el equipo por ID
+        if ($user_id) {
+            return "Mi nombre es $usuario->nombre"; // Retorna el nombre del usuario
+        } else {
+            return abort(404); 
+        }
+    });
 
-    if ($equipo_id) {
-        return "Mi nombre es $equipo->nombre"; // ReturnA EL NOMBRE DEL EQUIPO
-    } else {
-        return abort(404); // Handle not found case
-    }
-});
+    // Route::get('/usuario_actual', [UserController::class, 'usuarioActual']);
 
-Route::get('/Perfil', function () {
-    return Inertia::render('Perfil', [
-    ]);
-});
+    // Rutas para Equipos
+    Route::get('/equipos', [EquiposController::class, 'showEquipos'])->name('equipos');
+    Route::post('/equiposPOST', [EquiposController::class, 'crearEquipos']);
+    Route::delete('/equiposDELETE/{equipo_id}', [EquiposController::class, 'borrarEquipos']);
+    Route::put('/equiposPUT/{equipo_id}', [EquiposController::class, 'editarEquipos']);
 
-// Render Login Page (GET request)
-Route::get('/loginsolytec', function () {
-    return Inertia::render('Login');
-  });
-  
-// Handle Login Logic (POST request)
-Route::post('/loginPOST', [LoginController::class, 'login']);
+    Route::get('/equipos/{equipo_id}', function ($equipo_id) {
+        $equipo = equipos::where('equipo_id', $equipo_id)->first(); // Saca el equipo por ID
+
+        if ($equipo_id) {
+            return "Mi nombre es $equipo->nombre"; // Retorna el nombre del equipo
+        } else {
+            return abort(404); // Handle not found case
+        }
+    });
 
 
-Route::get('/signupsolytec', function () {
-    return Inertia::render('SignUp', [
-    ]);
-});
+// Route::middleware('auth:sanctum')->group(function () {
 
-Route::post('signupPOST', [SignupController::class, 'register']);
+//     Route::post('/signupPOST', [SignupController::class, 'signup']);
+//     Route::get('/register', function () {
+//         return Inertia::render('SignUp', [
+//         ]);
+//     });
+    
+//     // Rutas para la página principal
+//     Route::get('/pantallaprincipal', function() {
+//         return Inertia::render('PaginaPrincipal', []);
+//     });
+
+//     // Rutas para Listas
+//     Route::get('/listas/{id_lista}', function ($id_lista) {
+//         $lista = Listas::where('id_lista', $id_lista)->first(); // Fetch the list by ID
+
+//         if ($lista) {
+//             return "Mi nombre es $lista->nombre"; // Return list name
+//         } else {
+//             return abort(404); // Handle not found case
+//         }
+//     });
+
+//     Route::get('/listas', [ListasController::class, 'showListas'])->name('listas');
+//     Route::post('/listasPOST', [ListasController::class, 'crearLista']);
+//     Route::delete('/listasDELETE/{id_lista}', [ListasController::class, 'borrarLista']);
+//     Route::put('/listasPUT/{id_lista}', [ListasController::class, 'editarLista']);
+
+//     // Rutas para Usuarios
+//     Route::get('/usuarios', [UserController::class, 'showUsuarios'])->name('usuarios');
+//     Route::post('/usuariosPOST', [UserController::class, 'crearUsuario']);
+//     Route::delete('/usuariosDELETE/{user_id}', [UserController::class, 'borrarUsuario']);
+//     Route::put('/usuariosPUT/{user_id}', [UserController::class, 'editarUsuario']);
+
+//     Route::get('/usuarios/{user_id}', function ($user_id) {
+//         $usuario = Users::where('user_id', $user_id)->first(); // Saca el usuario por ID
+
+//         if ($user_id) {
+//             return "Mi nombre es $usuario->nombre"; // Retorna el nombre del usuario
+//         } else {
+//             return abort(404); 
+//         }
+//     });
+
+//     Route::get('/usuario_actual', [UserController::class, 'usuarioActual']);
+
+//     // Rutas para Equipos
+//     Route::get('/equipos', [EquiposController::class, 'showEquipos'])->name('equipos');
+//     Route::post('/equiposPOST', [EquiposController::class, 'crearEquipos']);
+//     Route::delete('/equiposDELETE/{equipo_id}', [EquiposController::class, 'borrarEquipos']);
+//     Route::put('/equiposPUT/{equipo_id}', [EquiposController::class, 'editarEquipos']);
+
+//     Route::get('/equipos/{equipo_id}', function ($equipo_id) {
+//         $equipo = Equipos::where('equipo_id', $equipo_id)->first(); // Saca el equipo por ID
+
+//         if ($equipo_id) {
+//             return "Mi nombre es $equipo->nombre"; // Retorna el nombre del equipo
+//         } else {
+//             return abort(404); // Handle not found case
+//         }
+//     });
+
+//     // Ejemplo de un recurso protegido
+//     Route::get('/protected-resource', function () {
+//         return response()->json(['message' => 'This is a protected resource']);
+//     });
+// });
+
+
 
 
 

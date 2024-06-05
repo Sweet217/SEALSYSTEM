@@ -14,9 +14,9 @@ export default {
         return {
             modalVisible: false,
             usuarioSeleccionado: {
-                usuario_id: '',
+                user_id: '',
                 nombre: '',
-                correo: '',
+                email: '',
                 telefono: '',
                 estado: '',
                 tipo_usuario: ''
@@ -32,18 +32,18 @@ export default {
         cerrarModal() {
             this.modalVisible = false;
             this.usuarioSeleccionado = {
-                usuario_id: null,
+                user_id: null,
                 nombre: '',
-                correo: '',
+                email: '',
                 telefono: '',
                 estado: '',
                 tipo_usuario: ''
                 // Agrega más campos según sea necesario
             };
         },
-        eliminarUsuario(usuario_id) {
-            console.log(usuario_id);
-            axios.delete(`/usuariosDELETE/${usuario_id}`)
+        eliminarUsuario(user_id) {
+            console.log(user_id);
+            axios.delete(`/usuariosDELETE/${user_id}`)
                 .then(() => {
                     alert('Usuario eliminado correctamente');
                     window.location.reload(); // Recarga la página después de eliminar
@@ -52,10 +52,10 @@ export default {
                     console.error('Error al eliminar el usuario:', error);
                 });
         },
-        editarUsuario(usuario_id) {
-            axios.put(`/usuariosPUT/${usuario_id}`, {
+        editarUsuario(user_id) {
+            axios.put(`/usuariosPUT/${user_id}`, {
                 nombre: this.usuarioSeleccionado.nombre,
-                correo: this.usuarioSeleccionado.correo,
+                email: this.usuarioSeleccionado.email,
                 telefono: this.usuarioSeleccionado.telefono,
                 estado: this.usuarioSeleccionado.estado,
                 tipo_usuario: this.usuarioSeleccionado.tipo_usuario
@@ -86,32 +86,31 @@ export default {
 
         <div v-else>
             <ul class="list-disc space-y-2">
-                <li v-for="usuario in usuarios" :key="usuario.usuario_id">
+                <li v-for="usuario in usuarios" :key="usuario.user_id">
                     <div class="flex items-center justify-between">
                         <div>
                             <h3>{{ usuario.nombre }}</h3>
-                            <p>{{ usuario.correo }}</p>
+                            <p>{{ usuario.email }}</p>
                             <p>{{ usuario.telefono }}</p>
                             <p>{{ usuario.estado }}</p>
                             <p>{{ usuario.tipo_usuario }}</p>
                         </div>
                         <div class="flex space-x-2">
                             <button class="btn editar-btn" @click="abrirModal(usuario)">Editar</button>
-                            <button class="btn eliminar-btn"
-                                @click="eliminarUsuario(usuario.usuario_id)">Eliminar</button>
+                            <button class="btn eliminar-btn" @click="eliminarUsuario(usuario.user_id)">Eliminar</button>
 
                             <!-- Modal para editar usuario -->
                             <div v-if="modalVisible" class="modal">
                                 <div class="modal-content">
                                     <span class="close" @click="cerrarModal">&times;</span>
                                     <h2>Editar Usuario</h2>
-                                    <form @submit.prevent="editarUsuario(usuarioSeleccionado.usuario_id)">
+                                    <form @submit.prevent="editarUsuario(usuarioSeleccionado.user_id)">
                                         <label for="nombre">Nombre:</label>
                                         <input type="text" v-model="usuarioSeleccionado.nombre" id="nombre"
                                             class="form-control rounded-pill">
 
-                                        <label for="correo">Correo Electrónico:</label>
-                                        <input type="email" v-model="usuarioSeleccionado.correo" id="correo"
+                                        <label for="email">Correo Electrónico:</label>
+                                        <input type="email" v-model="usuarioSeleccionado.email" id="email"
                                             class="form-control rounded-pill">
 
                                         <label for="telefono">Teléfono:</label>

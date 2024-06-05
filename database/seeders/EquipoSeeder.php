@@ -29,12 +29,12 @@ class EquipoSeeder extends Seeder
         equipos::create([
             'nombre' => 'Kiosko Sonora',
             'licencia_id' => $licencia1->licencia_id,
-            'usuario_id' => $user1->usuario_id,
+            'user_id' => $user1->user_id,
         ]);
         } else {
             equipos::create([
                 'nombre' => 'Kiosko Sonora',
-                'usuario_id' => $user1->usuario_id,
+                'user_id' => $user1->user_id,
             ]);
         
     }
