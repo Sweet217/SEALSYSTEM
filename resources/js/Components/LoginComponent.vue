@@ -14,6 +14,7 @@ export default {
       password: '',
       errors: null,
       token: '',
+      showPassword: false,
     }
   },
 
@@ -50,12 +51,21 @@ export default {
           this.errors = response.data.errors || ['Credenciales incorrectas'];
         }
       } catch (error) {
-        if (error.response && error.response.data && error.response.data.errors) {
-          this.errors = error.response.data.errors;
+        if (error.response) {
+          if (error.response.status === 401) {
+            this.errors = ['Datos Invalidos'];
+          } else if (error.response.data && error.response.data.errors) {
+            this.errors = error.response.data.errors;
+          } else {
+            console.error('Login failed:', error.message);
+          }
         } else {
           console.error('Login failed:', error.message);
         }
       }
+    },
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
     }
   }
 };
@@ -80,7 +90,14 @@ export default {
                       <img class="solytec-logo" src="@/images/SOLYTEC LOGO.jpg">
                     </div>
 
-                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Entra a tu cuenta</h5>
+                    <div class="text-danger" v-if="errors">
+                      <ul>
+                        <li v-for="error in errors" :key="error">{{ error }}</li>
+                      </ul>
+                    </div>
+
+                    <!-- <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Entra a tu cuenta</h5> -->
+                    <br>
 
                     <div class="form-outline mb-4">
                       <input type="email" v-model="email" id="form2Example17" class="form-control form-control-lg"
@@ -88,27 +105,23 @@ export default {
                       <label class="form-label" for="form2Example17">Direccion de correo electronico</label>
                     </div>
 
-                    <div class="form-outline mb-4">
-                      <input type="password" v-model="password" id="form2Example27" class="form-control form-control-lg"
-                        required />
-                      <label class="form-label" for="form2Example27">Contrasena</label>
+                    <div class="form-outline mb-4 position-relative">
+                      <input :type="showPassword ? 'text' : 'password'" v-model="password" id="form2Example27"
+                        class="form-control form-control-lg" required />
+                      <label class="form-label" for="form2Example27">Contraseña</label>
+                      <i :class="showPassword ? 'fas fa-eye-slash eye-icon' : 'fas fa-eye eye-icon'"
+                        @click="togglePasswordVisibility"></i>
                     </div>
 
                     <div class="pt-1 mb-4">
-                      <button type="submit" class="color-boton login-boton btn btn-lg btn-block">Iniciar Sesion</button>
+                      <button type="submit" class="color-boton login-boton btn btn-lg btn-block">Inicia sesión</button>
                     </div>
 
-                    <div class="text-danger" v-if="errors">
-                      <ul>
-                        <li v-for="error in errors" :key="error">{{ error }}</li>
-                      </ul>
-                    </div>
-
-                    <a class="small text-muted" href="#!">Olvidate tu contrasena?</a>
-                    <br>
-                    <a href="#!" class="small text-muted">Terminos de uso</a>
-                    <br>
-                    <a href="#!" class="small text-muted">Politica de privacidad</a>
+                    <!-- <a class="small text-muted" href="#!">Olvidate tu contraseña?</a>
+                    <br> -->
+                    <a href="#!" class="small text-muted">Terminos de uso y Política de privacidad</a>
+                    <!-- <br>
+                    <a href="#!" class="small text-muted">Politica de privacidad</a> -->
 
                   </form>
 
@@ -135,6 +148,10 @@ export default {
   background-repeat: no-repeat;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
+}
+
+.hide-image .contenedor-imagen {
+  display: none;
 }
 
 .letra-naranja {
@@ -169,24 +186,45 @@ export default {
   object-fit: contain;
 }
 
-@media (max-width: 768px) {
-  .solytec-logo {
-    margin-left: -40px;
-    margin-top: 0px;
-    width: 50%;
-    height: 50%;
-    /* Reduce el ancho a 30% */
+.eye-icon {
+  position: absolute;
+  top: 30%;
+  right: 20px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d;
+  /* Color del icono */
+}
+
+@media (max-width: 1024px) {
+
+  /* Oculta la imagen si las dimensiones son menores o iguales a 1029x800 */
+  .contenedor-imagen {
+    width: 300px;
+    /* Ajusta el ancho según tus necesidades */
+    height: 500px;
   }
 }
 
-/* Para pantallas con un ancho máximo de 480px (por ejemplo, smartphones): */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+
+  /* Media query para dispositivos móviles */
   .solytec-logo {
     margin-left: -40px;
     margin-top: 0px;
     width: 50%;
     height: 50%;
-    /* Reduce el ancho a 20% */
+  }
+}
+
+@media (max-width: 480px) {
+
+  /* Media query para smartphones */
+  .solytec-logo {
+    margin-left: -40px;
+    margin-top: 0px;
+    width: 50%;
+    height: 50%;
   }
 }
 

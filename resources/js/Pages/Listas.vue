@@ -1,7 +1,7 @@
 <script setup>
 import FooterComponent from '@/Components/FooterComponent.vue'
 import NavbarComponent from '@/Components/NavbarComponent.vue'
-import CrearListaComponent from '@/Components/CrearListaComponent.vue'
+// import CrearListaComponent from '@/Components/CrearListaComponent.vue'
 import axios from 'axios';
 
 const props = defineProps({
@@ -17,12 +17,34 @@ export default {
     return {
       nombre: '',
       modalVisible: false,
+      modalCrearVisible: false,
       listaSeleccionada: {
         id_lista: null,
         nombre: '',
       },
       error: null,
+      user_id: this.user_id,
+      nombre_usuario: this.nombreUsuario,
+      tipo_usuario: this.tipoUsuario,
+      nuevoNombre: '',
     };
+  },
+  mounted() {
+    axios.get('/api/usuario_actual')
+      .then(response => {
+        this.user_id = response.data.user_id;
+        this.nombreUsuario = response.data.nombre;
+        this.tipoUsuario = response.data.tipo_usuario;
+      })
+      .catch(error => {
+        console.error('Error al obtener el usuario actual:', error);
+        // Redirigir a la página de inicio de sesión si no está autenticado
+        if (error.response && error.response.status === 401) {
+          window.location.href = '/';
+        } else {
+          this.error = 'Error al obtener el usuario actual.';
+        }
+      });
   },
 
   methods: {
@@ -36,6 +58,14 @@ export default {
         id_lista: null,
         nombre: '',
       };
+      this.error = null;
+    },
+    abrirModalCrear() {
+      this.modalCrearVisible = true;
+    },
+    cerrarModalCrear() {
+      this.modalCrearVisible = false;
+      this.nuevoNombre = '';
       this.error = null;
     },
     eliminarLista(id_lista) {
@@ -62,6 +92,25 @@ export default {
         .catch(error => {
           console.error('Error al editar la lista:', error)
         });
+    },
+    crearLista() {
+      axios.post('/listasPOST', {
+        nombre: this.nuevoNombre,
+      })
+        .then(() => {
+          alert('Lista creada correctamente');
+          this.cerrarModalCrear();
+          window.location.reload();
+        })
+        .catch(error => {
+          console.error('Error al crear la lista:', error);
+        });
+    },
+    redirectToListaContent(listId) {
+      window.location.href = `/listas/${listId}`;
+    },
+    redirectToListaContent(listId) {
+      window.location.href = `/listas/${listId}`;
     }
   }
 };
@@ -74,6 +123,9 @@ export default {
   <div class="container mx-auto mt-4">
     <h1 class="text-2xl font-bold mb-4">Todas las Listas</h1>
 
+    <button class="btn morado-btn" @click="abrirModalCrear">Crear Nueva Lista</button>
+
+
     <div v-if="listas.length === 0" class="text-gray-500">
       No hay listas disponibles.
     </div>
@@ -82,8 +134,7 @@ export default {
       <ul class="list-disc space-y-2">
         <li v-for="lista in listas" :key="lista.id_lista">
           <div class="flex items-center justify-between">
-            <button class="btn morado-btn"
-              @click="$router.push({ name: 'list-multimedia', params: { listId: lista.id_lista } })">
+            <button class="btn morado-btn" @click="redirectToListaContent(lista.id_lista)">
               {{ lista.nombre }}
             </button>
             <div class="flex space-x-2">
@@ -91,6 +142,7 @@ export default {
               <button class="btn eliminar-btn" @click="eliminarLista(lista.id_lista)">
                 Eliminar
               </button>
+
 
               <div v-if="modalVisible" class="modal">
                 <div class="modal-content">
@@ -105,6 +157,21 @@ export default {
                   </form>
                 </div>
               </div>
+
+              <div v-if="modalCrearVisible" class="modal">
+                <div class="modal-content">
+                  <span class="close" @click="cerrarModalCrear">&times;</span>
+                  <h2>Crear Lista</h2>
+                  <form @submit.prevent="crearLista">
+                    <label for="nuevoNombre">Nombre:</label>
+                    <input type="text" v-model="nuevoNombre" id="nuevoNombre" class="form-control rounded-pill">
+                    <div class="text-center">
+                      <button type="submit">Crear</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
             </div>
           </div>
         </li>
@@ -112,7 +179,7 @@ export default {
     </div>
   </div>
 
-  <CrearListaComponent></CrearListaComponent>
+  <!-- <CrearListaComponent></CrearListaComponent> -->
 
   <FooterComponent></FooterComponent>
 </template>
@@ -129,6 +196,8 @@ export default {
   background-color: #302f51;
   border: 1px solid #302f51;
   color: white;
+  margin-bottom: 15px;
+
 }
 
 .morado-btn:hover {

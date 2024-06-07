@@ -1,24 +1,45 @@
 <script>
 export default {
   name: 'NavbarComponent',
+  data() {
+    return {
+      nombreUsuario: '',
+      tipoUsuario: '',
+      showUsuarios: false,
+    };
+  },
   mounted() {
-    const usuariosButton = document.querySelector('.usuarios');
-    const listasButton = document.querySelector('.listas');
-    const equiposButton = document.querySelector('.equipos');
-
-    function redireccionar(ruta) {
-      window.location.href = `${window.location.origin}${ruta}`;
+    axios.get('/api/usuario_actual')
+      .then(response => {
+        this.nombreUsuario = response.data.nombre;
+        this.tipoUsuario = response.data.tipo_usuario;
+        // console.log(this.tipoUsuario)
+        if (this.tipoUsuario === 'Administrador') {
+          return this.showUsuarios = true;
+        }
+      })
+      .catch(error => {
+        console.error('Error al obtener el usuario actual:', error);
+        // Redirigir a la página de inicio de sesión si no está autenticado
+        if (error.response && error.response.status === 401) {
+          window.location.href = '/';
+        } else {
+          this.error = 'Error al obtener el usuario actual.';
+        }
+      });
+  },
+  methods: {
+    redirectUsuarios() {
+      window.location.href = '/usuarios';
+    },
+    redirectListas() {
+      window.location.href = '/listas';
+    },
+    redirectEquipos() {
+      window.location.href = '/equipos';
     }
-    usuariosButton.addEventListener('click', () => {
-      redireccionar('/usuarios');
-    });
-    listasButton.addEventListener('click', () => {
-      redireccionar('/listas');
-    });
-    equiposButton.addEventListener('click', () => {
-      redireccionar('/equipos');
-    });
   }
+
 };
 // Wait for the gradient animation to finish (2 seconds) HEADER COMPONENT EFFECT
 setTimeout(() => {
@@ -35,20 +56,17 @@ setTimeout(() => {
   <div id="menuHolder">
     <div role="navigation" class="sticky-top border-bottom border-top" id="mainNavigation">
       <div class="flexMain">
-        <div class="flex2">
-
-        </div>
+        <div class="flex2"></div>
         <div class="flex3 text-center" id="siteBrand">
-
-          <img class="solytec-logo text-center" src="@/images/SOLYTEC LOGO.jpg">
+          <div class="logo-container">
+            <img class="solytec-logo text-center" src="@/images/SOLYTEC LOGO.jpg">
+          </div>
         </div>
-        <div class="flex2 text-end d-block d-md-none">
-          <button class="whiteLink siteLink"><i class="fas fa-search"></i></button>
-        </div>
-        <div class="button-container">
-          <button class="siteLink usuarios">USUARIOS</button>
-          <button class="siteLink listas">LISTAS</button>
-          <button class="siteLink equipos">EQUIPOS</button>
+        <div class="button-container flexMain">
+          <!-- Agregar v-if para mostrar el botón de usuarios solo si el usuario es administrador -->
+          <button v-if="showUsuarios" @click="redirectUsuarios" class="siteLink usuarios">USUARIOS</button>
+          <button class="siteLink listas" @click="redirectListas">LISTAS</button>
+          <button class="siteLink equipos" @click="redirectEquipos">EQUIPOS</button>
         </div>
       </div>
     </div>
@@ -66,24 +84,46 @@ setTimeout(() => {
   object-fit: contain;
 }
 
+
+
 @media (max-width: 768px) {
   .solytec-logo {
     margin: 0 auto;
-    width: 50%;
-    height: 50%;
-    /* Reduce el ancho a 30% */
+    width: auto;
+    height: auto;
+    /* Ajusta la altura automáticamente */
+    max-width: 100%;
+    scale: auto;
+    /* Asegura que el logo no exceda el ancho del contenedor */
   }
 
+  .logo-container {
+    margin-bottom: 20px;
+    /* Espacio entre el logo y las opciones */
+  }
 
+  .siteLink {
+    padding: 12px;
+    font-size: 14px;
+    /* Reducir el relleno y el tamaño del texto para hacer los botones más compactos */
+  }
 }
 
 /* Para pantallas con un ancho máximo de 480px (por ejemplo, smartphones): */
 @media (max-width: 480px) {
   .solytec-logo {
     margin: 0 auto;
-    width: 50%;
-    height: 50%;
-    /* Reduce el ancho a 20% */
+    width: auto;
+    height: auto;
+    /* Ajusta la altura automáticamente */
+    max-width: 100%;
+    scale: auto;
+  }
+
+  .siteLink {
+    padding: 8px;
+    font-size: 12px;
+    /* Reducir aún más el relleno y el tamaño del texto para pantallas más pequeñas */
   }
 }
 

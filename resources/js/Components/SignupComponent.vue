@@ -49,9 +49,9 @@ export default {
                             <div class="contenedor-imagen col-md-6 col-lg-5 d-none d-md-block">
                                 <!-- Image content here -->
                             </div>
-                            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                            <div class="col-md-6 col-lg-7 d-flex align-items-center" autocomplete="off">
                                 <div class="card-body p-4 p-lg-5 text-black">
-                                    <form @submit.prevent="submitForm">
+                                    <form @submit.prevent="submitForm" autocomplete="off">
                                         <div class="d-flex align-items-center mb-3 pb-1">
                                             <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
                                             <img class="solytec-logo" src="@/images/SOLYTEC LOGO.jpg">
@@ -76,7 +76,8 @@ export default {
                                         <div data-mdb-input-init class="form-outline mb-4">
                                             <input type="email" id="email" v-model="email"
                                                 class="form-control form-control-lg" />
-                                            <label class="form-label" for="email">Direccion de correo
+                                            <label class="form-label" for="email" autocomplete="new-email">Direccion de
+                                                correo
                                                 electronico</label>
                                         </div>
 
