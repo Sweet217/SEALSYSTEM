@@ -23,28 +23,27 @@ class ImagenSeeder extends Seeder
      */
     public function run(): void
     {
-        $multimedia1 = Multimedia::first(); 
+        $multimedia = Multimedia::where('tipo', 'imagen')->first(); 
         
         $imagePath = 'resources/js/images/kioskogobierno.jpg';
         if (file_exists($imagePath)) {
             $imageName = 'kioskogobierno.jpg';
 
             try {
-                $imageContent = file_get_contents($imagePath);
-                Storage::disk('public')->put('images/pruebas/' . $imageName, $imageContent);
-                // Create Imagenes record 
+                $storedPath = Storage::disk('public')->put('images/pruebas/' . $imageName, file_get_contents($imagePath));
+                
                 Imagenes::create([
                   'nombre_archivo' => $imageName,
                   'tiempo' => 10,
-                  'data' => $imagePath,
-                  'multimedia_id' => $multimedia1->multimedia_id,
+                  'data' => 'images/pruebas/' . $imageName,
+                  'multimedia_id' => $multimedia->multimedia_id,
                 ]);
               } catch (Exception $e) {
-                echo "Error: Image processxing failed! " . $e->getMessage();
+                echo "Error: Image processing failed! " . $e->getMessage();
               }
             
         } else {
-        echo "Error: Image file not found!";
+            echo "Error: Image file not found!";
         }
     }
 }

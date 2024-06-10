@@ -26,5 +26,15 @@ class MultimediaSeeder extends Seeder
             'tipo' => 'video',
             'id_lista' => $lista1->id_lista,
         ]);
+
+        multimedia::create([
+            'tipo' => 'imagen',
+            'id_lista' => $lista1->id_lista
+        ]);
+
+        multimedia::create([
+            'tipo'=>'enlace',
+            'id_lista'=> $lista1->id_lista
+        ]);
     }
 }

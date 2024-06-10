@@ -14,5 +14,10 @@ class listas extends Model
     protected $primaryKey = 'id_lista';
     
     protected $fillable = ['nombre', 'id_lista'];
+
+    public function multimedia()
+    {
+        return $this->hasMany(multimedia::class, 'id_lista', 'id_lista');
+    }
     
 }

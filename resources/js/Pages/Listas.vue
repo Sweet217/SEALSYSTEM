@@ -107,11 +107,8 @@ export default {
         });
     },
     redirectToListaContent(listId) {
-      window.location.href = `/listas/${listId}`;
+      window.location.href = `/listas/${listId}/multimedia`;
     },
-    redirectToListaContent(listId) {
-      window.location.href = `/listas/${listId}`;
-    }
   }
 };
 

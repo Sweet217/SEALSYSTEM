@@ -20,11 +20,11 @@ class EnlaceSeeder extends Seeder
      */
     public function run(): void
     {
-        $multimedia1 = multimedia::first(); // Assuming ListaSeeder runs first
+        $multimedia = Multimedia::where('tipo', 'enlace')->first();
 
         enlaces::create([
-            'data' => 'https://www.youtube.com/watch?v=jNQXAC9IVRw', // Another YouTube link
-            'multimedia_id' => $multimedia1->id,
+            'data' => 'https://www.youtube.com/watch?v=jNQXAC9IVRw', 
+            'multimedia_id' => $multimedia->multimedia_id,
         ]);
         
     }

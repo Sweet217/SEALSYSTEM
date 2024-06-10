@@ -45,6 +45,8 @@ Route::post('/signupPOST', [SignupController::class, 'signup']);
             return abort(404); // Handle not found case
         }
     });
+    
+    Route::get('/listas/{id_lista}/multimedia', [MultimediaController::class, 'showMultimedia']);
 
     Route::get('/listas', [ListasController::class, 'showListas'])->name('listas');
     Route::post('/listasPOST', [ListasController::class, 'crearLista']);
@@ -84,6 +86,9 @@ Route::post('/signupPOST', [SignupController::class, 'signup']);
             return abort(404); // Handle not found case
         }
     });
+
+    //Rutas para Imagenes (editar solamente ya que es lo unico solicitad)
+    Route::put('/imagenPUT/{id}', [ImagenController::class, 'editarImagen']);
 
 
 // Route::middleware('auth:sanctum')->group(function () {

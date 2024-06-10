@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('imagen_id'); // Use id() for auto-incrementing primary key
             $table->string('nombre_archivo', 255); // VARCHAR(255) to store the image filename
             $table->integer('tiempo'); // INTEGER to store the image display time
-            $table->binary('data'); // BLOB to store the image data
+            $table->string('data'); // BLOB to store the image data
             $table->unsignedBigInteger('multimedia_id')->nullable(); // Use unsignedBigInteger for foreign keys
             $table->foreign('multimedia_id')->references('multimedia_id')->on('multimedia')->onDelete('cascade'); // Define foreign key relationship
             $table->timestamps();
