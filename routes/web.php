@@ -96,12 +96,15 @@ Route::post('/signupPOST', [SignupController::class, 'signup']);
     //Rutas para Imagenes
     Route::put('/imagenPUT/{imagen_id}', [ImagenController::class, 'editarImagen']);
     Route::post('/imagenesPOST', [ImagenController::class, 'crearImagen']);
+    Route::delete('/imagenesDELETE/{multimedia_id}/{imagen_id}', [ImagenController::class, 'eliminarImagen']);
 
     //Rutas para Videos
     Route::post('/videosPOST', [VideoController::class, 'crearVideo']);
+    Route::delete('/videosDELETE/{multimedia_id}/{video_id}', [VideosController::class, 'eliminarVideo']);
     
     //Rutas para Enlaces
     Route::post('/enlacesPOST', [EnlaceController::class, 'crearEnlace']);
+    Route::delete('/enlacesDELETE/{multimedia_id}/{enlace_id}', [EnlaceController::class, 'eliminarEnlace']);
 
 
 // Route::middleware('auth:sanctum')->group(function () {

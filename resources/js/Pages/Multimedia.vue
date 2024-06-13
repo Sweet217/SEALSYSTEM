@@ -109,6 +109,7 @@ export default {
             const formData = new FormData();
             formData.append('nombre_archivo', this.nuevoVideo.nombre_archivo);
             formData.append('archivo', this.nuevoVideo.archivo);
+            formData.append('id_lista', this.nuevaMultimedia.id_lista);
 
             axios.post('/videosPOST', formData)
                 .then(response => {
@@ -120,9 +121,11 @@ export default {
                 });
         },
         crearEnlace() {
-            axios.post('/enlacesPOST', {
-                data: this.nuevoEnlace.enlace,
-            })
+            const formData = new FormData();
+            formData.append('data', this.nuevoEnlace.enlace);
+            formData.append('id_lista', this.nuevaMultimedia.id_lista);
+
+            axios.post('/enlacesPOST', formData)
                 .then(response => {
                     this.cerrarModal();
                     window.location.reload();
@@ -136,6 +139,57 @@ export default {
         },
         handleVideoSeleccionado(event) {
             this.nuevoVideo.archivo = event.target.files[0];
+        },
+
+        // Método para eliminar una imagen
+        eliminarImagen(multimedia_id, imagen_id) {
+            axios.delete(`/imagenesDELETE/${multimedia_id}/${imagen_id}`, {
+                data: {
+                    multimedia_id: multimedia_id,
+                    imagen_id: imagen_id
+                }
+            })
+                .then(response => {
+                    console.log(response.data.message);
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('Error al eliminar la imagen:', error);
+                });
+        },
+
+        // Método para eliminar un video
+        eliminarVideo(multimedia_id, video_id) {
+            axios.delete(`/videosDELETE/${multimedia_id}/${video_id}`, {
+                data: {
+                    multimedia_id: multimedia_id,
+                    video_id: video_id
+                }
+            })
+                .then(response => {
+                    console.log(response.data.message);
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('Error al eliminar el video:', error);
+                });
+        },
+
+        // Método para eliminar un enlace
+        eliminarEnlace(multimedia_id, enlace_id) {
+            axios.delete(`/enlacesDELETE/${multimedia_id}/${enlace_id}`, {
+                data: {
+                    multimedia_id: multimedia_id,
+                    enlace_id: enlace_id
+                }
+            })
+                .then(response => {
+                    console.log(response.data.message);
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('Error al eliminar el enlace:', error);
+                });
         },
     }
 }
@@ -155,6 +209,10 @@ export default {
                             <h2 class="text-2xl font-bold mb-4">Video(s)</h2>
                             <video :src="`/storage/${item.data.data}`" controls></video>
                             <!-- <p>{{ item.data.nombre_archivo }}</p> -->
+                            <button @click="eliminarVideo(item.data.multimedia_id, item.data.video_id)"
+                                class="btn btn-danger btn-sm mt-2">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
                         </div>
                     </template>
 
@@ -167,6 +225,10 @@ export default {
                             <input type="text" v-model="item.data.tiempo" @input="validarDuracion(item)"
                                 @focusout="editarImagen(item.data.imagen_id, item.data.tiempo)" class="text-center"
                                 style="max-width: 50px; height: 30px;"> Segundos
+                            <button @click="eliminarImagen(item.data.multimedia_id, item.data.imagen_id)"
+                                class="btn btn-danger btn-sm mt-2">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
                         </div>
                     </template>
 
@@ -174,6 +236,10 @@ export default {
                         <div class="link">
                             <h2 class="text-2xl font-bold mb-4">Enlace(s)</h2>
                             <a :href="item.data.data" target="_blank">{{ item.data.data }}</a>
+                            <button @click="eliminarEnlace(item.data.multimedia_id, item.data.enlace_id)"
+                                class="btn btn-danger btn-sm mt-2">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
                         </div>
                     </template>
                 </div>

@@ -19,11 +19,29 @@ class EnlaceController extends Controller
             'id_lista' => $request->id_lista,
         ]);
 
-        Enlace::create([
+        enlaces::create([
             'data' => $request->data,
-            'multimedia_id' => $multimedia->id,
+            'multimedia_id' => $multimedia->multimedia_id,
         ]);
 
         return response()->json(['message' => 'Enlace creado correctamente'], 201);
+    }
+
+    public function eliminarEnlace(Request $request, $multimedia_id, $enlace_id) {
+        $enlace = Enlaces::find($enlace_id);
+        
+        if (!$enlace || $enlace->multimedia_id != $multimedia_id) {
+            return response()->json(['message' => 'Enlace no encontrado'], 404);
+        }
+
+        $enlace->delete();
+
+        $multimedia = Multimedia::find($multimedia_id);
+        if ($multimedia) {
+            $multimedia->delete();
+        }
+
+        return response()->json(['message' => 'Enlace eliminado correctamente'], 200);
+        
     }
 }

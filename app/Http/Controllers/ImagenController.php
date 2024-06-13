@@ -58,4 +58,25 @@ class ImagenController extends Controller
 
         return response()->json(['message' => 'Imagen creada correctamente'], 201);
     }
+
+    public function eliminarImagen(Request $request, $multimedia_id, $imagen_id) {
+        $imagen = Imagenes::find($imagen_id);
+        
+        if (!$imagen || $imagen->multimedia_id != $multimedia_id) {
+            return response()->json(['message' => 'Imagen no encontrada'], 404);
+        }
+    
+        if (Storage::disk('public')->exists($imagen->data)) {
+            Storage::disk('public')->delete($imagen->data);
+        }
+    
+        $imagen->delete();
+    
+        $multimedia = Multimedia::find($multimedia_id);
+        if ($multimedia) {
+            $multimedia->delete();
+        }
+    
+        return response()->json(['message' => 'Imagen eliminada correctamente'], 200);
+    }
 }
