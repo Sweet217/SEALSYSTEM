@@ -4,7 +4,9 @@ import NavbarComponent from '@/Components/NavbarComponent.vue';
 
 const props = defineProps({
     multimedia: Object,
+    listaData: Object,
 });
+
 </script>
 
 <script>
@@ -19,7 +21,22 @@ export default {
                 imagen_id: null,
                 tiempo: '',
             },
-            error: null
+            nuevaMultimedia: {
+                tipo: '',
+                id_lista: this.listaData.id_lista,
+            },
+            nuevaImagen: {
+                nombre_archivo: '',
+                tiempo: 0,
+                archivo: null,
+            },
+            nuevoVideo: {
+                nombre_archivo: '',
+                archivo: null,
+            },
+            nuevoEnlace: {
+                enlace: '',
+            },
         };
     },
     mounted() {
@@ -38,30 +55,87 @@ export default {
             });
     },
     methods: {
-        abrirModal(imagen) {
-            this.imagenSeleccionada = { ...imagen };
+        abrirModal() {
             this.modalVisible = true;
+            console.log('abierto')
         },
         cerrarModal() {
             this.modalVisible = false;
-            this.imagenSeleccionada = {
-                id_imagen: null,
-                tiempo: '',
-            };
             this.error = null;
         },
-        editarImagen(imagen_id) {
-            axios.put(`/imagenPUT/${imagenSeleccionada.imagen_id}`, {
-                duracion: imagenSeleccionada.duracion,
-            })
+        validarDuracion(item) {
+            item.data.tiempo = item.data.tiempo.replace(/\D/g, '');
+        },
+        editarImagen(imagen_id, tiempo) {
+            tiempo = tiempo.replace(/\D/g, '');
+            axios.put(`/imagenPUT/${imagen_id}`, { tiempo })
                 .then(() => {
-                    alert('Imagen editada correctamente');
-                    cerrarModal();
+                    // alert('Imagen editada correctamente');
+                    this.cerrarModal();
                     window.location.reload();
                 })
                 .catch(error => {
                     console.error('Error al editar la imagen:', error);
                 });
+        },
+        crearMultimedia() {
+            if (this.nuevaMultimedia.tipo === 'imagen') {
+                this.crearImagen();
+            } else if (this.nuevaMultimedia.tipo === 'video') {
+                this.crearVideo();
+            } else if (this.nuevaMultimedia.tipo === 'enlace') {
+                this.crearEnlace();
+            } else {
+                console.error('Tipo de multimedia no válido');
+            }
+        },
+        crearImagen() {
+            const formData = new FormData();
+            formData.append('nombre_archivo', this.nuevaImagen.nombre_archivo);
+            formData.append('tiempo', this.nuevaImagen.tiempo);
+            formData.append('archivo', this.nuevaImagen.archivo);
+            formData.append('id_lista', this.nuevaMultimedia.id_lista);
+
+            axios.post('/imagenesPOST', formData)
+                .then(response => {
+                    this.cerrarModal();
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('Error al crear la imagen:', error);
+                });
+        },
+        crearVideo() {
+            const formData = new FormData();
+            formData.append('nombre_archivo', this.nuevoVideo.nombre_archivo);
+            formData.append('archivo', this.nuevoVideo.archivo);
+
+            axios.post('/videosPOST', formData)
+                .then(response => {
+                    this.cerrarModal();
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('Error al crear el video:', error);
+                });
+        },
+        crearEnlace() {
+            axios.post('/enlacesPOST', {
+                data: this.nuevoEnlace.enlace,
+            })
+                .then(response => {
+                    this.cerrarModal();
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('Error al crear el enlace:', error);
+                });
+        },
+        handleImagenSeleccionada(event) {
+            this.nuevaImagen.archivo = event.target.files[0];
+        },
+        handleVideoSeleccionado(event) {
+            this.nuevoVideo.archivo = event.target.files[0];
         },
     }
 }
@@ -72,6 +146,7 @@ export default {
         <NavbarComponent />
         <div class="content container mx-auto mt-4">
             <h1 class="text-3xl font-bold mb-4">Multimedia</h1>
+            <button class="btn morado-btn" @click="abrirModal">Crear Nueva Multimedia</button>
 
             <div v-if="multimedia.length">
                 <div v-for="item in multimedia" :key="item.data.id">
@@ -87,11 +162,11 @@ export default {
                         <div class="image">
                             <h2 class="text-2xl font-bold mb-4">Imagen(es)</h2>
                             <img :src="`/storage/${item.data.data}`" :alt="item.data.nombre_archivo" />
-                            <p> Duracion: <br>{{ item.data.tiempo }} Segundos</p>
-                            <button class="btn editar-btn" @click="abrirModal(item.data)">
-                                Editar Duración
-                            </button>
-                            <!-- <p>{{ item.data.nombre_archivo }}</p> -->
+                            <!-- Hacer que la duración sea editable -->
+                            <label>Duración:</label>
+                            <input type="text" v-model="item.data.tiempo" @input="validarDuracion(item)"
+                                @focusout="editarImagen(item.data.imagen_id, item.data.tiempo)" class="text-center"
+                                style="max-width: 50px; height: 30px;"> Segundos
                         </div>
                     </template>
 
@@ -108,18 +183,76 @@ export default {
             </div>
         </div>
 
+        <!-- Modal para crear nueva multimedia -->
         <div v-if="modalVisible" class="modal">
-            <div class="modal-content">
-                <span class="close" @click="cerrarModal">&times;</span>
-                <h2>Editar Duracion de Imagen</h2>
-                <form @submit.prevent="editarImagen(imagenSeleccionada.imagen_id)">
-                    <label for="nombre">Tiempo:</label>
-                    <input type="text" v-model="imagenSeleccionada.tiempo" id="nombre"
-                        class="form-control rounded-pill">
-                    <div class="text-center">
-                        <button type="submit">Guardar Cambios</button>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Crear Nueva Multimedia</h5>
+                        <button type="button" class="close" @click="cerrarModal">&times;</button>
                     </div>
-                </form>
+                    <form @submit.prevent="crearMultimedia">
+                        <div class="modal-body">
+                            <!-- Campos para la multimedia -->
+                            <div class="form-group">
+                                <label for="tipo">Tipo:</label>
+                                <select class="form-control" v-model="nuevaMultimedia.tipo" id="tipo">
+                                    <option value="imagen">Imagen</option>
+                                    <option value="video">Video</option>
+                                    <option value="enlace">Enlace</option>
+                                </select>
+                            </div>
+
+                            <!-- Dependiendo del tipo de multimedia, mostrar campos específicos -->
+                            <template v-if="nuevaMultimedia.tipo === 'imagen'">
+                                <!-- Campos para cargar imagen -->
+                                <div class="form-group">
+                                    <label for="nombreArchivoImagen">Nombre de archivo:</label>
+                                    <input type="text" class="form-control rounded-pill"
+                                        v-model="nuevaImagen.nombre_archivo" id="nombreArchivoImagen">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tiempoImagen">Tiempo (segundos):</label>
+                                    <input type="number" class="form-control rounded-pill" v-model="nuevaImagen.tiempo"
+                                        id="tiempoImagen">
+                                </div>
+                                <!-- Input para subir archivo de imagen -->
+                                <div class="form-group">
+                                    <label for="subirImagen">Seleccionar imagen:</label>
+                                    <input type="file" class="form-control-file" @change="handleImagenSeleccionada"
+                                        id="subirImagen">
+                                </div>
+                            </template>
+
+                            <template v-if="nuevaMultimedia.tipo === 'video'">
+                                <!-- Campos para cargar video -->
+                                <div class="form-group">
+                                    <label for="nombreArchivoVideo">Nombre de archivo:</label>
+                                    <input type="text" class="form-control rounded-pill"
+                                        v-model="nuevoVideo.nombre_archivo" id="nombreArchivoVideo">
+                                </div>
+                                <!-- Input para subir archivo de video -->
+                                <div class="form-group">
+                                    <label for="subirVideo">Seleccionar video:</label>
+                                    <input type="file" class="form-control-file" @change="handleVideoSeleccionado"
+                                        id="subirVideo">
+                                </div>
+                            </template>
+
+                            <template v-if="nuevaMultimedia.tipo === 'enlace'">
+                                <!-- Campos para cargar enlace -->
+                                <div class="form-group">
+                                    <label for="enlace">Enlace:</label>
+                                    <input type="text" class="form-control rounded-pill" v-model="nuevoEnlace.enlace"
+                                        id="enlace">
+                                </div>
+                            </template>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Crear Multimedia</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
         <FooterComponent />
@@ -179,7 +312,6 @@ a {
     background-color: #fdfcfa;
     border: 1px solid #dcdcdc;
     color: #333;
-    max-width: ;
     width: auto;
     height: auto;
 }
@@ -196,6 +328,77 @@ a {
 }
 
 .eliminar-btn:hover {
+    background-color: #e3671f;
+    border-color: #d4551a;
+}
+
+/* Modal container */
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fdfcfa;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    min-width: 500px;
+    min-height: 500px;
+    max-height: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.3s ease-in-out;
+    margin: 0 auto;
+    /* Centrar el modal horizontalmente */
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.modal-content h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 20px 0;
+}
+
+.close:hover,
+.close:focus {
+    color: #f78433;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content button {
+    background-color: #f78433;
+    color: #fdfcfa;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 180px;
+    margin-top: 10px;
+    position: static;
+}
+
+.modal-content button:hover {
     background-color: #e3671f;
     border-color: #d4551a;
 }

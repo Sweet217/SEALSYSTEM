@@ -44,4 +44,22 @@ class MultimediaController extends Controller
             'multimedia' => $multimediaData,
         ]);
     }
+    public function crearMultimedia(Request $request) 
+    {
+        // Validar y crear la multimedia en la base de datos
+        // Retorna el ID de la multimedia creada
+        // Validar los datos recibidos del formulario
+        $data = $request->validate([
+            'tipo' => 'required',
+            'id_lista' => 'required|exists:listas,id_lista'
+        ]);
+
+        // Crear la multimedia
+        $multimedia = Multimedia::create([
+            'tipo' => $data['tipo'],
+            'id_lista' => $data['id_lista']
+        ]);
+
+        return response()->json(['message' => 'Multimedia creada exitosamente', 'multimedia' => $multimedia], 201);
+    }
 }

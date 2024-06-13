@@ -9,6 +9,9 @@ use App\Http\Controllers\MultimediaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\EquiposController;
+use App\Http\Controllers\ImagenController;
+use App\Http\Controllers\VideoController;
+use App\Http\Controllers\EnlaceController;
 use App\Http\Controllers\SignupController;
 
 use App\Models\listas;
@@ -87,8 +90,18 @@ Route::post('/signupPOST', [SignupController::class, 'signup']);
         }
     });
 
-    //Rutas para Imagenes (editar solamente ya que es lo unico solicitad)
-    Route::put('/imagenPUT/{id}', [ImagenController::class, 'editarImagen']);
+    // //Rutas para multimedia
+    // Route::post('/multimediaPOST', [MultimediaController::class, 'crearMultimedia']);
+
+    //Rutas para Imagenes
+    Route::put('/imagenPUT/{imagen_id}', [ImagenController::class, 'editarImagen']);
+    Route::post('/imagenesPOST', [ImagenController::class, 'crearImagen']);
+
+    //Rutas para Videos
+    Route::post('/videosPOST', [VideoController::class, 'crearVideo']);
+    
+    //Rutas para Enlaces
+    Route::post('/enlacesPOST', [EnlaceController::class, 'crearEnlace']);
 
 
 // Route::middleware('auth:sanctum')->group(function () {

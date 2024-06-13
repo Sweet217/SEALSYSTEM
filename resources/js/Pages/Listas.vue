@@ -8,7 +8,6 @@ const props = defineProps({
   listas: Object,
 });
 
-let currentListId = null;
 </script>
 
 <script>
@@ -27,6 +26,7 @@ export default {
       nombre_usuario: this.nombreUsuario,
       tipo_usuario: this.tipoUsuario,
       nuevoNombre: '',
+      currentListId: Number,
     };
   },
   mounted() {
@@ -107,6 +107,7 @@ export default {
         });
     },
     redirectToListaContent(listId) {
+      this.currentListId = listId;
       window.location.href = `/listas/${listId}/multimedia`;
     },
   }
