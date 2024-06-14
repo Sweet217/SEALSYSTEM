@@ -6,27 +6,34 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\listas;
+use App\Models\equipos;
+use App\Http\Controllers\UserController;
 
 class ListasController extends Controller
 {
     public function showListas(Request $request)
   {
-    $data = listas::all();
+    $listas = listas::with('equipo')->get();
+    $equipos = equipos::all();
 
     return Inertia::render('Listas', [
-        'listas' => $data
+        'listas' => $listas,
+        'equipos' => $equipos
     ]);
+    
   }
 
   public function crearLista(Request $request) {
     // Valida los datos del formulario
     $request->validate([
         'nombre' => 'required', // Asegura que el nombre sea obligatorio y tenga como máximo 255 caracteres
+        'equipo_id' => 'required'
     ]);
 
     // Crea una nueva instancia del modelo Lista
     $lista = new listas();
     $lista->nombre = $request->nombre; // Asigna el nombre de la lista desde el formulario
+    $lista->equipo_id = $request->equipo_id;
 
     try {
         $lista->save();

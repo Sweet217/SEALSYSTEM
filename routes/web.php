@@ -51,7 +51,7 @@ Route::post('/signupPOST', [SignupController::class, 'signup']);
     
     Route::get('/listas/{id_lista}/multimedia', [MultimediaController::class, 'showMultimedia']);
 
-    Route::get('/listas', [ListasController::class, 'showListas'])->name('listas');
+    Route::get('/listas', [ListasController::class, 'showListas']);
     Route::post('/listasPOST', [ListasController::class, 'crearLista']);
     Route::delete('/listasDELETE/{id_lista}', [ListasController::class, 'borrarLista']);
     Route::put('/listasPUT/{id_lista}', [ListasController::class, 'editarLista']);
@@ -100,7 +100,7 @@ Route::post('/signupPOST', [SignupController::class, 'signup']);
 
     //Rutas para Videos
     Route::post('/videosPOST', [VideoController::class, 'crearVideo']);
-    Route::delete('/videosDELETE/{multimedia_id}/{video_id}', [VideosController::class, 'eliminarVideo']);
+    Route::delete('/videosDELETE/{multimedia_id}/{video_id}', [VideoController::class, 'eliminarVideo']);
     
     //Rutas para Enlaces
     Route::post('/enlacesPOST', [EnlaceController::class, 'crearEnlace']);

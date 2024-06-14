@@ -38,7 +38,7 @@ class VideoController extends Controller
 
     public function eliminarVideo(Request $request, $multimedia_id, $video_id) {
 
-        $video = Videos::find($video_id);
+        $video = videos::find($video_id);
 
         if (!$video || $video->multimedia_id != $multimedia_id) {
             return response()->json(['message' => 'Video no encontrado'], 404);

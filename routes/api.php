@@ -48,8 +48,6 @@ Route::middleware("auth:sanctum")->group(function () {
             return abort(404); // Handle not found case
         }
     });
-
-    Route::get('/listas', [ListasController::class, 'showListas'])->name('listas');
     Route::post('/listasPOST', [ListasController::class, 'crearLista']);
     Route::delete('/listasDELETE/{id_lista}', [ListasController::class, 'borrarLista']);
     Route::put('/listasPUT/{id_lista}', [ListasController::class, 'editarLista']);
@@ -71,6 +69,8 @@ Route::middleware("auth:sanctum")->group(function () {
     });
 
     Route::get('/usuario_actual', [UserController::class, 'usuarioActual']);
+
+
 
     // Rutas para Equipos
     Route::get('/equipos', [EquiposController::class, 'showEquipos'])->name('equipos');

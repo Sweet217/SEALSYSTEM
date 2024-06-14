@@ -19,5 +19,10 @@ class listas extends Model
     {
         return $this->hasMany(multimedia::class, 'id_lista', 'id_lista');
     }
+
+    public function equipo()
+    {
+        return $this->belongsTo(equipos::class, 'equipo_id');
+    }
     
 }

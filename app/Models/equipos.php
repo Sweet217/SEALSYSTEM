@@ -23,4 +23,9 @@ class equipos extends Model
         return $this->belongsTo(licencias::class, 'licencia_id');
     }
     
+    public function listas()
+    {
+        return $this->hasMany(listas::class, 'equipo_id');
+    }
+    
 }

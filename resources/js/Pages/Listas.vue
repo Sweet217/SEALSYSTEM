@@ -6,6 +6,7 @@ import axios from 'axios';
 
 const props = defineProps({
   listas: Object,
+  equipos: Object
 });
 
 </script>
@@ -21,10 +22,16 @@ export default {
         id_lista: null,
         nombre: '',
       },
+      equipoSeleccionado: {
+        equipo_id: null,
+        nombre: '',
+        numero_licencia: '',
+        nombre_usuario: ''
+      },
       error: null,
       user_id: this.user_id,
-      nombre_usuario: this.nombreUsuario,
-      tipo_usuario: this.tipoUsuario,
+      nombre_usuario: '',
+      tipo_usuario: '',
       nuevoNombre: '',
       currentListId: Number,
     };
@@ -46,8 +53,23 @@ export default {
         }
       });
   },
-
+  computed: {
+    equiposDisponibles() {
+      if (this.tipoUsuario == 'Administrador') {
+        return this.equipos;
+      } else {
+        return this.equipos.filter(equipo => equipo.user_id === this.user_id);
+      }
+    },
+  },
   methods: {
+    filtrarListas() {
+      if (this.tipoUsuario == 'Administrador') {
+        return this.listas;
+      } else {
+        return this.listas.filter(lista => lista.equipo.user_id === this.user_id);
+      }
+    },
     abrirModal(lista) {
       this.listaSeleccionada = { ...lista };
       this.modalVisible = true;
@@ -62,6 +84,7 @@ export default {
     },
     abrirModalCrear() {
       this.modalCrearVisible = true;
+      console.log('Tipo usuario', this.tipoUsuario);
     },
     cerrarModalCrear() {
       this.modalCrearVisible = false;
@@ -96,6 +119,7 @@ export default {
     crearLista() {
       axios.post('/listasPOST', {
         nombre: this.nuevoNombre,
+        equipo_id: this.equipoSeleccionado.equipo_id
       })
         .then(() => {
           alert('Lista creada correctamente');
@@ -130,7 +154,7 @@ export default {
 
     <div v-else>
       <ul class="list-disc space-y-2">
-        <li v-for="lista in listas" :key="lista.id_lista">
+        <li v-for="lista in filtrarListas()" :key="lista.id_lista">
           <div class="flex items-center justify-between">
             <button class="btn morado-btn" @click="redirectToListaContent(lista.id_lista)">
               {{ lista.nombre }}
@@ -161,10 +185,21 @@ export default {
                   <span class="close" @click="cerrarModalCrear">&times;</span>
                   <h2>Crear Lista</h2>
                   <form @submit.prevent="crearLista">
-                    <label for="nuevoNombre">Nombre:</label>
-                    <input type="text" v-model="nuevoNombre" id="nuevoNombre" class="form-control rounded-pill">
+                    <div class="mb-3">
+                      <label for="nuevoNombre">Nombre de la Lista:</label>
+                      <input type="text" v-model="nuevoNombre" id="nuevoNombre" class="form-control rounded-pill">
+                    </div>
+                    <div class="mb-3">
+                      <label for="equipoSeleccionado">Equipo:</label>
+                      <select v-model="equipoSeleccionado.equipo_id" id="equipoSeleccionado"
+                        class="form-control rounded-pill">
+                        <option v-for="equipo in equiposDisponibles" :value="equipo.equipo_id" :key="equipo.equipo_id">
+                          {{ equipo.nombre }}
+                        </option>
+                      </select>
+                    </div>
                     <div class="text-center">
-                      <button type="submit">Crear</button>
+                      <button type="submit" class="btn btn-primary rounded-pill">Crear</button>
                     </div>
                   </form>
                 </div>
@@ -176,8 +211,6 @@ export default {
       </ul>
     </div>
   </div>
-
-  <!-- <CrearListaComponent></CrearListaComponent> -->
 
   <FooterComponent></FooterComponent>
 </template>
