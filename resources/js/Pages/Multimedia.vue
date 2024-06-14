@@ -1,6 +1,7 @@
 <script setup>
 import FooterComponent from '@/Components/FooterComponent.vue';
 import NavbarComponent from '@/Components/NavbarComponent.vue';
+import draggable from 'vuedraggable';
 
 const props = defineProps({
     multimedia: Object,
@@ -11,6 +12,9 @@ const props = defineProps({
 
 <script>
 export default {
+    components: {
+        draggable
+    },
     data() {
         return {
             nombreUsuario: '',
@@ -191,6 +195,22 @@ export default {
                     console.error('Error al eliminar el enlace:', error);
                 });
         },
+        handleDragEnd(event) {
+            // Handle drag end event to update positions in backend
+            const reorderedMultimedia = event.newIndex.map(index => this.multimedia[index]);
+            const updatedMultimedia = reorderedMultimedia.map((item, index) => ({
+                ...item,
+                position: index + 1 // Assuming position starts from 1
+            }));
+
+            axios.put('/api/updateMultimediaOrder', updatedMultimedia)
+                .then(response => {
+                    console.log('Updated positions successfully');
+                })
+                .catch(error => {
+                    console.error('Error updating positions:', error);
+                });
+        },
     }
 }
 </script>
@@ -203,47 +223,68 @@ export default {
             <button class="btn morado-btn" @click="abrirModal">Crear Nueva Multimedia</button>
 
             <div v-if="multimedia.length">
-                <div v-for="item in multimedia" :key="item.data.id">
-                    <template v-if="item.tipo === 'video'">
-                        <div class="video">
-                            <h2 class="text-2xl font-bold mb-4">Video(s)</h2>
-                            <video :src="`/storage/${item.data.data}`" controls></video>
-                            <!-- <p>{{ item.data.nombre_archivo }}</p> -->
-                            <button @click="eliminarVideo(item.data.multimedia_id, item.data.video_id)"
-                                class="btn btn-danger btn-sm mt-2">
-                                <i class="bi bi-trash"></i> Eliminar
-                            </button>
-                        </div>
-                    </template>
+                <draggable :list="multimedia" :item-key="item => item.data.id" @end="handleDragEnd">
+                    <template #item="{ element }">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <template v-if="element.tipo === 'video'">
+                                    <div class="video">
+                                        <h2 class="text-2l font-bold mb-4">Video</h2>
+                                        <video :src="`/storage/${element.data.data}`" controls></video>
+                                    </div>
+                                </template>
 
-                    <template v-if="item.tipo === 'imagen'">
-                        <div class="image">
-                            <h2 class="text-2xl font-bold mb-4">Imagen(es)</h2>
-                            <img :src="`/storage/${item.data.data}`" :alt="item.data.nombre_archivo" />
-                            <!-- Hacer que la duración sea editable -->
-                            <label>Duración:</label>
-                            <input type="text" v-model="item.data.tiempo" @input="validarDuracion(item)"
-                                @focusout="editarImagen(item.data.imagen_id, item.data.tiempo)" class="text-center"
-                                style="max-width: 50px; height: 30px;"> Segundos
-                            <button @click="eliminarImagen(item.data.multimedia_id, item.data.imagen_id)"
-                                class="btn btn-danger btn-sm mt-2">
-                                <i class="bi bi-trash"></i> Eliminar
-                            </button>
-                        </div>
-                    </template>
+                                <template v-else-if="element.tipo === 'imagen'">
+                                    <div class="image">
+                                        <h2 class="text-2l font-bold mb-4">Imagen</h2>
+                                        <img :src="`/storage/${element.data.data}`"
+                                            :alt="element.data.nombre_archivo" />
+                                    </div>
+                                </template>
 
-                    <template v-if="item.tipo === 'enlace'">
-                        <div class="link">
-                            <h2 class="text-2xl font-bold mb-4">Enlace(s)</h2>
-                            <a :href="item.data.data" target="_blank">{{ item.data.data }}</a>
-                            <button @click="eliminarEnlace(item.data.multimedia_id, item.data.enlace_id)"
-                                class="btn btn-danger btn-sm mt-2">
-                                <i class="bi bi-trash"></i> Eliminar
-                            </button>
+                                <template v-else-if="element.tipo === 'enlace'">
+                                    <div class="link">
+                                        <h2 class="text-2l font-bold mb-4">Enlace</h2>
+                                        <a :href="element.data.data" target="_blank" class="youtube-link">{{
+                element.data.data }}</a>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div class="col-md-6">
+                                <template v-if="element.tipo === 'video'">
+                                    <!-- Aquí puedes añadir cualquier contenido adicional específico para videos si es necesario -->
+                                </template>
+
+                                <template v-else-if="element.tipo === 'imagen'">
+                                    <div class="input-container">
+                                        <label>Duración:</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" v-model="element.data.tiempo"
+                                                @input="validarDuracion(element)"
+                                                @focusout="editarImagen(element.data.imagen_id, element.data.tiempo)"
+                                                class="text-center input-duracion-imagen">
+                                            <span>Segundos</span>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <!-- Puedes añadir más columnas aquí para otros elementos si es necesario -->
+                            </div>
+
+                            <div class="col-md-3">
+                                <button
+                                    @click="eliminarMultimedia(element.data.multimedia_id, element.data.video_id, element.data.imagen_id, element.data.enlace_id)"
+                                    class="btn btn-danger btn-sm mt-2">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </button>
+                            </div>
                         </div>
                     </template>
-                </div>
+                </draggable>
             </div>
+
+
             <div v-else>
                 <p>No hay multimedia disponible para esta lista.</p>
             </div>
@@ -320,8 +361,8 @@ export default {
                     </form>
                 </div>
             </div>
+            <FooterComponent />
         </div>
-        <FooterComponent />
     </div>
 </template>
 
@@ -330,17 +371,70 @@ export default {
     padding: 20px;
 }
 
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    /* O center, dependiendo de tu necesidad */
+    flex-wrap: wrap;
+    /* Para manejar mejor la responsividad */
+    gap: 5px;
+    /* Margen alrededor del contenedor */
+    top: -100px;
+    left: 110px;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    /* O center, dependiendo de tu necesidad */
+}
+
+.input-duracion-imagen {
+    width: 50px;
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.btn-trash-video {
+    position: relative;
+    top: -50px;
+    left: 100px;
+    margin: 10px;
+}
+
+.btn-trash-imagen {
+    position: relative;
+    top: -86px;
+    left: 100px;
+    margin: 10px;
+}
+
+.btn-trash-enlace {
+    position: relative;
+    margin: 10px;
+    top: -35px;
+}
+
+.youtube-link {
+    top: -15px;
+    position: relative;
+}
+
 .video,
 .image,
 .link {
-    margin-bottom: 20px;
+    margin: 10px;
 }
 
-.video video,
-.image img {
+.content .video video,
+.content .image img {
     width: 100px;
     height: 100px;
-    /* Ajusta la altura automáticamente para mantener la relación de aspecto */
 }
 
 h2 {
@@ -348,7 +442,7 @@ h2 {
 }
 
 a {
-    color: #302f51;
+    color: #0800ff;
     /* Cambié el color para que coincida con los estilos de los botones */
     text-decoration: none;
     /* Quité la subrayado del enlace */

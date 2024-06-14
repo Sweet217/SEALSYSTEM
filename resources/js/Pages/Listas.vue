@@ -56,7 +56,7 @@ export default {
   computed: {
     equiposDisponibles() {
       if (this.tipoUsuario == 'Administrador') {
-        return this.equipos;
+        return this.equipos.filter(equipo => equipo.user_id === this.user_id);
       } else {
         return this.equipos.filter(equipo => equipo.user_id === this.user_id);
       }
@@ -65,7 +65,7 @@ export default {
   methods: {
     filtrarListas() {
       if (this.tipoUsuario == 'Administrador') {
-        return this.listas;
+        return this.listas.filter(lista => lista.equipo.user_id === this.user_id);
       } else {
         return this.listas.filter(lista => lista.equipo.user_id === this.user_id);
       }
