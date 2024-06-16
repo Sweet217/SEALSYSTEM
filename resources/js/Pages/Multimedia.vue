@@ -145,7 +145,6 @@ export default {
             this.nuevoVideo.archivo = event.target.files[0];
         },
 
-        // Método para eliminar una imagen
         eliminarImagen(multimedia_id, imagen_id) {
             axios.delete(`/imagenesDELETE/${multimedia_id}/${imagen_id}`, {
                 data: {
@@ -162,7 +161,6 @@ export default {
                 });
         },
 
-        // Método para eliminar un video
         eliminarVideo(multimedia_id, video_id) {
             axios.delete(`/videosDELETE/${multimedia_id}/${video_id}`, {
                 data: {
@@ -179,7 +177,6 @@ export default {
                 });
         },
 
-        // Método para eliminar un enlace
         eliminarEnlace(multimedia_id, enlace_id) {
             axios.delete(`/enlacesDELETE/${multimedia_id}/${enlace_id}`, {
                 data: {
@@ -194,6 +191,54 @@ export default {
                 .catch(error => {
                     console.error('Error al eliminar el enlace:', error);
                 });
+        },
+        eliminarMultimedia(multimedia_id, video_id, imagen_id, enlace_id) {
+            if (imagen_id) {
+                // Eliminar imagen
+                axios.delete(`/imagenesDELETE/${multimedia_id}/${imagen_id}`, {
+                    data: {
+                        multimedia_id: multimedia_id,
+                        imagen_id: imagen_id
+                    }
+                })
+                    .then(response => {
+                        console.log(response.data.message);
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error al eliminar la imagen:', error);
+                    });
+            } else if (video_id) {
+                // Eliminar video
+                axios.delete(`/videosDELETE/${multimedia_id}/${video_id}`, {
+                    data: {
+                        multimedia_id: multimedia_id,
+                        video_id: video_id
+                    }
+                })
+                    .then(response => {
+                        console.log(response.data.message);
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error al eliminar el video:', error);
+                    });
+            } else if (enlace_id) {
+                // Eliminar enlace
+                axios.delete(`/enlacesDELETE/${multimedia_id}/${enlace_id}`, {
+                    data: {
+                        multimedia_id: multimedia_id,
+                        enlace_id: enlace_id
+                    }
+                })
+                    .then(response => {
+                        console.log(response.data.message);
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error al eliminar el enlace:', error);
+                    });
+            }
         },
         handleDragEnd(event) {
             // Handle drag end event to update positions in backend
@@ -225,8 +270,8 @@ export default {
             <div v-if="multimedia.length">
                 <draggable :list="multimedia" :item-key="item => item.data.id" @end="handleDragEnd">
                     <template #item="{ element }">
-                        <div class="row mb-4">
-                            <div class="col-md-3">
+                        <div class="row align-items-center justify-content-between mb-4">
+                            <div class="col-12 col-md-3 mb-2 mb-md-0">
                                 <template v-if="element.tipo === 'video'">
                                     <div class="video">
                                         <h2 class="text-2l font-bold mb-4">Video</h2>
@@ -251,13 +296,13 @@ export default {
                                 </template>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-12 col-md-3 mb-2 mb-md-0">
                                 <template v-if="element.tipo === 'video'">
-                                    <!-- Aquí puedes añadir cualquier contenido adicional específico para videos si es necesario -->
+                                    <!--Nada por ahora.-->
                                 </template>
 
                                 <template v-else-if="element.tipo === 'imagen'">
-                                    <div class="input-container">
+                                    <div class=" input-container">
                                         <label>Duración:</label>
                                         <div class="input-wrapper">
                                             <input type="text" v-model="element.data.tiempo"
@@ -266,17 +311,18 @@ export default {
                                                 class="text-center input-duracion-imagen">
                                             <span>Segundos</span>
                                         </div>
+
                                     </div>
                                 </template>
 
-                                <!-- Puedes añadir más columnas aquí para otros elementos si es necesario -->
+
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-12 col-md-3 mb-2 mb-md-0">
                                 <button
                                     @click="eliminarMultimedia(element.data.multimedia_id, element.data.video_id, element.data.imagen_id, element.data.enlace_id)"
-                                    class="btn btn-danger btn-sm mt-2">
-                                    <i class="bi bi-trash"></i> Eliminar
+                                    class="btn btn-danger btn-sm mt-2 btn-trash">
+                                    <i class="bi bi-trash"></i>
                                 </button>
                             </div>
                         </div>
@@ -371,25 +417,25 @@ export default {
     padding: 20px;
 }
 
+.btn-trash {
+    position: relative;
+    display: flex;
+    top: 10px;
+}
+
 .input-container {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    /* O center, dependiendo de tu necesidad */
     flex-wrap: wrap;
-    /* Para manejar mejor la responsividad */
     gap: 5px;
-    /* Margen alrededor del contenedor */
-    top: -100px;
-    left: 110px;
 }
 
 .input-wrapper {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    /* O center, dependiendo de tu necesidad */
 }
 
 .input-duracion-imagen {
@@ -398,26 +444,6 @@ export default {
     border-radius: 4px;
     border: 1px solid #ccc;
     text-align: center;
-}
-
-.btn-trash-video {
-    position: relative;
-    top: -50px;
-    left: 100px;
-    margin: 10px;
-}
-
-.btn-trash-imagen {
-    position: relative;
-    top: -86px;
-    left: 100px;
-    margin: 10px;
-}
-
-.btn-trash-enlace {
-    position: relative;
-    margin: 10px;
-    top: -35px;
 }
 
 .youtube-link {
