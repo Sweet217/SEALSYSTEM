@@ -6,6 +6,7 @@ import draggable from 'vuedraggable';
 const props = defineProps({
     multimedia: Object,
     listaData: Object,
+    multimediaData: Object,
 });
 
 </script>
@@ -14,6 +15,11 @@ const props = defineProps({
 export default {
     components: {
         draggable
+    },
+    computed: {
+        multimediaOrdenada() {
+            return this.multimediaData.sort((a, b) => a.posicion - b.posicion);
+        }
     },
     data() {
         return {
@@ -145,53 +151,6 @@ export default {
             this.nuevoVideo.archivo = event.target.files[0];
         },
 
-        eliminarImagen(multimedia_id, imagen_id) {
-            axios.delete(`/imagenesDELETE/${multimedia_id}/${imagen_id}`, {
-                data: {
-                    multimedia_id: multimedia_id,
-                    imagen_id: imagen_id
-                }
-            })
-                .then(response => {
-                    console.log(response.data.message);
-                    window.location.reload();
-                })
-                .catch(error => {
-                    console.error('Error al eliminar la imagen:', error);
-                });
-        },
-
-        eliminarVideo(multimedia_id, video_id) {
-            axios.delete(`/videosDELETE/${multimedia_id}/${video_id}`, {
-                data: {
-                    multimedia_id: multimedia_id,
-                    video_id: video_id
-                }
-            })
-                .then(response => {
-                    console.log(response.data.message);
-                    window.location.reload();
-                })
-                .catch(error => {
-                    console.error('Error al eliminar el video:', error);
-                });
-        },
-
-        eliminarEnlace(multimedia_id, enlace_id) {
-            axios.delete(`/enlacesDELETE/${multimedia_id}/${enlace_id}`, {
-                data: {
-                    multimedia_id: multimedia_id,
-                    enlace_id: enlace_id
-                }
-            })
-                .then(response => {
-                    console.log(response.data.message);
-                    window.location.reload();
-                })
-                .catch(error => {
-                    console.error('Error al eliminar el enlace:', error);
-                });
-        },
         eliminarMultimedia(multimedia_id, video_id, imagen_id, enlace_id) {
             if (imagen_id) {
                 // Eliminar imagen
@@ -240,21 +199,34 @@ export default {
                     });
             }
         },
-        handleDragEnd(event) {
-            // Handle drag end event to update positions in backend
-            const reorderedMultimedia = event.newIndex.map(index => this.multimedia[index]);
-            const updatedMultimedia = reorderedMultimedia.map((item, index) => ({
-                ...item,
-                position: index + 1 // Assuming position starts from 1
+        async handleDragEnd() {
+            const positions = this.multimedia.map((item, index) => ({
+                multimedia_id: item.data.multimedia_id,
+                nueva_posicion: index + 1, // +1 because positions usually start from 1
             }));
+            console.log(positions);
 
-            axios.put('/api/updateMultimediaOrder', updatedMultimedia)
-                .then(response => {
-                    console.log('Updated positions successfully');
-                })
-                .catch(error => {
-                    console.error('Error updating positions:', error);
-                });
+            try {
+                const response = await axios.put('/actualizarOrdenMultimedia', { positions });
+                console.log('Posiciones actualizadas correctamente:', response.data.message);
+            } catch (error) {
+                console.error('Error al actualizar posiciones:', error.response.data || error.message);
+            }
+        },
+        getEmbedUrl(url) {
+            // Function to convert standard YouTube URL to embed format
+            let videoId = this.getVideoId(url);
+            return `https://www.youtube.com/embed/${videoId}`;
+        },
+        getVideoId(url) {
+            // Function to extract YouTube video ID from URL
+            let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            let match = url.match(regExp);
+            if (match && match[2].length === 11) {
+                return match[2];
+            } else {
+                return 'VIDEO_ID';
+            }
         },
     }
 }
@@ -264,8 +236,8 @@ export default {
     <div>
         <NavbarComponent />
         <div class="content container mx-auto mt-4">
-            <h1 class="text-3xl font-bold mb-4">Multimedia</h1>
-            <button class="btn morado-btn" @click="abrirModal">Crear Nueva Multimedia</button>
+            <h1 class="text-3xl font-bold mb-4">Multimedia {{ listaData.nombre }} </h1>
+            <button class="btn morado-btn" @click="abrirModal">Agregar Elemento</button>
 
             <div v-if="multimedia.length">
                 <draggable :list="multimedia" :item-key="item => item.data.id" @end="handleDragEnd">
@@ -292,6 +264,7 @@ export default {
                                         <h2 class="text-2l font-bold mb-4">Enlace</h2>
                                         <a :href="element.data.data" target="_blank" class="youtube-link">{{
                 element.data.data }}</a>
+                                        <iframe :src="getEmbedUrl(element.data.data)"></iframe>
                                     </div>
                                 </template>
                             </div>
@@ -304,7 +277,7 @@ export default {
                                 <template v-else-if="element.tipo === 'imagen'">
                                     <div class=" input-container">
                                         <label>Duración:</label>
-                                        <div class="input-wrapper">
+                                        <div class="input-wrapper col-12 col-md-3 mb-2 mb-md-0">
                                             <input type="text" v-model="element.data.tiempo"
                                                 @input="validarDuracion(element)"
                                                 @focusout="editarImagen(element.data.imagen_id, element.data.tiempo)"
@@ -341,7 +314,7 @@ export default {
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Crear Nueva Multimedia</h5>
+                        <h5 class="modal-title">Nueva Multimedia</h5>
                         <button type="button" class="close" @click="cerrarModal">&times;</button>
                     </div>
                     <form @submit.prevent="crearMultimedia">
@@ -414,7 +387,7 @@ export default {
 
 <style scoped>
 .content {
-    padding: 20px;
+    padding: 40px;
 }
 
 .btn-trash {
@@ -430,6 +403,26 @@ export default {
     justify-content: flex-start;
     flex-wrap: wrap;
     gap: 5px;
+    left: 190%;
+    top: 12px;
+}
+
+@media (max-width: 1025px) and (max-height: 802px) {
+    .input-container {
+        position: relative;
+        top: 93px;
+        left: 70px;
+        margin-top: -90px;
+    }
+}
+
+@media (max-width: 766px) and (max-height: 802px) {
+    .input-container {
+        position: relative;
+        top: 93px;
+        left: 100px;
+        margin-top: -90px;
+    }
 }
 
 .input-wrapper {
@@ -454,13 +447,13 @@ export default {
 .video,
 .image,
 .link {
-    margin: 10px;
+    margin: 0%;
 }
 
 .content .video video,
 .content .image img {
-    width: 100px;
-    height: 100px;
+    width: 75px;
+    height: 75px;
 }
 
 h2 {
@@ -472,6 +465,11 @@ a {
     /* Cambié el color para que coincida con los estilos de los botones */
     text-decoration: none;
     /* Quité la subrayado del enlace */
+}
+
+iframe {
+    height: 75px;
+    width: 75px;
 }
 
 /* Estilos para los botones */

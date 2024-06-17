@@ -92,6 +92,7 @@ Route::post('/signupPOST', [SignupController::class, 'signup']);
 
     // //Rutas para multimedia
     // Route::post('/multimediaPOST', [MultimediaController::class, 'crearMultimedia']);
+    Route::put('/actualizarOrdenMultimedia', [MultimediaController::class, 'actualizarOrden']);
 
     //Rutas para Imagenes
     Route::put('/imagenPUT/{imagen_id}', [ImagenController::class, 'editarImagen']);

@@ -156,7 +156,7 @@ export default {
       <ul class="list-disc space-y-2">
         <li v-for="lista in filtrarListas()" :key="lista.id_lista">
           <div class="flex items-center justify-between">
-            <button class="btn morado-btn" @click="redirectToListaContent(lista.id_lista)">
+            <button class="btn eliminar-btn" @click="redirectToListaContent(lista.id_lista)">
               {{ lista.nombre }}
             </button>
             <div class="flex space-x-2">
@@ -228,8 +228,8 @@ export default {
   border: 1px solid #302f51;
   color: white;
   margin-bottom: 15px;
-
 }
+
 
 .morado-btn:hover {
   background-color: #4a4978;
