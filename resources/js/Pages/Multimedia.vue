@@ -393,7 +393,8 @@ export default {
 .btn-trash {
     position: relative;
     display: flex;
-    top: 10px;
+    top: 7px;
+    left: 60%;
 }
 
 .input-container {
@@ -403,7 +404,7 @@ export default {
     justify-content: flex-start;
     flex-wrap: wrap;
     gap: 5px;
-    left: 190%;
+    left: 160%;
     top: 12px;
 }
 
@@ -440,8 +441,8 @@ export default {
 }
 
 .youtube-link {
-    top: -15px;
     position: relative;
+    left: 30%;
 }
 
 .video,
@@ -470,6 +471,7 @@ a {
 iframe {
     height: 75px;
     width: 75px;
+    margin-top: -45px;
 }
 
 /* Estilos para los botones */
@@ -505,16 +507,7 @@ iframe {
     border-color: #cccccc;
 }
 
-.eliminar-btn {
-    background-color: #f78433;
-    border: 1px solid #e3671f;
-    color: white;
-}
 
-.eliminar-btn:hover {
-    background-color: #e3671f;
-    border-color: #d4551a;
-}
 
 /* Modal container */
 .modal {

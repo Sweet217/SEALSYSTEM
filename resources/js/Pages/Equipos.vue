@@ -170,8 +170,8 @@ export default {
                             </div>
                             <div class="flex space-x-2">
                                 <button class="btn editar-btn" @click="abrirModal(equipo)">Editar</button>
-                                <button class="btn eliminar-btn"
-                                    @click="eliminarEquipo(equipo.equipo_id)">Eliminar</button>
+                                <button class="btn btn-danger btn-trash bi-trash"
+                                    @click="eliminarEquipo(equipo.equipo_id)"></button>
                             </div>
                         </div>
                     </li>

@@ -197,7 +197,8 @@ export default {
                         </div>
                         <div class="flex space-x-2">
                             <button class="btn editar-btn" @click="abrirModal(usuario)">Editar</button>
-                            <button class="btn eliminar-btn" @click="eliminarUsuario(usuario.user_id)">Eliminar</button>
+                            <button class="btn eliminar-btn btn-danger btn-trash bi-trash"
+                                @click="eliminarUsuario(usuario.user_id)"></button>
                         </div>
                     </div>
                 </li>
@@ -332,16 +333,6 @@ export default {
     border-color: #cccccc;
 }
 
-.eliminar-btn {
-    background-color: #f78433;
-    border: 1px solid #e3671f;
-    color: white;
-}
-
-.eliminar-btn:hover {
-    background-color: #e3671f;
-    border-color: #d4551a;
-}
 
 /* Estilos para el modal */
 /* Modal container */
