@@ -29,11 +29,15 @@ class EquipoSeeder extends Seeder
         equipos::create([
             'nombre' => 'Kiosko Sonora',
             'licencia_id' => $licencia1->licencia_id,
+            'mac' => '12:52:A1:B2:A1',
+            'server_key' => NULL,
             'user_id' => $user1->user_id,
         ]);
         } else {
             equipos::create([
                 'nombre' => 'Kiosko Sonora',
+                'mac' => '12:52:A1:B2:A1',
+                'server_key' => NULL,
                 'user_id' => $user1->user_id,
             ]);
         

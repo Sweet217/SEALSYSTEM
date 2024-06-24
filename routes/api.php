@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\MacAddressController;
 use Inertia\Inertia;
 
 Route::get('/user', function (Request $request) {
@@ -69,7 +70,7 @@ Route::middleware("auth:sanctum")->group(function () {
     });
 
     Route::get('/usuario_actual', [UserController::class, 'usuarioActual']);
-
+    Route::get('/get_mac', [MacAddressController::class, 'getMacAddress']);
 
 
     // Rutas para Equipos

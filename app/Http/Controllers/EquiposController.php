@@ -38,6 +38,7 @@ class EquiposController extends Controller
                 'nombre' => 'required',
                 'numero_licencia' => 'nullable',
                 'nombre_usuario' => 'required',
+                'mac' => 'required'
             ]);
 
             // Buscar el ID del usuario por su nombre
@@ -55,6 +56,7 @@ class EquiposController extends Controller
             $equipo->nombre = $request->input('nombre');
             $equipo->licencia_id = $licencia_id;
             $equipo->user_id = $usuario->user_id;
+            $equipo->mac = $request->input('mac');
 
             $equipo->save();
 
@@ -96,83 +98,137 @@ class EquiposController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function editarEquipos(Request $request, $equipo_id)
-{
-    $request->validate([
-        'nombre' => 'required',
-        'numero_licencia' => 'nullable|string',
-        'nombre_usuario' => 'required|string',
-    ]);
+        {
+            $request->validate([
+                'nombre' => 'required',
+                'numero_licencia' => 'nullable|string',
+                'nombre_usuario' => 'required|string',
+            ]);
 
-    $equipo = Equipos::find($equipo_id);
+            $equipo = Equipos::find($equipo_id);
 
-    if (!$equipo) {
-        return response()->json(['message' => 'Equipo no encontrado'], 404);
-    }
-
-    // Obtener el usuario por nombre
-    $usuario = Users::where('nombre', $request->input('nombre_usuario'))->first();
-
-    if (!$usuario) {
-        return response()->json(['message' => 'Usuario no encontrado'], 404);
-    }
-
-    // Obtener la licencia por numero de licencia
-    $licencia = Licencias::where('licencia', $request->input('numero_licencia'))->first();
-
-    // Verificar si la licencia es nula
-    if ($request->input('numero_licencia') == '') {
-        $licencia_id = null;
-    } else if (!$licencia) {
-        return response()->json(['message' => 'Licencia no encontrada'], 404);
-    } else {
-        // Verificar si la licencia ya está asociada a otro equipo
-        if ($licencia->equipo_id && $licencia->equipo_id != $equipo_id) {
-            return response()->json(['message' => 'Esta licencia ya está asociada a otro equipo'], 400);
-        }
-
-        // Verificar si el equipo ya está asociado con otra licencia
-        $licenciaExistente = Licencias::where('equipo_id', $equipo_id)->first();
-        if ($licenciaExistente && $licenciaExistente->licencia_id != $licencia->licencia_id) {
-            // Si el equipo ya tiene una licencia asociada, desasociarla
-            $licenciaExistente->equipo_id = null;
-            $licenciaExistente->save();
-        }
-
-        // Asignar el ID de la licencia
-        $licencia_id = $licencia->licencia_id;
-
-        // Actualizar el campo equipo_id de la licencia anterior
-        if ($equipo->licencia_id && $equipo->licencia_id != $licencia_id) {
-            $licencia_anterior = Licencias::find($equipo->licencia_id);
-            if ($licencia_anterior) {
-                $licencia_anterior->equipo_id = null;
-                $licencia_anterior->save();
+            if (!$equipo) {
+                return response()->json(['message' => 'Equipo no encontrado'], 404);
             }
+
+            // Obtener el usuario por nombre
+            $usuario = Users::where('nombre', $request->input('nombre_usuario'))->first();
+
+            if (!$usuario) {
+                return response()->json(['message' => 'Usuario no encontrado'], 404);
+            }
+
+            // Obtener la licencia por numero de licencia
+            $licencia = Licencias::where('licencia', $request->input('numero_licencia'))->first();
+
+            // Verificar si la licencia es nula
+            if ($request->input('numero_licencia') == '') {
+                $licencia_id = null;
+            } else if (!$licencia) {
+                return response()->json(['message' => 'Licencia no encontrada'], 404);
+            } else {
+                // Verificar si la licencia ya está asociada a otro equipo
+                if ($licencia->equipo_id && $licencia->equipo_id != $equipo_id) {
+                    return response()->json(['message' => 'Esta licencia ya está asociada a otro equipo'], 400);
+                }
+
+                // Verificar si el equipo ya está asociado con otra licencia
+                $licenciaExistente = Licencias::where('equipo_id', $equipo_id)->first();
+                if ($licenciaExistente && $licenciaExistente->licencia_id != $licencia->licencia_id) {
+                    // Si el equipo ya tiene una licencia asociada, desasociarla
+                    $licenciaExistente->equipo_id = null;
+                    $licenciaExistente->save();
+                }
+
+                // Asignar el ID de la licencia
+                $licencia_id = $licencia->licencia_id;
+
+                // Actualizar el campo equipo_id de la licencia anterior
+                if ($equipo->licencia_id && $equipo->licencia_id != $licencia_id) {
+                    $licencia_anterior = Licencias::find($equipo->licencia_id);
+                    if ($licencia_anterior) {
+                        $licencia_anterior->equipo_id = null;
+                        $licencia_anterior->save();
+                    }
+                }
+            }
+
+            // Actualizar los datos del equipo y la licencia
+            $equipo->nombre = $request->input('nombre');
+            $equipo->user_id = $usuario->user_id;
+            $equipo->licencia_id = $licencia_id;
+
+            if ($licencia) {
+                $licencia->equipo_id = $equipo->equipo_id;
+            }
+
+            $licenciaEquipo = Licencias::where('equipo_id', $equipo_id)->first();
+            if ($licenciaEquipo) {
+                // Si el equipo tenía una licencia asociada, desasociarla
+                $licenciaEquipo->equipo_id = null;
+                $licenciaEquipo->save();
+            }
+
+            // Guardar los cambios en la base de datos
+            $equipo->save();
+            if ($licencia) {
+                $licencia->save();
+            }
+
+            return response()->json(['message' => 'Equipo editado correctamente'], 200);
         }
-    }
 
-    // Actualizar los datos del equipo y la licencia
-    $equipo->nombre = $request->input('nombre');
-    $equipo->user_id = $usuario->user_id;
-    $equipo->licencia_id = $licencia_id;
+        public function obtenerEquiposUsuario($userId)
+            {
+                try {
+                    // Encontrar los equipos asociados con el user_id
+                    $equipos = Equipos::where('user_id', $userId)->get();
 
-    if ($licencia) {
-        $licencia->equipo_id = $equipo->equipo_id;
-    }
+                    // Enviar la lista de equipos como respuesta
+                    return response()->json(['equipos' => $equipos], 200);
+                    
+                } catch (\Exception $e) {
+                    \Log::error('Error al obtener los equipos del usuario: ' . $e->getMessage());
+                    return response()->json(['message' => 'Error al obtener los equipos del usuario'], 500);
+                }
+            }
+        public function verEquiposUsuarioPagina($userId)
+            {
+                // Obtener los equipos del usuario basado en $userId
+                $equipos = Equipos::where('user_id', $userId)
+                                 ->with('usuarios', 'licencias')
+                                 ->get();
+        
+                // Renderizar la vista utilizando Inertia.js
+                return Inertia::render('Equipos', [
+                    'equipos' => $equipos
+                ]);
+            }
 
-    $licenciaEquipo = Licencias::where('equipo_id', $equipo_id)->first();
-    if ($licenciaEquipo) {
-        // Si el equipo tenía una licencia asociada, desasociarla
-        $licenciaEquipo->equipo_id = null;
-        $licenciaEquipo->save();
-    }
-
-    // Guardar los cambios en la base de datos
-    $equipo->save();
-    if ($licencia) {
-        $licencia->save();
-    }
-
-    return response()->json(['message' => 'Equipo editado correctamente'], 200);
-}
+        public function agregarServerKey(Request $request, $equipo_id) 
+        {
+            $validatedData = $request->validate([
+                'server_key' => 'required|string',
+            ]);
+    
+            try {
+            // Encontrar el equipo por ID
+            $equipo = Equipos::find($equipo_id);
+    
+            // Verificar si el equipo existe
+            if (!$equipo) {
+                return response()->json(['error' => 'Equipo no encontrado'], 404);
+            }
+    
+            // Actualizar la server_key del equipo
+            $equipo->server_key = $validatedData['server_key'];
+            $equipo->save();
+    
+            // Devolver una respuesta exitosa
+            return response()->json(['message' => 'Server Key guardada correctamente'], 200);   
+            } catch (\Exception $e) {
+            \Log::error('Error al obtener los equipos del usuario: ' . $e->getMessage());
+            return response()->json(['message' => 'Error al obtener los equipos del usuario'], 500);
+            } 
+        }
 }

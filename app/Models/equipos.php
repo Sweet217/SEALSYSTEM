@@ -11,7 +11,7 @@ class equipos extends Model
     use HasFactory;
 
     protected $primaryKey = 'equipo_id'; // Set the primary key field
-    protected $fillable = ['licencia_id', 'user_id', 'nombre']; // Add other fields as necessary
+    protected $fillable = ['licencia_id', 'user_id', 'nombre', 'server_key', 'mac']; // Add other fields as necessary
 
     public function usuarios()
     {

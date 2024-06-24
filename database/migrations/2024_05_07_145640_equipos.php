@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('equipos', function (Blueprint $table) {
             $table->id('equipo_id'); // Use id() for auto-incrementing primary key
             $table->string('nombre');
+            $table->string('mac');
+            $table->string('server_key')->nullable();
             $table->unsignedBigInteger('licencia_id')->nullable();
             $table->unsignedBigInteger('user_id'); // Use unsignedBigInteger for foreign keys (es un requerimiento de laravel)
             $table->foreign('user_id')->references('user_id')->on('usuarios')->onDelete('cascade'); // Define foreign key relationship

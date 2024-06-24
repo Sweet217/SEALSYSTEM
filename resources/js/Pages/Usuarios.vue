@@ -87,6 +87,9 @@ export default {
                 tipo_usuario: ''
             };
         },
+        verDispositivosUsuario(user_id) {
+            window.location.href = `/equipos_usuario_pagina/${user_id}`;
+        },
         eliminarUsuario(user_id) {
             axios.delete(`/usuariosDELETE/${user_id}`)
                 .then(() => {
@@ -115,7 +118,6 @@ export default {
                 });
         },
         async crearUsuario() {
-            // Verificamos que todos los campos estén completos
             if (
                 !this.nuevoUsuario.nombre ||
                 !this.nuevoUsuario.email ||
@@ -196,6 +198,9 @@ export default {
                             <p>Rol: {{ usuario.tipo_usuario }}</p>
                         </div>
                         <div class="flex space-x-2">
+                            <button class="btn ver-dispositivos-btn"
+                                @click="verDispositivosUsuario(usuario.user_id)">Ver
+                                Dispositivos</button>
                             <button class="btn editar-btn" @click="abrirModal(usuario)">Editar</button>
                             <button class="btn eliminar-btn btn-danger btn-trash bi-trash"
                                 @click="eliminarUsuario(usuario.user_id)"></button>
@@ -331,6 +336,17 @@ export default {
 .editar-btn:hover {
     background-color: #e6e6e6;
     border-color: #cccccc;
+}
+
+.ver-dispositivos-btn {
+    background-color: #f78433;
+    border: 1px solid #e3671f;
+    color: white;
+}
+
+.ver-dispositivos-btn:hover {
+    background-color: #e3671f;
+    border-color: #d4551a;
 }
 
 

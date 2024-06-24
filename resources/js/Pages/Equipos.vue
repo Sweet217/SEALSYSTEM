@@ -2,6 +2,7 @@
 import FooterComponent from '@/Components/FooterComponent.vue';
 import NavbarComponent from '@/Components/NavbarComponent.vue';
 import axios from 'axios';
+import CryptoJS from 'crypto-js';
 
 const props = defineProps({
     equipos: Object
@@ -15,21 +16,33 @@ export default {
             nombre: '',
             modalVisible: false,
             crearModalVisible: false,
+            generarLicenciaModalVisible: false,
             equipoSeleccionado: {
                 equipo_id: null,
                 nombre: '',
                 numero_licencia: '',
+                mac: '',
+                server_key: '',
                 nombre_usuario: ''
             },
             nuevoEquipo: {
                 nombre: '',
                 numero_licencia: '',
-                nombre_usuario: ''
+                nombre_usuario: '',
+                mac: '',
             },
             nombreUsuario: '',
             tipoUsuario: '',
+            equiposUsuario: [],
+            mac: '',
+            showGenerarLicencia: false,
             error: null,
         };
+    },
+    computed: {
+        licenciaGenerada() {
+            return this.generarLicencia()
+        }
     },
     mounted() {
         axios.get('/api/usuario_actual')
@@ -37,6 +50,11 @@ export default {
                 this.nuevoEquipo.user_id = response.data.user_id;
                 this.nombreUsuario = response.data.nombre;
                 this.tipoUsuario = response.data.tipo_usuario;
+                this.obtenerEquiposUsuario(response.data.user_id);
+
+                if (this.tipoUsuario === 'Administrador') {
+                    return this.showGenerarLicencia = true;
+                }
             })
             .catch(error => {
                 console.error('Error al obtener el usuario actual:', error);
@@ -47,8 +65,24 @@ export default {
                     this.error = 'Error al obtener el usuario actual.';
                 }
             });
+        axios.get('/api/get_mac')
+            .then(response => {
+                this.mac = response.data.mac;
+            })
+            .catch(error => {
+                console.error('Error al obtener la mac:', error);
+            })
     },
     methods: {
+        obtenerEquiposUsuario(user_id) {
+            axios.get(`/equipos_usuario/${user_id}`)
+                .then(response => {
+                    this.equiposUsuario = response.data.equipos;
+                })
+                .catch(error => {
+                    console.error('Error al obtener los equipos del usuario:', error);
+                });
+        },
         filtrarEquipos() {
             if (this.tipoUsuario == 'Administrador') {
                 // Si el usuario no es un operador, mostrar todos los equipos
@@ -80,10 +114,12 @@ export default {
 
         abrirCrearModal() {
             this.crearModalVisible = true;
+            console.log(this.mac);
             this.nuevoEquipo = {
                 nombre: '',
                 numero_licencia: '',
-                nombre_usuario: this.nombreUsuario // Asigna el nombre del usuario actual
+                nombre_usuario: this.nombreUsuario, // Asigna el nombre del usuario actual
+                mac: this.mac //Asigna la mac del equipo actual (simulado)
             };
         },
         cerrarCrearModal() {
@@ -94,7 +130,18 @@ export default {
                 nombre_usuario: this.nombreUsuario
             };
         },
-
+        abrirModalGenerarLicencia(equipo) {
+            console.log(equipo)
+            this.equipoSeleccionado = {
+                equipo_id: equipo.equipo_id,
+                mac: equipo.mac,
+                server_key: equipo.server_key ? equipo.server_key : this.generarServerKey() //Si ya tiene una server_key pasar esa, si no, generar una.
+            };
+            this.generarLicenciaModalVisible = true;
+        },
+        cerrarModalGenerarLicencia() {
+            this.generarLicenciaModalVisible = false;
+        },
         eliminarEquipo(equipo_id) {
             axios.delete(`/equiposDELETE/${equipo_id}`)
                 .then(() => {
@@ -108,6 +155,7 @@ export default {
 
         editarEquipo(equipo_id) {
             console.log('Numero de licencia:', this.nuevoEquipo.numero_licencia);
+            console.log('Equipo ID: ', equipo_id);
             axios.put(`/equiposPUT/${equipo_id}`, {
                 nombre: this.equipoSeleccionado.nombre,
                 numero_licencia: this.equipoSeleccionado.numero_licencia,
@@ -126,25 +174,64 @@ export default {
                     }
                 });
         },
-
         crearEquipo() {
+            const equipoExistente = this.equiposUsuario.some(equipo => equipo.nombre === this.nuevoEquipo.nombre);
+
+            if (equipoExistente) {
+                alert('Ya tienes un equipo registrado con este nombre.');
+                return;
+            }
+
             axios.post('/equiposPOST', {
                 nombre: this.nuevoEquipo.nombre,
                 numero_licencia: this.nuevoEquipo.numero_licencia,
-                nombre_usuario: this.nuevoEquipo.nombre_usuario
+                nombre_usuario: this.nuevoEquipo.nombre_usuario,
+                mac: this.nuevoEquipo.mac
             })
                 .then(response => {
                     alert('Equipo creado correctamente');
                     this.cerrarCrearModal();
-                    this.equipos.push(response.data.equipo); // Agregar el nuevo equipo a la lista sin recargar la página
-                    window.location.reload(); //Recargar la pagina para que jale de nuevo la informacion de los usuarios (si no sale sin licencia y sin usuario asignado)
+                    this.equipos.push(response.data.equipo);
+                    window.location.reload();
                 })
                 .catch(error => {
                     console.error('Error al crear el equipo:', error);
                 });
+        },
+        guardarServerKey(equipo_id) {
+            console.log(this.equipoSeleccionado);
+            console.log('Equipo_id: ', equipo_id);
+            axios.post(`/equipos/agregarServerKey/${equipo_id}`, {
+                server_key: this.equipoSeleccionado.server_key
+            })
+                .then(response => {
+                    alert('Server Key guardada correctamente');
+                    window.location.reload()
+                })
+                .catch(error => {
+                    console.error('Error al guardar Server Key:', error);
+                    alert('Error al guardar Server Key');
+                });
+        },
+        generarLicencia() {
+            let key = `${this.equipoSeleccionado.mac}-${this.equipoSeleccionado.server_key}`;
+            let hash = CryptoJS.SHA256(key).toString(CryptoJS.enc.Hex);
+            let shortHash = hash.substring(0, 16); // Lograr una longitud similar a la de windows.
+            let formattedHash = shortHash.match(/.{1,4}/g).join('-').toUpperCase(); //Lograr que la substring sea similar a una licencia de windows XXXX-XXXX-XXXX-XXXX
+
+            return formattedHash;
+        },
+        generarServerKey() {
+            const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let clave = '';
+            for (let i = 0; i < 10; i++) {
+                clave += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+
+            return clave;
         }
     }
-};
+}
 </script>
 
 <template>
@@ -169,6 +256,9 @@ export default {
                                 <p>Usuario: {{ equipo.usuarios ? equipo.usuarios.nombre : 'Sin Usuario' }}</p>
                             </div>
                             <div class="flex space-x-2">
+                                <button v-if="showGenerarLicencia" class="btn generar-licencia-btn"
+                                    @click="abrirModalGenerarLicencia(equipo)">Generar
+                                    Licencia</button>
                                 <button class="btn editar-btn" @click="abrirModal(equipo)">Editar</button>
                                 <button class="btn btn-danger btn-trash bi-trash"
                                     @click="eliminarEquipo(equipo.equipo_id)"></button>
@@ -222,6 +312,35 @@ export default {
             </div>
         </div>
 
+
+        <!-- Modal para generar licencia -->
+        <div v-if="generarLicenciaModalVisible" class="modal">
+            <div class="modal-content">
+                <span class="close" @click="cerrarModalGenerarLicencia">&times;</span>
+                <h2>Generar Licencia</h2>
+                <form @submit.prevent="guardarServerKey(equipoSeleccionado.equipo_id)">
+                    <div class="campo">
+                        <label for="mac">Mac:</label>
+                        <input type="text" v-model="equipoSeleccionado.mac" id="mac" class="form-control rounded-pill"
+                            disabled>
+                    </div>
+                    <div class="campo">
+                        <label for="serverKey">Server Key:</label>
+                        <input class="form-control rounded-pill" type="text" id="serverKey"
+                            v-model="equipoSeleccionado.server_key" disabled>
+                    </div>
+                    <div class="campo">
+                        <label for="licencia">Licencia:</label>
+                        <input :value="licenciaGenerada" type="text" class="form-control rounded-pill" id="licencia"
+                            rows="4" disabled>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit">Guardar Server Key</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <FooterComponent></FooterComponent>
     </div>
 </template>
@@ -258,13 +377,14 @@ export default {
     border-color: #cccccc;
 }
 
-.eliminar-btn {
+
+.generar-licencia-btn {
     background-color: #f78433;
     border: 1px solid #e3671f;
     color: white;
 }
 
-.eliminar-btn:hover {
+.generar-licencia-btn:hover {
     background-color: #e3671f;
     border-color: #d4551a;
 }

@@ -79,6 +79,9 @@ Route::post('/signupPOST', [SignupController::class, 'signup']);
     Route::post('/equiposPOST', [EquiposController::class, 'crearEquipos']);
     Route::delete('/equiposDELETE/{equipo_id}', [EquiposController::class, 'borrarEquipos']);
     Route::put('/equiposPUT/{equipo_id}', [EquiposController::class, 'editarEquipos']);
+    Route::get('/equipos_usuario/{user_id}', [EquiposController::class, 'obtenerEquiposUsuario']);
+    Route::get('/equipos_usuario_pagina/{user_id}', [EquiposController::class, 'verEquiposUsuarioPagina']);
+    Route::post('/equipos/agregarServerKey/{equipo_id}', [EquiposController::class, 'agregarServerKey']);
 
     Route::get('/equipos/{equipo_id}', function ($equipo_id) {
         $equipo = equipos::where('equipo_id', $equipo_id)->first(); // Saca el equipo por ID
