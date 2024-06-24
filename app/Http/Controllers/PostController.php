@@ -21,4 +21,5 @@ class PostController extends Controller
 
         return Post::create($data);
     }
+    //este controlador solo fue para pruebas de sesion. (recomiendo dejarlo para cualquier tipo de pruebas que se necesiten)
 }

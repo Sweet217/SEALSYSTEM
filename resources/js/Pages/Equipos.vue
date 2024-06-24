@@ -201,6 +201,7 @@ export default {
                 })
                 .catch(error => {
                     console.error('Error al crear el equipo:', error);
+                    alert('Error al crear el equipo');
                 });
         },
         guardarServerKey(equipo_id) {

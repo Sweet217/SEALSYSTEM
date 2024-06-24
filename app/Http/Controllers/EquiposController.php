@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\equipos;
-use App\Models\Users;
-use App\Models\licencias;
+use App\Models\equipos; //Importa el modelo equipos
+use App\Models\Users;   //Importa el modelo users
+use App\Models\licencias; //Importa el modelo licencias
 
 class EquiposController extends Controller
 {
@@ -71,7 +71,7 @@ class EquiposController extends Controller
 
 
     /**
-     * Remove the specified equipo from storage.
+     * remueve el equipo de la base de datos
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $equipo_id

@@ -98,6 +98,7 @@ export default {
                 })
                 .catch(error => {
                     console.error('Error al eliminar el usuario:', error);
+                    alert('Error al eliminar el usuario')
                 });
         },
         editarUsuario(user_id) {
@@ -115,6 +116,7 @@ export default {
                 })
                 .catch(error => {
                     console.error('Error al editar el usuario:', error);
+                    alert('Error al crear el usuario');
                 });
         },
         async crearUsuario() {
@@ -169,6 +171,7 @@ export default {
             } catch (error) {
                 console.error('Error al crear el usuario:', error.response.data);
                 this.error = 'Error al crear el usuario';
+                alert('Error al crear el usuario');
             }
         }
     }

@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\listas;
-use App\Models\equipos;
-use App\Http\Controllers\UserController;
+use App\Models\listas; //Importar el modelo listas
+use App\Models\equipos; //Importar el modelo equipos
+use App\Http\Controllers\UserController; 
 
 class ListasController extends Controller
 {
+
+  /* Mostrar las listas que esten asociadas a un equipo*/
     public function showListas(Request $request)
   {
     $listas = listas::with('equipo')->get();
