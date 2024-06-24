@@ -182,11 +182,16 @@ export default {
                 return;
             }
 
+            console.log(this.nuevoEquipo.mac);
+            //La key sera desencriptar
+            let key = "desencriptar"
+            let mac_encriptada = CryptoJS.AES.encrypt(this.nuevoEquipo.mac, key).toString()
+
             axios.post('/equiposPOST', {
                 nombre: this.nuevoEquipo.nombre,
                 numero_licencia: this.nuevoEquipo.numero_licencia,
                 nombre_usuario: this.nuevoEquipo.nombre_usuario,
-                mac: this.nuevoEquipo.mac
+                mac: mac_encriptada
             })
                 .then(response => {
                     alert('Equipo creado correctamente');
@@ -214,8 +219,12 @@ export default {
                 });
         },
         generarLicencia() {
-            let key = `${this.equipoSeleccionado.mac}-${this.equipoSeleccionado.server_key}`;
-            let hash = CryptoJS.SHA256(key).toString(CryptoJS.enc.Hex);
+            let key = 'desencriptar';
+            let bytes = CryptoJS.AES.decrypt(this.equipoSeleccionado.mac, key);
+            let mac_desencriptada = bytes.toString(CryptoJS.enc.Utf8);
+            console.log(mac_desencriptada);
+            let key_combined = `${mac_desencriptada}-${this.equipoSeleccionado.server_key}`;
+            let hash = CryptoJS.SHA256(key_combined).toString(CryptoJS.enc.Hex);
             let shortHash = hash.substring(0, 16); // Lograr una longitud similar a la de windows.
             let formattedHash = shortHash.match(/.{1,4}/g).join('-').toUpperCase(); //Lograr que la substring sea similar a una licencia de windows XXXX-XXXX-XXXX-XXXX
 
