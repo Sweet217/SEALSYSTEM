@@ -1,7 +1,6 @@
 <script setup>
 import FooterComponent from '@/Components/FooterComponent.vue'
 import NavbarComponent from '@/Components/NavbarComponent.vue'
-// import CrearListaComponent from '@/Components/CrearListaComponent.vue'
 import axios from 'axios';
 
 const props = defineProps({
@@ -30,8 +29,8 @@ export default {
       },
       error: null,
       user_id: this.user_id,
-      nombre_usuario: '',
-      tipo_usuario: '',
+      nombreUsuario: '',
+      tipoUsuario: '',
       nuevoNombre: '',
       currentListId: Number,
     };
@@ -84,6 +83,7 @@ export default {
     },
     abrirModalCrear() {
       this.modalCrearVisible = true;
+      console.log(this.modalCrearVisible);
       console.log('Tipo usuario', this.tipoUsuario);
     },
     cerrarModalCrear() {
@@ -178,36 +178,35 @@ export default {
                   </form>
                 </div>
               </div>
-
-              <div v-if="modalCrearVisible" class="modal">
-                <div class="modal-content">
-                  <span class="close" @click="cerrarModalCrear">&times;</span>
-                  <h2>Crear Lista</h2>
-                  <form @submit.prevent="crearLista">
-                    <div class="mb-3">
-                      <label for="nuevoNombre">Nombre de la Lista:</label>
-                      <input type="text" v-model="nuevoNombre" id="nuevoNombre" class="form-control rounded-pill">
-                    </div>
-                    <div class="mb-3">
-                      <label for="equipoSeleccionado">Equipo:</label>
-                      <select v-model="equipoSeleccionado.equipo_id" id="equipoSeleccionado"
-                        class="form-control rounded-pill">
-                        <option v-for="equipo in equiposDisponibles" :value="equipo.equipo_id" :key="equipo.equipo_id">
-                          {{ equipo.nombre }}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary rounded-pill">Crear</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-
             </div>
           </div>
         </li>
       </ul>
+    </div>
+
+    <!-- Modal de Creación de Lista -->
+    <div v-if="modalCrearVisible" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="cerrarModalCrear">&times;</span>
+        <h2>Crear Lista</h2>
+        <form @submit.prevent="crearLista">
+          <div class="mb-3">
+            <label for="nuevoNombre">Nombre de la Lista:</label>
+            <input type="text" v-model="nuevoNombre" id="nuevoNombre" class="form-control rounded-pill">
+          </div>
+          <div class="mb-3">
+            <label for="equipoSeleccionado">Equipo:</label>
+            <select v-model="equipoSeleccionado.equipo_id" id="equipoSeleccionado" class="form-control rounded-pill">
+              <option v-for="equipo in equiposDisponibles" :value="equipo.equipo_id" :key="equipo.equipo_id">
+                {{ equipo.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary rounded-pill">Crear</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
