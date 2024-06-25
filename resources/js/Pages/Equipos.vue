@@ -211,8 +211,10 @@ export default {// Define el estado del componente
         guardarServerKey(equipo_id) {
             console.log(this.equipoSeleccionado);
             console.log('Equipo_id: ', equipo_id);
+            console.log(this.licenciaGenerada);
             axios.post(`/equipos/agregarServerKey/${equipo_id}`, {
-                server_key: this.equipoSeleccionado.server_key
+                server_key: this.equipoSeleccionado.server_key,
+                licencia: this.licenciaGenerada
             })
                 .then(response => {
                     alert('Server Key guardada correctamente');

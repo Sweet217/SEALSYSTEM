@@ -209,11 +209,13 @@ class EquiposController extends Controller
         {
             $validatedData = $request->validate([
                 'server_key' => 'required|string',
+                'licencia' => 'required'
             ]);
     
             try {
             // Encontrar el equipo por ID
             $equipo = Equipos::find($equipo_id);
+            
     
             // Verificar si el equipo existe
             if (!$equipo) {
@@ -223,12 +225,22 @@ class EquiposController extends Controller
             // Actualizar la server_key del equipo
             $equipo->server_key = $validatedData['server_key'];
             $equipo->save();
+
+            // Checar si la licencia ya existe 
+            $licenciaExistente = Licencias::where('licencia', $validatedData['licencia'])->first();
+            
+            if (!$licenciaExistente) {
+                // Guardar la licencia si no existe
+                $licencia = new Licencias();
+                $licencia->licencia = $validatedData['licencia'];
+                $licencia->save();
+            }
     
             // Devolver una respuesta exitosa
             return response()->json(['message' => 'Server Key guardada correctamente'], 200);   
             } catch (\Exception $e) {
-            \Log::error('Error al obtener los equipos del usuario: ' . $e->getMessage());
-            return response()->json(['message' => 'Error al obtener los equipos del usuario'], 500);
+            \Log::error('Error al agregar la serverkey ' . $e->getMessage());
+            return response()->json(['message' => 'Error al agregar la serverkey'], 500);
             } 
         }
 }
