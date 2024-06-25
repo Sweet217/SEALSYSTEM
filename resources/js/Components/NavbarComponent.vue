@@ -9,18 +9,18 @@ export default {
     };
   },
   mounted() {
-    axios.get('/api/usuario_actual')
+    axios.get('/api/usuario_actual') //Hacer una peticion a la api para obtener los datos del usuario que esta utilizando el sistema
       .then(response => {
         this.nombreUsuario = response.data.nombre;
         this.tipoUsuario = response.data.tipo_usuario;
         // console.log(this.tipoUsuario)
         if (this.tipoUsuario === 'Administrador') {
-          return this.showUsuarios = true;
+          return this.showUsuarios = true; //Solo se mostrara el apartado "Usuarios" a los administradores
         }
       })
       .catch(error => {
         console.error('Error al obtener el usuario actual:', error);
-        // Redirigir a la página de inicio de sesión si no está autenticado
+        // Redirigir a la página de inicio de sesión si el usuario no está autenticado
         if (error.response && error.response.status === 401) {
           window.location.href = '/';
         } else {
@@ -30,13 +30,13 @@ export default {
   },
   methods: {
     redirectUsuarios() {
-      window.location.href = '/usuarios';
+      window.location.href = '/usuarios';  //Redireccionar a /usuarios
     },
     redirectListas() {
-      window.location.href = '/listas';
+      window.location.href = '/listas'; //Redireccionar a /listas
     },
     redirectEquipos() {
-      window.location.href = '/equipos';
+      window.location.href = '/equipos'; //Redireccionar a /equipos
     }
   }
 

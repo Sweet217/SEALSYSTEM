@@ -28,7 +28,7 @@ export default {
             return match ? `https://www.youtube.com/embed/${match[1]}` : url;
         },
     },
-};
+}; //Se uso para pruebas dentro de multimedia, se termino poniendo todo directo ya que este componente solo se terminaria usando para una pagina.
 </script>
 
 <template>

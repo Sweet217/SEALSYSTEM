@@ -1,43 +1,47 @@
 <script>
-import axios from 'axios';
+import axios from 'axios'; // Importa la librería axios para realizar peticiones HTTP 
 
 
 export default {
-  name: 'LoginComponent',
+  name: 'LoginComponent', //Nombre del componente 
 
   mounted() { //Nada por ahora.
   },
 
   data() {
     return {
-      email: '',
-      password: '',
-      errors: null,
-      token: '',
-      showPassword: false,
+      email: '', // Email del usuario para el login
+      password: '', // Contraseña del usuario para el login
+      errors: null, // Almacena los errores de autenticación (si existen)
+      token: '', // Token de autenticación recibido tras el login exitoso
+      showPassword: false, // Indica si se muestra el campo contraseña en texto plano
     }
   },
 
   methods: {
     async submitLogin() {
+      // Intenta realizar el login del usuario
       try {
         const response = await axios.post('/loginPOST', {
-          email: this.email,
-          password: this.password,
-          token: this.token
+          email: this.email, // Envía el email del usuario
+          password: this.password, // Envía la contraseña del usuario
+          token: this.token // **Revisar si 'token' es necesario enviarlo**
         });
 
-
-        const isAuthenticated = response.data && response.data.autenticacion_correcta;
+        const isAuthenticated = response.data && response.data.autenticacion_correcta; // Verifica si la autenticación fue exitosa
 
         if (isAuthenticated) {
-          sessionStorage.clear();
-          console.log('Login successful!');
-          this.$emit('login-success');
-          this.token = response.data.token;
-          axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
-          sessionStorage.setItem('token', this.token);
+          // Login exitoso
+          sessionStorage.clear(); // Limpia el almacenamiento de sesión
+          console.log('¡Inicio de sesión exitoso!');
+          this.$emit('login-success'); // Emite el evento 'login-success'
 
+          // Guarda el token de autenticación
+          this.token = response.data.token;
+          axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`; // Agrega el token al header de autorización por defecto de axios
+          sessionStorage.setItem('token', this.token); // Almacena el token en sessionStorage
+
+          // Redirecciona a la pantalla principal tras un login exitoso
           axios.get('/api/pantallaprincipal')
             .then(response => {
               window.location.href = '/pantallaprincipal';
@@ -45,26 +49,27 @@ export default {
             .catch(error => {
               console.error('Error al acceder a pantallaprincipal:', error);
             });
-
         } else {
-
-          this.errors = response.data.errors || ['Credenciales incorrectas'];
+          // Login fallido
+          this.errors = response.data.errors || ['Credenciales incorrectas']; // Muestra los errores de autenticación (si existen)
         }
       } catch (error) {
+        // Manejo de errores durante la petición
         if (error.response) {
           if (error.response.status === 401) {
-            this.errors = ['Datos Invalidos'];
+            this.errors = ['Datos Invalidos']; // Error 401: credenciales no válidas
           } else if (error.response.data && error.response.data.errors) {
-            this.errors = error.response.data.errors;
+            this.errors = error.response.data.errors; // Muestra los errores devueltos por el servidor
           } else {
-            console.error('Login failed:', error.message);
+            console.error('Error en el inicio de sesión:', error.message); // Error inesperado
           }
         } else {
-          console.error('Login failed:', error.message);
+          console.error('Error en el inicio de sesión:', error.message); // Error de red u otro tipo
         }
       }
     },
     togglePasswordVisibility() {
+      // Cambia el estado para mostrar u ocultar la contraseña en texto plano
       this.showPassword = !this.showPassword;
     }
   }

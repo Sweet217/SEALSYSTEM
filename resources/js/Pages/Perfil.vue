@@ -2,6 +2,8 @@
 import FooterComponent from '@/Components/FooterComponent.vue'
 import NavbarComponent from '@/Components/NavbarComponent.vue'
 import HeaderComponent from '@/Components/HeaderComponent.vue'
+
+//No se termino utilizando esta pagina
 </script>
 
 <template>

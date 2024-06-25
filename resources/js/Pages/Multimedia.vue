@@ -14,91 +14,98 @@ const props = defineProps({
 <script>
 export default {
     components: {
-        draggable
+        draggable // Componente draggable utilizado para arrastrar y soltar
     },
     computed: {
+        // Propiedad computada para ordenar la multimedia según la posición
         multimediaOrdenada() {
             return this.multimediaData.sort((a, b) => a.posicion - b.posicion);
         }
     },
     data() {
         return {
-            nombreUsuario: '',
-            tipoUsuario: '',
-            error: '',
-            modalVisible: false,
-            imagenSeleccionada: {
+            nombreUsuario: '', // Nombre del usuario actual
+            tipoUsuario: '', // Tipo de usuario actual
+            error: '', // Variable para almacenar errores
+            modalVisible: false, // Controla la visibilidad del modal
+            imagenSeleccionada: { // Datos de la imagen seleccionada
                 imagen_id: null,
                 tiempo: '',
             },
-            nuevaMultimedia: {
+            nuevaMultimedia: { // Datos de la nueva multimedia
                 tipo: '',
                 id_lista: this.listaData.id_lista,
             },
-            nuevaImagen: {
+            nuevaImagen: { // Datos de la nueva imagen
                 nombre_archivo: '',
                 tiempo: 0,
                 archivo: null,
             },
-            nuevoVideo: {
+            nuevoVideo: { // Datos del nuevo video
                 nombre_archivo: '',
                 archivo: null,
             },
-            nuevoEnlace: {
+            nuevoEnlace: { // Datos del nuevo enlace
                 enlace: '',
             },
         };
     },
     mounted() {
+        // Se ejecuta cuando el componente es montado
         axios.get('/api/usuario_actual')
             .then(response => {
-                this.nombreUsuario = response.data.nombre;
-                this.tipoUsuario = response.data.tipo_usuario;
+                this.nombreUsuario = response.data.nombre; // Asigna el nombre del usuario actual
+                this.tipoUsuario = response.data.tipo_usuario; // Asigna el tipo de usuario actual
             })
             .catch(error => {
-                console.error('Error al obtener el usuario actual:', error);
+                console.error('Error al obtener el usuario actual:', error); // Muestra un error en la consola
                 if (error.response && error.response.status === 401) {
-                    window.location.href = '/';
+                    window.location.href = '/'; // Redirige a la página de inicio de sesión si no está autenticado
                 } else {
-                    this.error = 'Error al obtener el usuario actual.';
+                    this.error = 'Error al obtener el usuario actual.'; // Asigna un mensaje de error
                 }
             });
     },
     methods: {
+        // Método para abrir el modal
         abrirModal() {
             this.modalVisible = true;
-            console.log('abierto')
+            console.log('abierto');
         },
+        // Método para cerrar el modal
         cerrarModal() {
             this.modalVisible = false;
-            this.error = null;
+            this.error = null; // Reinicia el error
         },
+        // Método para validar la duración de un item multimedia
         validarDuracion(item) {
-            item.data.tiempo = item.data.tiempo.replace(/\D/g, '');
+            item.data.tiempo = item.data.tiempo.replace(/\D/g, ''); // Remueve caracteres no numéricos
         },
+        // Método para editar una imagen por su ID
         editarImagen(imagen_id, tiempo) {
-            tiempo = tiempo.replace(/\D/g, '');
+            tiempo = tiempo.replace(/\D/g, ''); // Remueve caracteres no numéricos
             axios.put(`/imagenPUT/${imagen_id}`, { tiempo })
                 .then(() => {
-                    // alert('Imagen editada correctamente');
-                    this.cerrarModal();
-                    window.location.reload();
+                    this.cerrarModal(); // Cierra el modal
+                    window.location.reload(); // Recarga la página
                 })
                 .catch(error => {
-                    console.error('Error al editar la imagen:', error);
+                    console.error('Error al editar la imagen:', error); // Muestra un error en la consola
                 });
         },
+        // Método para crear una nueva multimedia
         crearMultimedia() {
             if (this.nuevaMultimedia.tipo === 'imagen') {
-                this.crearImagen();
+                this.crearImagen(); // Crea una imagen
             } else if (this.nuevaMultimedia.tipo === 'video') {
-                this.crearVideo();
+                this.crearVideo(); // Crea un video
             } else if (this.nuevaMultimedia.tipo === 'enlace') {
-                this.crearEnlace();
+                this.crearEnlace(); // Crea un enlace
             } else {
-                console.error('Tipo de multimedia no válido');
+                console.error('Tipo de multimedia no válido'); // Muestra un error en la consola
             }
         },
+        // Método para crear una nueva imagen
         crearImagen() {
             const formData = new FormData();
             formData.append('nombre_archivo', this.nuevaImagen.nombre_archivo);
@@ -108,13 +115,14 @@ export default {
 
             axios.post('/imagenesPOST', formData)
                 .then(response => {
-                    this.cerrarModal();
-                    window.location.reload();
+                    this.cerrarModal(); // Cierra el modal
+                    window.location.reload(); // Recarga la página
                 })
                 .catch(error => {
-                    console.error('Error al crear la imagen:', error);
+                    console.error('Error al crear la imagen:', error); // Muestra un error en la consola
                 });
         },
+        // Método para crear un nuevo video
         crearVideo() {
             const formData = new FormData();
             formData.append('nombre_archivo', this.nuevoVideo.nombre_archivo);
@@ -123,13 +131,14 @@ export default {
 
             axios.post('/videosPOST', formData)
                 .then(response => {
-                    this.cerrarModal();
-                    window.location.reload();
+                    this.cerrarModal(); // Cierra el modal
+                    window.location.reload(); // Recarga la página
                 })
                 .catch(error => {
-                    console.error('Error al crear el video:', error);
+                    console.error('Error al crear el video:', error); // Muestra un error en la consola
                 });
         },
+        // Método para crear un nuevo enlace
         crearEnlace() {
             const formData = new FormData();
             formData.append('data', this.nuevoEnlace.enlace);
@@ -137,20 +146,22 @@ export default {
 
             axios.post('/enlacesPOST', formData)
                 .then(response => {
-                    this.cerrarModal();
-                    window.location.reload();
+                    this.cerrarModal(); // Cierra el modal
+                    window.location.reload(); // Recarga la página
                 })
                 .catch(error => {
-                    console.error('Error al crear el enlace:', error);
+                    console.error('Error al crear el enlace:', error); // Muestra un error en la consola
                 });
         },
+        // Maneja la selección de una imagen
         handleImagenSeleccionada(event) {
             this.nuevaImagen.archivo = event.target.files[0];
         },
+        // Maneja la selección de un video
         handleVideoSeleccionado(event) {
             this.nuevoVideo.archivo = event.target.files[0];
         },
-
+        // Método para eliminar una multimedia
         eliminarMultimedia(multimedia_id, video_id, imagen_id, enlace_id) {
             if (imagen_id) {
                 // Eliminar imagen
@@ -162,10 +173,10 @@ export default {
                 })
                     .then(response => {
                         console.log(response.data.message);
-                        window.location.reload();
+                        window.location.reload(); // Recarga la página
                     })
                     .catch(error => {
-                        console.error('Error al eliminar la imagen:', error);
+                        console.error('Error al eliminar la imagen:', error); // Muestra un error en la consola
                     });
             } else if (video_id) {
                 // Eliminar video
@@ -177,10 +188,10 @@ export default {
                 })
                     .then(response => {
                         console.log(response.data.message);
-                        window.location.reload();
+                        window.location.reload(); // Recarga la página
                     })
                     .catch(error => {
-                        console.error('Error al eliminar el video:', error);
+                        console.error('Error al eliminar el video:', error); // Muestra un error en la consola
                     });
             } else if (enlace_id) {
                 // Eliminar enlace
@@ -192,17 +203,18 @@ export default {
                 })
                     .then(response => {
                         console.log(response.data.message);
-                        window.location.reload();
+                        window.location.reload(); // Recarga la página
                     })
                     .catch(error => {
-                        console.error('Error al eliminar el enlace:', error);
+                        console.error('Error al eliminar el enlace:', error); // Muestra un error en la consola
                     });
             }
         },
+        // Maneja el fin del arrastre para actualizar la posición de la multimedia
         async handleDragEnd() {
             const positions = this.multimedia.map((item, index) => ({
                 multimedia_id: item.data.multimedia_id,
-                nueva_posicion: index + 1, // +1 because positions usually start from 1
+                nueva_posicion: index + 1, // +1 porque las posiciones usualmente empiezan desde 1
             }));
             console.log(positions);
 
@@ -213,13 +225,13 @@ export default {
                 console.error('Error al actualizar posiciones:', error.response.data || error.message);
             }
         },
+        // Obtiene la URL de embed de YouTube a partir de una URL estándar
         getEmbedUrl(url) {
-            // Function to convert standard YouTube URL to embed format
             let videoId = this.getVideoId(url);
             return `https://www.youtube.com/embed/${videoId}`;
         },
+        // Extrae el ID del video de YouTube a partir de una URL
         getVideoId(url) {
-            // Function to extract YouTube video ID from URL
             let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
             let match = url.match(regExp);
             if (match && match[2].length === 11) {

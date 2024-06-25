@@ -3,6 +3,7 @@ import FooterComponent from '@/Components/FooterComponent.vue'
 import NavbarComponent from '@/Components/NavbarComponent.vue'
 import axios from 'axios';
 
+// Definir las propiedades que se esperan recibir, en este caso, un objeto de usuarios
 const props = defineProps({
     usuarios: Object,
 });
@@ -12,8 +13,10 @@ const props = defineProps({
 export default {
     data() {
         return {
+            // Variables para controlar la visibilidad de los modales
             modalVisible: false,
             crearModalVisible: false,
+            // Objeto para almacenar la información del usuario seleccionado
             usuarioSeleccionado: {
                 user_id: '',
                 nombre: '',
@@ -22,6 +25,7 @@ export default {
                 estado: '',
                 tipo_usuario: ''
             },
+            // Objeto para almacenar la información del nuevo usuario a crear
             nuevoUsuario: {
                 nombre: '',
                 email: '',
@@ -31,12 +35,14 @@ export default {
                 telefono: '',
                 estado: 'Activo'
             },
+            // Variables para almacenar el nombre y tipo del usuario actual y posibles errores
             nombreUsuario: '',
             tipoUsuario: '',
             error: ''
         };
     },
     mounted() {
+        // Al montar el componente, obtener los datos del usuario actual
         axios.get('/api/usuario_actual')
             .then(response => {
                 this.nombreUsuario = response.data.nombre;
@@ -53,14 +59,17 @@ export default {
             });
     },
     methods: {
+        // Método para abrir el modal de creación de usuario
         abrirCrearModal() {
             this.crearModalVisible = true;
             this.resetForm();
         },
+        // Método para cerrar el modal de creación de usuario
         cerrarCrearModal() {
             this.crearModalVisible = false;
             this.resetForm();
         },
+        // Método para resetear el formulario de nuevo usuario
         resetForm() {
             this.nuevoUsuario = {
                 nombre: '',
@@ -72,10 +81,12 @@ export default {
                 estado: 'Activo'
             };
         },
+        // Método para abrir el modal de edición de usuario
         abrirModal(usuario) {
             this.usuarioSeleccionado = { ...usuario };
             this.modalVisible = true;
         },
+        // Método para cerrar el modal de edición de usuario
         cerrarModal() {
             this.modalVisible = false;
             this.usuarioSeleccionado = {
@@ -87,9 +98,11 @@ export default {
                 tipo_usuario: ''
             };
         },
+        // Método para ver los dispositivos de un usuario
         verDispositivosUsuario(user_id) {
             window.location.href = `/equipos_usuario_pagina/${user_id}`;
         },
+        // Método para eliminar un usuario
         eliminarUsuario(user_id) {
             axios.delete(`/usuariosDELETE/${user_id}`)
                 .then(() => {
@@ -101,6 +114,7 @@ export default {
                     alert('Error al eliminar el usuario')
                 });
         },
+        // Método para editar un usuario
         editarUsuario(user_id) {
             axios.put(`/usuariosPUT/${user_id}`, {
                 nombre: this.usuarioSeleccionado.nombre,
@@ -116,10 +130,12 @@ export default {
                 })
                 .catch(error => {
                     console.error('Error al editar el usuario:', error);
-                    alert('Error al crear el usuario');
+                    alert('Error al editar el usuario');
                 });
         },
+        // Método para crear un nuevo usuario
         async crearUsuario() {
+            // Validar que todos los campos estén completos
             if (
                 !this.nuevoUsuario.nombre ||
                 !this.nuevoUsuario.email ||
@@ -133,22 +149,25 @@ export default {
                 return; // Salimos de la función si algún campo está vacío
             }
 
-            // Verificamos que la contraseña coincida con la confirmación de contraseña
+            // Verificar que la contraseña coincida con la confirmación de contraseña
             if (this.nuevoUsuario.password !== this.nuevoUsuario.confirmPassword) {
                 this.error = 'Las contraseñas no coinciden.';
                 return; // Salimos de la función si las contraseñas no coinciden
             }
 
+            // Validar formato del correo electrónico
             if (!/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/.test(this.nuevoUsuario.email)) {
                 this.error = 'Por favor ingresa un correo electrónico válido.';
                 return; // Salimos de la función si el correo electrónico no es válido
             }
 
+            // Validar que el teléfono contenga solo números y espacios
             if (!/^\d+(\s\d+)*$/.test(this.nuevoUsuario.telefono)) {
                 this.error = 'El teléfono debe contener solo números y espacios';
                 return; // Salimos de la función si el formato del teléfono no es válido
             }
 
+            // Validar formato del teléfono
             if (!/^\d{3}\s\d{3}\s\d{4}$/.test(this.nuevoUsuario.telefono)) {
                 this.error = 'El teléfono debe tener el formato 000 000 0000.';
                 return; // Salimos de la función si el formato del teléfono no es válido

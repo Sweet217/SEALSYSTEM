@@ -14,45 +14,47 @@ const props = defineProps({
 export default {
   data() {
     return {
-      nombre: '',
-      modalVisible: false,
-      modalCrearVisible: false,
-      listaSeleccionada: {
+      nombre: '', // Nombre de la lista
+      modalVisible: false, // Controla la visibilidad del modal de edición
+      modalCrearVisible: false, // Controla la visibilidad del modal de creación
+      listaSeleccionada: { // Datos de la lista seleccionada
         id_lista: null,
         nombre: '',
       },
-      equipoSeleccionado: {
+      equipoSeleccionado: { // Datos del equipo seleccionado
         equipo_id: null,
         nombre: '',
         numero_licencia: '',
         nombre_usuario: ''
       },
-      error: null,
-      user_id: this.user_id,
-      nombreUsuario: '',
-      tipoUsuario: '',
-      nuevoNombre: '',
-      currentListId: Number,
+      error: null, // Variable para almacenar errores
+      user_id: this.user_id, // ID del usuario actual
+      nombreUsuario: '', // Nombre del usuario actual
+      tipoUsuario: '', // Tipo de usuario actual (Administrador o Usuario)
+      nuevoNombre: '', // Nombre de la nueva lista a crear
+      currentListId: Number, // ID de la lista actual
     };
   },
   mounted() {
+    // Se ejecuta cuando el componente es montado
     axios.get('/api/usuario_actual')
       .then(response => {
-        this.user_id = response.data.user_id;
-        this.nombreUsuario = response.data.nombre;
-        this.tipoUsuario = response.data.tipo_usuario;
+        this.user_id = response.data.user_id; // Asigna el ID del usuario actual
+        this.nombreUsuario = response.data.nombre; // Asigna el nombre del usuario actual
+        this.tipoUsuario = response.data.tipo_usuario; // Asigna el tipo de usuario actual
       })
       .catch(error => {
-        console.error('Error al obtener el usuario actual:', error);
-        // Redirigir a la página de inicio de sesión si no está autenticado
+        console.error('Error al obtener el usuario actual:', error); // Muestra un error en la consola
+        // Redirige a la página de inicio de sesión si el usuario no está autenticado
         if (error.response && error.response.status === 401) {
           window.location.href = '/';
         } else {
-          this.error = 'Error al obtener el usuario actual.';
+          this.error = 'Error al obtener el usuario actual.'; // Asigna un mensaje de error
         }
       });
   },
   computed: {
+    // Computed property para obtener los equipos disponibles según el tipo de usuario
     equiposDisponibles() {
       if (this.tipoUsuario == 'Administrador') {
         return this.equipos.filter(equipo => equipo.user_id === this.user_id);
@@ -62,6 +64,7 @@ export default {
     },
   },
   methods: {
+    // Método para filtrar las listas según el tipo de usuario y su ID de usuario
     filtrarListas() {
       if (this.tipoUsuario == 'Administrador') {
         return this.listas.filter(lista => lista.equipo.user_id === this.user_id);
@@ -69,70 +72,78 @@ export default {
         return this.listas.filter(lista => lista.equipo.user_id === this.user_id);
       }
     },
+    // Método para abrir el modal y seleccionar una lista
     abrirModal(lista) {
-      this.listaSeleccionada = { ...lista };
-      this.modalVisible = true;
+      this.listaSeleccionada = { ...lista }; // Clona la lista seleccionada
+      this.modalVisible = true; // Muestra el modal
     },
+    // Método para cerrar el modal y reiniciar la lista seleccionada
     cerrarModal() {
-      this.modalVisible = false;
+      this.modalVisible = false; // Oculta el modal
       this.listaSeleccionada = {
         id_lista: null,
         nombre: '',
       };
-      this.error = null;
+      this.error = null; // Reinicia el error
     },
+    // Método para abrir el modal de creación de listas
     abrirModalCrear() {
-      this.modalCrearVisible = true;
+      this.modalCrearVisible = true; // Muestra el modal de creación
       console.log(this.modalCrearVisible);
       console.log('Tipo usuario', this.tipoUsuario);
     },
+    // Método para cerrar el modal de creación y reiniciar el nombre de la nueva lista
     cerrarModalCrear() {
-      this.modalCrearVisible = false;
-      this.nuevoNombre = '';
-      this.error = null;
+      this.modalCrearVisible = false; // Oculta el modal de creación
+      this.nuevoNombre = ''; // Reinicia el nombre de la nueva lista
+      this.error = null; // Reinicia el error
     },
+    // Método para eliminar una lista por su ID
     eliminarLista(id_lista) {
       axios.delete(`/listasDELETE/${id_lista}`, {
-        //id_lista: this.id,
+        //id_lista: this.id, // Esta línea está comentada
       })
         .then(() => {
-          window.location.reload()
-          alert('Lista eliminada correctamente');
+          window.location.reload(); // Recarga la página
+          alert('Lista eliminada correctamente'); // Muestra una alerta de éxito
         })
         .catch(error => {
-          console.error('Error al eliminar la lista:', error);
+          console.error('Error al eliminar la lista:', error); // Muestra un error en la consola
         });
     },
+    // Método para editar una lista por su ID
     editarLista(id_lista) {
       axios.put(`/listasPUT/${id_lista}`, {
-        nombre: this.listaSeleccionada.nombre,
+        nombre: this.listaSeleccionada.nombre, // Envía el nuevo nombre de la lista
       })
         .then(() => {
-          alert('Lista editada correctamente');
-          this.cerrarModal();
-          window.location.reload()
+          alert('Lista editada correctamente'); // Muestra una alerta de éxito
+          this.cerrarModal(); // Cierra el modal
+          window.location.reload(); // Recarga la página
         })
         .catch(error => {
-          console.error('Error al editar la lista:', error)
+          console.error('Error al editar la lista:', error); // Muestra un error en la consola
         });
     },
+    // Método para crear una nueva lista
     crearLista() {
       axios.post('/listasPOST', {
-        nombre: this.nuevoNombre,
-        equipo_id: this.equipoSeleccionado.equipo_id
+        nombre: this.nuevoNombre, // Envía el nombre de la nueva lista
+        equipo_id: this.equipoSeleccionado.equipo_id // Envía el ID del equipo seleccionado
       })
         .then(() => {
-          alert('Lista creada correctamente');
-          this.cerrarModalCrear();
-          window.location.reload();
+          alert('Lista creada correctamente'); // Muestra una alerta de éxito
+          this.cerrarModalCrear(); // Cierra el modal de creación
+          window.location.reload(); // Recarga la página
         })
         .catch(error => {
-          console.error('Error al crear la lista:', error);
+          console.error('Error al crear la lista:', error); // Muestra un error en la consola
         });
     },
+    // Método para redirigir al contenido multimedia de una lista por su ID
     redirectToListaContent(listId) {
-      this.currentListId = listId;
-      window.location.href = `/listas/${listId}/multimedia`;
+      this.currentListId = listId; // Establece el ID de la lista actual
+      window.location.href = `/listas/${listId}/multimedia`; // Redirige a la URL del contenido multimedia de la lista
     },
   }
 };

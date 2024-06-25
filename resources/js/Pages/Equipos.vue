@@ -1,47 +1,51 @@
 <script setup>
-import FooterComponent from '@/Components/FooterComponent.vue';
+// Importa los componentes NavbarComponent y FooterComponent
 import NavbarComponent from '@/Components/NavbarComponent.vue';
+import FooterComponent from '@/Components/FooterComponent.vue';
+
+// Importa las librerías axios y CryptoJS
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 
+// Define las props que recibe el componente
 const props = defineProps({
-    equipos: Object
+    equipos: Object, // Objeto que contiene los equipos del usuario
 });
 </script>
 
 <script>
-export default {
+export default {// Define el estado del componente
     data() {
         return {
-            nombre: '',
-            modalVisible: false,
-            crearModalVisible: false,
-            generarLicenciaModalVisible: false,
+            nombre: '', // Nombre del equipo seleccionado
+            modalVisible: false, // Visibilidad del modal principal
+            crearModalVisible: false,  // Visibilidad del modal de creación de equipo
+            generarLicenciaModalVisible: false, // Visibilidad del modal de generación de licencia
             equipoSeleccionado: {
-                equipo_id: null,
-                nombre: '',
-                numero_licencia: '',
-                mac: '',
-                server_key: '',
-                nombre_usuario: ''
+                equipo_id: null, //Id del equipo
+                nombre: '', //Nombre del equipo
+                numero_licencia: '', //Numero de licencia del equipo
+                mac: '', //Mac del equipo
+                server_key: '', //Server key del equipo
+                nombre_usuario: '', //Nombre del usuario del equipo
             },
-            nuevoEquipo: {
-                nombre: '',
-                numero_licencia: '',
-                nombre_usuario: '',
-                mac: '',
+            nuevoEquipo: { // Nuevo equipo a crear
+                nombre: '', //Nombre del equipo que se creara
+                numero_licencia: '', //Numero de licencia del equipo que se creara (puede ser null en caso de que no se introduzca una licencia)
+                nombre_usuario: '', //Nombre del usuario responsable (siempre sera el usuario actual que este utilizando el sistema)
+                mac: '', //Mac del equipo se obtendra desde la aplicacion de c# ya que un sistema web no puede sacar la direccion mac
             },
-            nombreUsuario: '',
-            tipoUsuario: '',
-            equiposUsuario: [],
-            mac: '',
-            showGenerarLicencia: false,
-            error: null,
+            nombreUsuario: '',  // Nombre del usuario actual
+            tipoUsuario: '',  // Tipo de usuario actual (Administrador o Operador)
+            equiposUsuario: [], // Equipos del usuario actual
+            mac: '', // Dirección MAC del equipo actual
+            showGenerarLicencia: false, // Indica si se muestra el botón para generar licencia
+            error: null, // Almacena el error en caso de que ocurra uno
         };
     },
     computed: {
         licenciaGenerada() {
-            return this.generarLicencia()
+            return this.generarLicencia() //Para lograr poner el generarLicencia() dentro de un input con v-model
         }
     },
     mounted() {
@@ -232,6 +236,7 @@ export default {
             return formattedHash;
         },
         generarServerKey() {
+            //Generar una clave en el servidor aleatoria
             const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let clave = '';
             for (let i = 0; i < 10; i++) {

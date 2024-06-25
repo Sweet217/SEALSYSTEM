@@ -38,4 +38,4 @@ export default {
         }
     }
 };
-</script>
+</script> <!--Idea descartada, se termino usando equipos solo cargando de manera distinta los props.s-->

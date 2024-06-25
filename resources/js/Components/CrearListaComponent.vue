@@ -24,7 +24,7 @@ export default {
     },
 };
 
-
+//AL FINAL NUNCA SE USO, LO DEJO PARA FUTURAS MODIFICACIONES. 
 </script>
 
 <template>

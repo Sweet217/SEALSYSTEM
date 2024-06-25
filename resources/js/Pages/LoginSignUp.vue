@@ -4,4 +4,4 @@ import LoginSignUpComponent from '@/Components/LoginSignUpComponent.vue'
 
 <template>
     <LoginSignUpComponent></LoginSignUpComponent>
-</template>
+</template> <!--No se termino tulizando esta pagina ni el componente, idea descartada-->
