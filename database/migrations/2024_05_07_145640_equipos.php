@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('equipos', function (Blueprint $table) {
-            $table->id('equipo_id'); // Use id() for auto-incrementing primary key
-            $table->string('nombre');
-            $table->string('mac');
-            $table->string('server_key')->nullable();
-            $table->unsignedBigInteger('licencia_id')->nullable();
-            $table->unsignedBigInteger('user_id'); // Use unsignedBigInteger for foreign keys (es un requerimiento de laravel)
-            $table->foreign('user_id')->references('user_id')->on('usuarios')->onDelete('cascade'); // Define foreign key relationship
+            $table->id('equipo_id'); //Id de la tabla autoincremental
+            $table->string('nombre'); //Nombre del equipo "Kiosko Sonora"
+            $table->string('mac'); //Mac del equipo, se terminara guardando una encriptacion AES
+            $table->string('server_key')->nullable(); //Server key del equipo que se genera al querer crear una licencia. //Su valor puede ser nulo
+            $table->unsignedBigInteger('licencia_id')->nullable(); //Relacion con licencia // Usar unsignedBigInteger para llaves foraneas (es un requerimiento de laravel)
+            $table->unsignedBigInteger('user_id'); //Relacion con usuario // Usar unsignedBigInteger para llaves foraneas (es un requerimiento de laravel)
+            $table->foreign('user_id')->references('user_id')->on('usuarios')->onDelete('cascade'); // Definir la relacion de user_id dentro de la tabla.
             $table->timestamps();
         });
     }

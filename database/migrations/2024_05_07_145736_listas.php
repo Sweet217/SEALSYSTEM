@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('listas', function (Blueprint $table) {
             $table->id('id_lista'); // Use id() for auto-incrementing primary key
-            $table->string('nombre', 255)->unique(); // Make 'Nombre' unique to avoid duplicate playlists 
+            $table->string('nombre', 255)->unique(); // unique para evitar se repita el nombre de las listas, nombre es el nombre de la lista
             $table->unsignedBigInteger('equipo_id')->nullable(); // Use unsignedBigInteger for foreign keys
             $table->foreign('equipo_id')->references('equipo_id')->on('equipos')->onDelete('cascade'); // Define foreign key relationship
             $table->timestamps();

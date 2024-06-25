@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('usuarios', function (Blueprint $table) {
             $table->id('user_id'); // Auto-incrementing primary key
-            $table->string('nombre', 255);
-            $table->string('email', 255)->unique(); // Enforce unique email addresses
-            $table->string('password', 255); 
-            $table->string('estado', 50);
-            $table->string('telefono', 20);
-            $table->string('tipo_usuario', 50)->default('Operador');
+            $table->string('nombre', 255); // Nombre del usuario
+            $table->string('email', 255)->unique(); // Forzar un unico correo del usuario // Correo del usuario
+            $table->string('password', 255);  // Contrasena
+            $table->string('estado', 50); //Estado activo inactivo
+            $table->string('telefono', 20); // Telefono del usuario xxx xxx xxxx
+            $table->string('tipo_usuario', 50)->default('Operador'); // Tipo de usuario Administrador / Operador // Por default sera Operador ya que administrador solo seran pocos y se cargaran desde seeders en su mayoria.
             $table->string('remember_token')->nullable();
             $table->timestamps();
 
             $table->index('email');
         });
-
+        //Laravel basics
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');

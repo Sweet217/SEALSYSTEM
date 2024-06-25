@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('equipos', function (Blueprint $table) {
             $table->foreign('licencia_id')->references('licencia_id')->on('licencias')->onDelete('cascade');
-        });
+        }); //Para agregar la relacion que tiene licencia_id con equipos.
     }
 
     /**

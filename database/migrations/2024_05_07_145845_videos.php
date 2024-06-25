@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('videos', function (Blueprint $table) {
             $table->id('video_id'); // Use id() for auto-incrementing primary key
             $table->string('nombre_archivo', 255); // VARCHAR(255) to store the video filename (PUEDE SER MUY LARGO)
-            $table->string('data'); // BLOB to store the video data
+            $table->string('data'); // Data sera la ruta dentro de los disks.
             $table->unsignedBigInteger('multimedia_id')->nullable(); // Use unsignedBigInteger for foreign keys
             $table->foreign('multimedia_id')->references('multimedia_id')->on('multimedia')->onDelete('cascade'); // Define foreign key relationship
             $table->timestamps();
