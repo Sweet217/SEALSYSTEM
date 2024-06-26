@@ -25,6 +25,7 @@
         "sortablejs": "^1.15.2",
         "vmodal": "^0.1.13",
         "vue-router": "^4.3.2",
-        "vuedraggable": "^4.1.0"
+        "vuedraggable": "^4.1.0",
+        "ziggy-js": "github:tightenco/ziggy"
     }
 }
