@@ -17,4 +17,8 @@ export default defineConfig({
             },
         }),
     ],
+    build: {
+        outDir: 'dist', // Optional: Output directory for built assets
+        base: '/',  // Set base to '/' for production
+    },
 });

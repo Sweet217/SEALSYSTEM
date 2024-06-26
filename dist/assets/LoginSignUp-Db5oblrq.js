@@ -1,0 +1,1 @@
+import{_ as t}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{o as r,c}from"./app-B3E4MCWe.js";const p={name:"LoginSignUpComponent"};function _(n,o,e,a,i,m){return null}const s=t(p,[["render",_]]),g={__name:"LoginSignUp",setup(n){return(o,e)=>(r(),c(s))}};export{g as default};
