@@ -1,0 +1,648 @@
+{
+  "_ActionSection-D5LHIK-L.js": {
+    "file": "assets/ActionSection-D5LHIK-L.js",
+    "name": "ActionSection",
+    "imports": [
+      "_SectionTitle-DiW6xq-c.js",
+      "resources/js/app.js"
+    ]
+  },
+  "_AppLayout-BxQ_euW4.js": {
+    "file": "assets/AppLayout-BxQ_euW4.js",
+    "name": "AppLayout",
+    "imports": [
+      "resources/js/app.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "_ResponsiveNavLink-CfrLEzl4.js"
+    ]
+  },
+  "_ApplicationLogo-BHsUznCO.js": {
+    "file": "assets/ApplicationLogo-BHsUznCO.js",
+    "name": "ApplicationLogo",
+    "imports": [
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "resources/js/app.js"
+    ]
+  },
+  "_AuthenticatedLayout-BO90OeCK.js": {
+    "file": "assets/AuthenticatedLayout-BO90OeCK.js",
+    "name": "AuthenticatedLayout",
+    "imports": [
+      "_ApplicationLogo-BHsUznCO.js",
+      "_ResponsiveNavLink-CfrLEzl4.js",
+      "resources/js/app.js"
+    ]
+  },
+  "_Checkbox-bbht66Tq.js": {
+    "file": "assets/Checkbox-bbht66Tq.js",
+    "name": "Checkbox",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_DangerButton-DQVx3Ia3.js": {
+    "file": "assets/DangerButton-DQVx3Ia3.js",
+    "name": "DangerButton",
+    "imports": [
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "resources/js/app.js"
+    ]
+  },
+  "_DialogModal-DsfJCMke.js": {
+    "file": "assets/DialogModal-DsfJCMke.js",
+    "name": "DialogModal",
+    "imports": [
+      "resources/js/app.js",
+      "_Modal-D1scECnx.js"
+    ]
+  },
+  "_FooterComponent-!~{00L}~.js": {
+    "file": "assets/FooterComponent-PvgmwtbO.css",
+    "src": "_FooterComponent-!~{00L}~.js"
+  },
+  "_FooterComponent-Bf3CRACQ.js": {
+    "file": "assets/FooterComponent-Bf3CRACQ.js",
+    "name": "FooterComponent",
+    "imports": [
+      "_SOLYTEC LOGO-B1hyz3XO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "resources/js/app.js"
+    ],
+    "css": [
+      "assets/FooterComponent-PvgmwtbO.css"
+    ]
+  },
+  "_GuestLayout-C18aFUbe.js": {
+    "file": "assets/GuestLayout-C18aFUbe.js",
+    "name": "GuestLayout",
+    "imports": [
+      "_ApplicationLogo-BHsUznCO.js",
+      "resources/js/app.js"
+    ]
+  },
+  "_HeaderComponent.vue_vue_type_style_index_0_lang-!~{00N}~.js": {
+    "file": "assets/HeaderComponent-DQYBuDty.css",
+    "src": "_HeaderComponent.vue_vue_type_style_index_0_lang-!~{00N}~.js"
+  },
+  "_InputLabel-DDTQRdx9.js": {
+    "file": "assets/InputLabel-DDTQRdx9.js",
+    "name": "InputLabel",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_Modal-D1scECnx.js": {
+    "file": "assets/Modal-D1scECnx.js",
+    "name": "Modal",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_PrimaryButton-gVtDqNkB.js": {
+    "file": "assets/PrimaryButton-gVtDqNkB.js",
+    "name": "PrimaryButton",
+    "imports": [
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "resources/js/app.js"
+    ]
+  },
+  "_ResponsiveNavLink-CfrLEzl4.js": {
+    "file": "assets/ResponsiveNavLink-CfrLEzl4.js",
+    "name": "ResponsiveNavLink",
+    "imports": [
+      "resources/js/app.js",
+      "_SectionTitle-DiW6xq-c.js"
+    ]
+  },
+  "_SOLYTEC LOGO-B1hyz3XO.js": {
+    "file": "assets/SOLYTEC LOGO-B1hyz3XO.js",
+    "name": "SOLYTEC LOGO",
+    "assets": [
+      "assets/SOLYTEC LOGO-D8cehJ8v.jpg"
+    ]
+  },
+  "_SecondaryButton-D1-GFxss.js": {
+    "file": "assets/SecondaryButton-D1-GFxss.js",
+    "name": "SecondaryButton",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_SectionBorder-D9SicCj5.js": {
+    "file": "assets/SectionBorder-D9SicCj5.js",
+    "name": "SectionBorder",
+    "imports": [
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "resources/js/app.js"
+    ]
+  },
+  "_SectionTitle-DiW6xq-c.js": {
+    "file": "assets/SectionTitle-DiW6xq-c.js",
+    "name": "SectionTitle",
+    "imports": [
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "resources/js/app.js"
+    ]
+  },
+  "_TextInput-CNfSR5Fv.js": {
+    "file": "assets/TextInput-CNfSR5Fv.js",
+    "name": "TextInput",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "__plugin-vue_export-helper-DlAUqK2U.js": {
+    "file": "assets/_plugin-vue_export-helper-DlAUqK2U.js",
+    "name": "_plugin-vue_export-helper"
+  },
+  "resources/js/Pages/API/Index.vue": {
+    "file": "assets/Index-BMNxoqBh.js",
+    "name": "Index",
+    "src": "resources/js/Pages/API/Index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/Pages/API/Partials/ApiTokenManager.vue",
+      "_AppLayout-BxQ_euW4.js",
+      "resources/js/app.js",
+      "_DialogModal-DsfJCMke.js",
+      "_Modal-D1scECnx.js",
+      "_ActionSection-D5LHIK-L.js",
+      "_SectionTitle-DiW6xq-c.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "_Checkbox-bbht66Tq.js",
+      "_DangerButton-DQVx3Ia3.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_InputLabel-DDTQRdx9.js",
+      "_PrimaryButton-gVtDqNkB.js",
+      "_SecondaryButton-D1-GFxss.js",
+      "_SectionBorder-D9SicCj5.js",
+      "_ResponsiveNavLink-CfrLEzl4.js"
+    ]
+  },
+  "resources/js/Pages/API/Partials/ApiTokenManager.vue": {
+    "file": "assets/ApiTokenManager-Bk1ROLjB.js",
+    "name": "ApiTokenManager",
+    "src": "resources/js/Pages/API/Partials/ApiTokenManager.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_DialogModal-DsfJCMke.js",
+      "_ActionSection-D5LHIK-L.js",
+      "_Checkbox-bbht66Tq.js",
+      "_Modal-D1scECnx.js",
+      "_DangerButton-DQVx3Ia3.js",
+      "_SectionTitle-DiW6xq-c.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_InputLabel-DDTQRdx9.js",
+      "_PrimaryButton-gVtDqNkB.js",
+      "_SecondaryButton-D1-GFxss.js",
+      "_SectionBorder-D9SicCj5.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ]
+  },
+  "resources/js/Pages/Auth/ConfirmPassword.vue": {
+    "file": "assets/ConfirmPassword-85lzJmQV.js",
+    "name": "ConfirmPassword",
+    "src": "resources/js/Pages/Auth/ConfirmPassword.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_GuestLayout-C18aFUbe.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_InputLabel-DDTQRdx9.js",
+      "_PrimaryButton-gVtDqNkB.js",
+      "_ApplicationLogo-BHsUznCO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ]
+  },
+  "resources/js/Pages/Auth/ForgotPassword.vue": {
+    "file": "assets/ForgotPassword-D-PtISiN.js",
+    "name": "ForgotPassword",
+    "src": "resources/js/Pages/Auth/ForgotPassword.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_GuestLayout-C18aFUbe.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_InputLabel-DDTQRdx9.js",
+      "_PrimaryButton-gVtDqNkB.js",
+      "_ApplicationLogo-BHsUznCO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ]
+  },
+  "resources/js/Pages/Auth/Login.vue": {
+    "file": "assets/Login-CxEYpeBS.js",
+    "name": "Login",
+    "src": "resources/js/Pages/Auth/Login.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_Checkbox-bbht66Tq.js",
+      "_GuestLayout-C18aFUbe.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_InputLabel-DDTQRdx9.js",
+      "_PrimaryButton-gVtDqNkB.js",
+      "_ApplicationLogo-BHsUznCO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ]
+  },
+  "resources/js/Pages/Auth/Register.vue": {
+    "file": "assets/Register-DfMd67pF.js",
+    "name": "Register",
+    "src": "resources/js/Pages/Auth/Register.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_GuestLayout-C18aFUbe.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_InputLabel-DDTQRdx9.js",
+      "_PrimaryButton-gVtDqNkB.js",
+      "_ApplicationLogo-BHsUznCO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ]
+  },
+  "resources/js/Pages/Auth/ResetPassword.vue": {
+    "file": "assets/ResetPassword-Bw4p3PWr.js",
+    "name": "ResetPassword",
+    "src": "resources/js/Pages/Auth/ResetPassword.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_GuestLayout-C18aFUbe.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_InputLabel-DDTQRdx9.js",
+      "_PrimaryButton-gVtDqNkB.js",
+      "_ApplicationLogo-BHsUznCO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ]
+  },
+  "resources/js/Pages/Auth/TwoFactorChallenge.vue": {
+    "file": "assets/TwoFactorChallenge-DFgLz1XO.js",
+    "name": "TwoFactorChallenge",
+    "src": "resources/js/Pages/Auth/TwoFactorChallenge.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_InputLabel-DDTQRdx9.js",
+      "_PrimaryButton-gVtDqNkB.js"
+    ]
+  },
+  "resources/js/Pages/Auth/VerifyEmail.vue": {
+    "file": "assets/VerifyEmail-mGxeEEm2.js",
+    "name": "VerifyEmail",
+    "src": "resources/js/Pages/Auth/VerifyEmail.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_GuestLayout-C18aFUbe.js",
+      "_PrimaryButton-gVtDqNkB.js",
+      "_ApplicationLogo-BHsUznCO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ]
+  },
+  "resources/js/Pages/Dashboard.vue": {
+    "file": "assets/Dashboard-BsTcujYZ.js",
+    "name": "Dashboard",
+    "src": "resources/js/Pages/Dashboard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_AuthenticatedLayout-BO90OeCK.js",
+      "resources/js/app.js",
+      "_ApplicationLogo-BHsUznCO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "_ResponsiveNavLink-CfrLEzl4.js",
+      "_SectionTitle-DiW6xq-c.js"
+    ]
+  },
+  "resources/js/Pages/Equipos.vue": {
+    "file": "assets/Equipos-D0Stbwlw.js",
+    "name": "Equipos",
+    "src": "resources/js/Pages/Equipos.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_FooterComponent-Bf3CRACQ.js",
+      "_SOLYTEC LOGO-B1hyz3XO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ],
+    "css": [
+      "assets/Equipos-D3yQumAr.css"
+    ]
+  },
+  "resources/js/Pages/EquiposUsuario.vue": {
+    "file": "assets/EquiposUsuario--bwyt_Ci.js",
+    "name": "EquiposUsuario",
+    "src": "resources/js/Pages/EquiposUsuario.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/Pages/Listas.vue": {
+    "file": "assets/Listas-BFLFQfs7.js",
+    "name": "Listas",
+    "src": "resources/js/Pages/Listas.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_FooterComponent-Bf3CRACQ.js",
+      "_SOLYTEC LOGO-B1hyz3XO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ],
+    "css": [
+      "assets/Listas-C76B2sSZ.css"
+    ]
+  },
+  "resources/js/Pages/Login.vue": {
+    "file": "assets/Login-Dh4aM4kI.js",
+    "name": "Login",
+    "src": "resources/js/Pages/Login.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_SOLYTEC LOGO-B1hyz3XO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ],
+    "css": [
+      "assets/Login-B3xSJEgH.css"
+    ],
+    "assets": [
+      "assets/imagen_ejemplo-4g6PbD_d.jpg"
+    ]
+  },
+  "resources/js/Pages/LoginSignUp.vue": {
+    "file": "assets/LoginSignUp-C1bl9Iyt.js",
+    "name": "LoginSignUp",
+    "src": "resources/js/Pages/LoginSignUp.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/Pages/Multimedia.vue": {
+    "file": "assets/Multimedia-D7QLM3Ko.js",
+    "name": "Multimedia",
+    "src": "resources/js/Pages/Multimedia.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_FooterComponent-Bf3CRACQ.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "_SOLYTEC LOGO-B1hyz3XO.js"
+    ],
+    "css": [
+      "assets/Multimedia-Du5yaT6u.css"
+    ]
+  },
+  "resources/js/Pages/PaginaPrincipal.vue": {
+    "file": "assets/PaginaPrincipal-CgF4PwRB.js",
+    "name": "PaginaPrincipal",
+    "src": "resources/js/Pages/PaginaPrincipal.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FooterComponent-Bf3CRACQ.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "resources/js/app.js",
+      "_SOLYTEC LOGO-B1hyz3XO.js"
+    ],
+    "css": [
+      "assets/HeaderComponent-DQYBuDty.css"
+    ]
+  },
+  "resources/js/Pages/Perfil.vue": {
+    "file": "assets/Perfil-D3RfdsGR.js",
+    "name": "Perfil",
+    "src": "resources/js/Pages/Perfil.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_FooterComponent-Bf3CRACQ.js",
+      "resources/js/app.js",
+      "_SOLYTEC LOGO-B1hyz3XO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ],
+    "css": [
+      "assets/HeaderComponent-DQYBuDty.css"
+    ]
+  },
+  "resources/js/Pages/Profile/Edit.vue": {
+    "file": "assets/Edit-ByFNnX1a.js",
+    "name": "Edit",
+    "src": "resources/js/Pages/Profile/Edit.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_AuthenticatedLayout-BO90OeCK.js",
+      "resources/js/Pages/Profile/Partials/DeleteUserForm.vue",
+      "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue",
+      "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.vue",
+      "resources/js/app.js",
+      "_ApplicationLogo-BHsUznCO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "_ResponsiveNavLink-CfrLEzl4.js",
+      "_SectionTitle-DiW6xq-c.js",
+      "_DangerButton-DQVx3Ia3.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_InputLabel-DDTQRdx9.js",
+      "_Modal-D1scECnx.js",
+      "_SecondaryButton-D1-GFxss.js",
+      "_PrimaryButton-gVtDqNkB.js"
+    ]
+  },
+  "resources/js/Pages/Profile/Partials/DeleteUserForm.vue": {
+    "file": "assets/DeleteUserForm-WVf4e1nm.js",
+    "name": "DeleteUserForm",
+    "src": "resources/js/Pages/Profile/Partials/DeleteUserForm.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_DangerButton-DQVx3Ia3.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_InputLabel-DDTQRdx9.js",
+      "_Modal-D1scECnx.js",
+      "_SecondaryButton-D1-GFxss.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ]
+  },
+  "resources/js/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue": {
+    "file": "assets/LogoutOtherBrowserSessionsForm-C6UZff_m.js",
+    "name": "LogoutOtherBrowserSessionsForm",
+    "src": "resources/js/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_DialogModal-DsfJCMke.js",
+      "_ActionSection-D5LHIK-L.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_PrimaryButton-gVtDqNkB.js",
+      "_SecondaryButton-D1-GFxss.js",
+      "_Modal-D1scECnx.js",
+      "_SectionTitle-DiW6xq-c.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ]
+  },
+  "resources/js/Pages/Profile/Partials/TwoFactorAuthenticationForm.vue": {
+    "file": "assets/TwoFactorAuthenticationForm-BZPGOzIu.js",
+    "name": "TwoFactorAuthenticationForm",
+    "src": "resources/js/Pages/Profile/Partials/TwoFactorAuthenticationForm.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_ActionSection-D5LHIK-L.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "_DangerButton-DQVx3Ia3.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_InputLabel-DDTQRdx9.js",
+      "_PrimaryButton-gVtDqNkB.js",
+      "_SecondaryButton-D1-GFxss.js",
+      "_SectionTitle-DiW6xq-c.js"
+    ]
+  },
+  "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue": {
+    "file": "assets/UpdatePasswordForm-C0NUMs82.js",
+    "name": "UpdatePasswordForm",
+    "src": "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_InputLabel-DDTQRdx9.js",
+      "_PrimaryButton-gVtDqNkB.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ]
+  },
+  "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.vue": {
+    "file": "assets/UpdateProfileInformationForm-DcjR1zhD.js",
+    "name": "UpdateProfileInformationForm",
+    "src": "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_InputLabel-DDTQRdx9.js",
+      "_PrimaryButton-gVtDqNkB.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ]
+  },
+  "resources/js/Pages/Profile/Show.vue": {
+    "file": "assets/Show-Cw8J7CNd.js",
+    "name": "Show",
+    "src": "resources/js/Pages/Profile/Show.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_AppLayout-BxQ_euW4.js",
+      "resources/js/Pages/Profile/Partials/DeleteUserForm.vue",
+      "resources/js/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue",
+      "_SectionBorder-D9SicCj5.js",
+      "resources/js/Pages/Profile/Partials/TwoFactorAuthenticationForm.vue",
+      "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue",
+      "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.vue",
+      "resources/js/app.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "_ResponsiveNavLink-CfrLEzl4.js",
+      "_SectionTitle-DiW6xq-c.js",
+      "_DangerButton-DQVx3Ia3.js",
+      "_TextInput-CNfSR5Fv.js",
+      "_InputLabel-DDTQRdx9.js",
+      "_Modal-D1scECnx.js",
+      "_SecondaryButton-D1-GFxss.js",
+      "_DialogModal-DsfJCMke.js",
+      "_ActionSection-D5LHIK-L.js",
+      "_PrimaryButton-gVtDqNkB.js"
+    ]
+  },
+  "resources/js/Pages/SignUp.vue": {
+    "file": "assets/SignUp-wn3bSMfZ.js",
+    "name": "SignUp",
+    "src": "resources/js/Pages/SignUp.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_SOLYTEC LOGO-B1hyz3XO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ],
+    "css": [
+      "assets/SignUp-B79nV72d.css"
+    ],
+    "assets": [
+      "assets/kioskogobierno-B9tzPV3L.jpg"
+    ]
+  },
+  "resources/js/Pages/Usuarios.vue": {
+    "file": "assets/Usuarios-D9oo5MK0.js",
+    "name": "Usuarios",
+    "src": "resources/js/Pages/Usuarios.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_FooterComponent-Bf3CRACQ.js",
+      "_SOLYTEC LOGO-B1hyz3XO.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ],
+    "css": [
+      "assets/Usuarios-CmZGzBI0.css"
+    ]
+  },
+  "resources/js/Pages/Welcome.vue": {
+    "file": "assets/Welcome-yeqVr9-a.js",
+    "name": "Welcome",
+    "src": "resources/js/Pages/Welcome.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-OFuLx5pu.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/Pages/API/Index.vue",
+      "resources/js/Pages/API/Partials/ApiTokenManager.vue",
+      "resources/js/Pages/Auth/ConfirmPassword.vue",
+      "resources/js/Pages/Auth/ForgotPassword.vue",
+      "resources/js/Pages/Auth/Login.vue",
+      "resources/js/Pages/Auth/Register.vue",
+      "resources/js/Pages/Auth/ResetPassword.vue",
+      "resources/js/Pages/Auth/TwoFactorChallenge.vue",
+      "resources/js/Pages/Auth/VerifyEmail.vue",
+      "resources/js/Pages/Dashboard.vue",
+      "resources/js/Pages/Equipos.vue",
+      "resources/js/Pages/EquiposUsuario.vue",
+      "resources/js/Pages/Listas.vue",
+      "resources/js/Pages/Login.vue",
+      "resources/js/Pages/LoginSignUp.vue",
+      "resources/js/Pages/Multimedia.vue",
+      "resources/js/Pages/PaginaPrincipal.vue",
+      "resources/js/Pages/Perfil.vue",
+      "resources/js/Pages/Profile/Edit.vue",
+      "resources/js/Pages/Profile/Partials/DeleteUserForm.vue",
+      "resources/js/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue",
+      "resources/js/Pages/Profile/Partials/TwoFactorAuthenticationForm.vue",
+      "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue",
+      "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.vue",
+      "resources/js/Pages/Profile/Show.vue",
+      "resources/js/Pages/SignUp.vue",
+      "resources/js/Pages/Usuarios.vue",
+      "resources/js/Pages/Welcome.vue"
+    ],
+    "css": [
+      "assets/app-D0u_Csp0.css"
+    ]
+  },
+  "resources/js/images/SOLYTEC LOGO.jpg": {
+    "file": "assets/SOLYTEC LOGO-D8cehJ8v.jpg",
+    "src": "resources/js/images/SOLYTEC LOGO.jpg"
+  },
+  "resources/js/images/imagen_ejemplo.jpg": {
+    "file": "assets/imagen_ejemplo-4g6PbD_d.jpg",
+    "src": "resources/js/images/imagen_ejemplo.jpg"
+  },
+  "resources/js/images/kioskogobierno.jpg": {
+    "file": "assets/kioskogobierno-B9tzPV3L.jpg",
+    "src": "resources/js/images/kioskogobierno.jpg"
+  }
+}
