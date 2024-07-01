@@ -227,11 +227,29 @@ export default {
                     }
                 })
                     .then(response => {
-                        console.log(response.data.message);
-                        window.location.reload(); // Recarga la página
+                        Swal.fire({
+                            title: 'Imagen Eliminada',
+                            text: 'Imagen eliminada correctamente',
+                            icon: 'sucess',
+                            confirmButtonText: 'Aceptar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                console.log(response.data.message);
+                                window.location.reload(); // Recarga la página
+                            }
+                        });
                     })
                     .catch(error => {
                         console.error('Error al eliminar la imagen:', error); // Muestra un error en la consola
+                        Swal.fire({
+                            title: 'Error al eliminar la imagen',
+                            text: error.response.data.message,
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                            }
+                        });
                     });
             } else if (video_id) {
                 // Eliminar video
@@ -242,11 +260,29 @@ export default {
                     }
                 })
                     .then(response => {
-                        console.log(response.data.message);
-                        window.location.reload(); // Recarga la página
+                        Swal.fire({
+                            title: 'Video Eliminado',
+                            text: 'Video eliminado correctamente',
+                            icon: 'sucess',
+                            confirmButtonText: 'Aceptar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                console.log(response.data.message);
+                                window.location.reload(); // Recarga la página
+                            }
+                        });
                     })
                     .catch(error => {
                         console.error('Error al eliminar el video:', error); // Muestra un error en la consola
+                        Swal.fire({
+                            title: 'Error al eliminar el video',
+                            text: error.response.data.message,
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                            }
+                        });
                     });
             } else if (enlace_id) {
                 // Eliminar enlace
@@ -257,11 +293,29 @@ export default {
                     }
                 })
                     .then(response => {
-                        console.log(response.data.message);
-                        window.location.reload(); // Recarga la página
+                        Swal.fire({
+                            title: 'Enlace Eliminado',
+                            text: 'Enlace eliminado correctamente',
+                            icon: 'sucess',
+                            confirmButtonText: 'Aceptar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                console.log(response.data.message);
+                                window.location.reload(); // Recarga la página
+                            }
+                        });
                     })
                     .catch(error => {
                         console.error('Error al eliminar el enlace:', error); // Muestra un error en la consola
+                        Swal.fire({
+                            title: 'Error al eliminar el video',
+                            text: error.response.data.message,
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                            }
+                        });
                     });
             }
         },
