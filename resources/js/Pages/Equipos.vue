@@ -346,20 +346,27 @@ export default {// Define el estado del componente
             // Seleccionar el campo de texto
             const licenciaInput = document.getElementById('licencia');
 
-            // Seleccionar y copiar el texto
-            licenciaInput.select();
-            document.execCommand('copy');
+            try {
+                // Intentar copiar el texto al portapapeles
+                navigator.clipboard.writeText(licenciaInput.value);
 
-            // Deseleccionar el campo después de copiar
-            licenciaInput.setSelectionRange(0, 0);
-
-            // Mostrar un mensaje o realizar alguna acción adicional si es necesario
-            Swal.fire({
-                title: 'Copiado!',
-                text: 'Licencia copiada al portapapeles.',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
+                // Mostrar mensaje de éxito
+                Swal.fire({
+                    title: 'Copiado!',
+                    text: 'Licencia copiada al portapapeles.',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                });
+            } catch (err) {
+                console.error('Error al copiar al portapapeles:', err);
+                // Manejar errores si es necesario
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'No se pudo copiar la licencia al portapapeles.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
         }
     }
 }

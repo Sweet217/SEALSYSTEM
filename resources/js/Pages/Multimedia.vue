@@ -464,32 +464,11 @@ export default {
 }
 
 .input-container {
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-wrap: wrap;
     gap: 5px;
-    left: 160%;
-    top: 12px;
-}
-
-@media (max-width: 1025px) and (max-height: 802px) {
-    .input-container {
-        position: relative;
-        top: 93px;
-        left: 70px;
-        margin-top: -90px;
-    }
-}
-
-@media (max-width: 766px) and (max-height: 802px) {
-    .input-container {
-        position: relative;
-        top: 93px;
-        left: 100px;
-        margin-top: -90px;
-    }
 }
 
 .input-wrapper {
@@ -573,8 +552,6 @@ iframe {
     border-color: #cccccc;
 }
 
-
-
 /* Modal container */
 .modal {
     display: flex;
@@ -636,13 +613,22 @@ iframe {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    margin-left: 180px;
-    margin-top: -10px;
-    position: static;
+    margin-top: 10px;
 }
 
-.modal-content .guardar-butn:hover {
+.modal-content .guardar-btn:hover {
     background-color: #e3671f;
     border-color: #d4551a;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 90%;
+        min-width: unset;
+        max-width: unset;
+        min-height: unset;
+        max-height: unset;
+    }
 }
 </style>

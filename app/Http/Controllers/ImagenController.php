@@ -7,12 +7,13 @@ use Inertia\Inertia;
 use App\Models\imagenes; //importa el modelo imagenes
 use App\Models\multimedia; //importa el modelo multimedia
 
-use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Facades\Storage;
 
 
 class ImagenController extends Controller
 {
-    public function editarImagen(Request $request, $imagen_id) {
+    public function editarImagen(Request $request, $imagen_id)
+    {
         $request->validate([
             'tiempo' => 'integer', // Asegúrate de ajustar la validación según tus necesidades
         ]);
@@ -32,11 +33,12 @@ class ImagenController extends Controller
             return response()->json(['message' => 'Error al actualizar la duración de la imagen'], 500);
         }
     }
-        
+
     /*  Crear una nueva imagen mediante la creacion de una multimedia y enlazarlos.
-    */
-    
-    public function crearImagen(Request $request) {
+     */
+
+    public function crearImagen(Request $request)
+    {
         // Validar los datos de entrada
         $request->validate([
             'nombre_archivo' => 'required|string|max:255',
@@ -49,7 +51,7 @@ class ImagenController extends Controller
         $filename = time() . '.' . $file->getClientOriginalExtension();
 
         // Almacenar el archivo en el almacenamiento público
-        $path = Storage::disk('public')->put('images/pruebas/' . $filename, file_get_contents($file));
+        $path = Storage::disk('public')->put('/images/pruebas/' . $filename, file_get_contents($file));
 
         // Crear un nuevo registro de multimedia de tipo 'imagen'
         $multimedia = Multimedia::create([
@@ -73,10 +75,11 @@ class ImagenController extends Controller
      * Elimina una imagen y su correspondiente registro en Multimedia.
      *
      */
-    public function eliminarImagen(Request $request, $multimedia_id, $imagen_id) {
+    public function eliminarImagen(Request $request, $multimedia_id, $imagen_id)
+    {
         // Buscar la imagen por su ID
         $imagen = Imagenes::find($imagen_id);
-        
+
         // Verificar si la imagen existe y si pertenece al multimedia indicado
         if (!$imagen || $imagen->multimedia_id != $multimedia_id) {
             return response()->json(['message' => 'Imagen no encontrada'], 404);
