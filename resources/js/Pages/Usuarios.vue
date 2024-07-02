@@ -284,19 +284,22 @@ export default {
                 <li v-for="usuario in usuariosFiltrados" :key="usuario.user_id">
                     <div class="flex items-center justify-between">
                         <div>
+                            <!-- Detalles del usuario -->
                             <h3>Nombre: {{ usuario.nombre }}</h3>
                             <p>Correo Electrónico: {{ usuario.email }}</p>
                             <p>Teléfono: {{ usuario.telefono }}</p>
                             <p>Estado: {{ usuario.estado }}</p>
                             <p>Rol: {{ usuario.tipo_usuario }}</p>
                         </div>
-                        <div class="flex space-x-2">
-                            <button class="btn ver-dispositivos-btn"
-                                @click="verDispositivosUsuario(usuario.user_id)">Ver
-                                Dispositivos</button>
-                            <button class="btn editar-btn" @click="abrirModal(usuario)">Editar</button>
-                            <button class="btn eliminar-btn btn-danger btn-trash bi-trash"
-                                @click="eliminarUsuario(usuario.user_id)"></button>
+                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                            <!-- Contenedor de botones -->
+                            <div class="flex flex-col sm:flex-row">
+                                <button class="btn ver-dispositivos-btn"
+                                    @click="verDispositivosUsuario(usuario.user_id)">Ver Dispositivos</button>
+                                <button class="btn editar-btn" @click="abrirModal(usuario)">Editar</button>
+                                <button class="btn eliminar-btn btn-danger btn-trash bi-trash"
+                                    @click="eliminarUsuario(usuario.user_id)"></button>
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -442,6 +445,11 @@ export default {
     border-color: #d4551a;
 }
 
+.ver-dispositivos-btn,
+.editar-btn,
+.eliminar-btn {
+    margin: 5px;
+}
 
 /* Estilos para el modal */
 /* Modal container */
@@ -528,5 +536,75 @@ export default {
 .modal-content button:hover {
     background-color: #e3671f;
     border-color: #d4551a;
+}
+
+@media (max-width: 600px) {
+    .btn {
+        padding: 0.3rem 0.8rem;
+        /* Reducir el padding para hacer los botones más compactos */
+        font-size: 0.8rem;
+        /* Reducir el tamaño de fuente para los botones */
+    }
+
+    .ver-dispositivos-btn,
+    .editar-btn,
+    .eliminar-btn {
+        min-width: 60px;
+        /* Establecer un ancho mínimo para los botones de acción */
+    }
+
+    .list-disc li {
+        padding: 8px;
+    }
+
+    .list-disc li h3,
+    .list-disc li p {
+        font-size: 0.9rem;
+        /* Reducir el tamaño de fuente para los detalles del usuario */
+    }
+
+    .modal-content {
+        width: 90%;
+        max-width: 90%;
+        /* Ajustar el ancho máximo del modal para pantallas pequeñas */
+        padding: 15px;
+    }
+
+    .morado-btn {
+        padding: 0.4rem 1rem;
+        /* Ajustar el padding del botón de crear usuario */
+        margin-top: 20px;
+        /* Aumentar el espacio superior para separar del contenido anterior */
+    }
+
+    .flex-col {
+        flex-direction: column;
+    }
+
+    .flex-row {
+        flex-direction: row;
+    }
+
+    .flex {
+        display: flex;
+    }
+
+    .space-y-2 {
+        margin-bottom: 0.5rem;
+    }
+
+    .space-y-0 {
+        margin-bottom: 0;
+    }
+
+    .space-x-2 {
+        margin-right: 0.5rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        /* Mantén el mismo padding que en dispositivos más grandes */
+    }
+
 }
 </style>
