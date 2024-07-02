@@ -2,6 +2,7 @@
 import FooterComponent from '@/Components/FooterComponent.vue'
 import NavbarComponent from '@/Components/NavbarComponent.vue'
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 // Definir las propiedades que se esperan recibir, en este caso, un objeto de usuarios
 const props = defineProps({
@@ -38,6 +39,7 @@ export default {
             // Variables para almacenar el nombre y tipo del usuario actual y posibles errores
             nombreUsuario: '',
             tipoUsuario: '',
+            busqueda: '',
             error: ''
         };
     },
@@ -58,6 +60,19 @@ export default {
                 }
             });
     },
+    computed: {
+        usuariosFiltrados() {
+            const textoBusqueda = this.busqueda.toLowerCase();
+            return this.usuarios.filter(usuario =>
+                usuario.nombre.toLowerCase().includes(textoBusqueda) ||
+                usuario.email.toLowerCase().includes(textoBusqueda) ||
+                usuario.telefono.includes(textoBusqueda) ||
+                usuario.estado.toLowerCase().includes(textoBusqueda) ||
+                usuario.tipo_usuario.toLowerCase().includes(textoBusqueda)
+            );
+        },
+    },
+
     methods: {
         // Método para abrir el modal de creación de usuario
         abrirCrearModal() {
@@ -106,12 +121,28 @@ export default {
         eliminarUsuario(user_id) {
             axios.delete(`/usuariosDELETE/${user_id}`)
                 .then(() => {
-                    alert('Usuario eliminado correctamente');
-                    window.location.reload();
+                    Swal.fire({
+                        title: 'Usuario eliminado',
+                        text: 'Usuario eliminado correctamente',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload(); // Recarga la página
+                        }
+                    });
                 })
                 .catch(error => {
                     console.error('Error al eliminar el usuario:', error);
-                    alert('Error al eliminar el usuario')
+                    Swal.fire({
+                        title: 'Error al eliminar el usuario',
+                        text: error.response.data.message,
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                        }
+                    });
                 });
         },
         // Método para editar un usuario
@@ -124,13 +155,29 @@ export default {
                 tipo_usuario: this.usuarioSeleccionado.tipo_usuario
             })
                 .then(() => {
-                    alert('Usuario editado correctamente');
-                    this.cerrarModal();
-                    window.location.reload();
+                    Swal.fire({
+                        title: 'Usuario editado',
+                        text: 'Usuario editado correctamente',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.cerrarModal();
+                            window.location.reload(); // Recarga la página
+                        }
+                    });
                 })
                 .catch(error => {
                     console.error('Error al editar el usuario:', error);
-                    alert('Error al editar el usuario');
+                    Swal.fire({
+                        title: 'Error al editar el usuario',
+                        text: error.response.data.message,
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                        }
+                    });
                 });
         },
         // Método para crear un nuevo usuario
@@ -167,10 +214,10 @@ export default {
                 return; // Salimos de la función si el formato del teléfono no es válido
             }
 
-            // Validar formato del teléfono
-            if (!/^\d{3}\s\d{3}\s\d{4}$/.test(this.nuevoUsuario.telefono)) {
-                this.error = 'El teléfono debe tener el formato 000 000 0000.';
-                return; // Salimos de la función si el formato del teléfono no es válido
+            // Validar formato del teléfono //Se cambio tras cambio de requisitos
+            if (!/^\d+$/.test(this.nuevoUsuario.telefono.trim())) {
+                this.error = 'El teléfono solo puede contener números.';
+                return; // Salimos de la función si el campo del teléfono contiene caracteres no numéricos
             }
 
             try {
@@ -184,17 +231,33 @@ export default {
                     telefono: this.nuevoUsuario.telefono,
                     estado: this.nuevoUsuario.estado
                 });
-                alert('Usuario creado correctamente');
-                this.cerrarCrearModal();
-                window.location.reload();
+                Swal.fire({
+                    title: 'Usuario creado',
+                    text: 'Usuario creado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.cerrarCrearModal();
+                        window.location.reload(); // Recarga la página
+                    }
+                });
             } catch (error) {
                 console.error('Error al crear el usuario:', error.response.data);
                 this.error = 'Error al crear el usuario';
-                alert('Error al crear el usuario');
+                Swal.fire({
+                    title: 'Error al crear el usuario',
+                    text: error.response.data,
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                    }
+                });
             }
         }
     }
-};
+}
 </script>
 
 <template>
@@ -202,6 +265,14 @@ export default {
 
     <div class="container mx-auto mt-4">
         <h1 class="text-2xl font-bold mb-4">Todos los Usuarios</h1>
+        <!-- Barra de búsqueda -->
+        <div class="input-group my-4">
+            <span class="input-group-text">
+                <i class="bi bi-search"></i>
+            </span>
+            <input type="text" v-model="busqueda" class="form-control"
+                placeholder="Buscar por nombre, correo, teléfono, estado o rol" />
+        </div>
         <button class="btn morado-btn" @click="abrirCrearModal">Crear Nuevo Usuario</button>
 
         <div v-if="usuarios.length === 0" class="text-gray-500">
@@ -210,7 +281,7 @@ export default {
 
         <div v-else>
             <ul class="list-disc space-y-2">
-                <li v-for="usuario in usuarios" :key="usuario.user_id">
+                <li v-for="usuario in usuariosFiltrados" :key="usuario.user_id">
                     <div class="flex items-center justify-between">
                         <div>
                             <h3>Nombre: {{ usuario.nombre }}</h3>
@@ -264,7 +335,7 @@ export default {
                     </select>
 
                     <div class="text-center">
-                        <button type="submit">Guardar Cambios</button>
+                        <button type="submit">Guardar</button>
                     </div>
                 </form>
             </div>
@@ -313,7 +384,7 @@ export default {
                     </select>
 
                     <div class="text-center">
-                        <button type="submit">Guardar Cambios</button>
+                        <button type="submit">Agregar</button>
                     </div>
                 </form>
             </div>

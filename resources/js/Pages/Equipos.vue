@@ -42,6 +42,7 @@ export default {// Define el estado del componente
             mac: '', // Dirección MAC del equipo actual
             showGenerarLicencia: false, // Indica si se muestra el botón para generar licencia
             usuariosDisponibles: [],
+            busqueda: '',
             error: null, // Almacena el error en caso de que ocurra uno
         };
     },
@@ -98,15 +99,15 @@ export default {// Define el estado del componente
                 });
         },
         filtrarEquipos() {
-            if (this.tipoUsuario == 'Administrador') {
-                // Si el usuario no es un operador, mostrar todos los equipos, se cambio a que de igual el tipo de usuario, solo puedes ver TUS equipos
-                return this.equipos.filter(equipo => equipo.usuarios.nombre === this.nombreUsuario);
-            } else {
-                // Si el usuario es un operador, filtrar solo los equipos que son suyos
-                return this.equipos.filter(equipo => equipo.usuarios.nombre === this.nombreUsuario);
-            }
+            const busqueda = this.busqueda.trim().toLowerCase();
+            return this.equipos.filter(equipo => {
+                return (
+                    equipo.usuarios.nombre.toLowerCase() === this.nombreUsuario.toLowerCase() &&
+                    (equipo.nombre.toLowerCase().includes(busqueda) ||
+                        (equipo.numero_licencia && equipo.numero_licencia.toLowerCase().includes(busqueda)))
+                );
+            });
         },
-
         abrirModal(equipo) {
             this.equipoSeleccionado = {
                 equipo_id: equipo.equipo_id,
@@ -377,6 +378,12 @@ export default {// Define el estado del componente
         <NavbarComponent></NavbarComponent>
 
         <div class="container mx-auto mt-4">
+            <div class="input-group my-4">
+                <span class="input-group-text">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="text" v-model="busqueda" class="form-control" placeholder="Buscar nombre de dispositivo" />
+            </div>
             <h1 class="text-2xl font-bold mb-4">Todos los Dispositivos</h1>
             <button class="btn morado-btn" @click="abrirCrearModal">Crear Nuevo Dispositivo</button>
 

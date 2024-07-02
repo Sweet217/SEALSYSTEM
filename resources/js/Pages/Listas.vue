@@ -34,6 +34,7 @@ export default {
       nombreUsuario: '', // Nombre del usuario actual
       tipoUsuario: '', // Tipo de usuario actual (Administrador o Usuario)
       nuevoNombre: '', // Nombre de la nueva lista a crear
+      busqueda: '',
       currentListId: Number, // ID de la lista actual
     };
   },
@@ -64,16 +65,29 @@ export default {
         return this.equipos.filter(equipo => equipo.user_id === this.user_id);
       }
     },
+    filtrarListas() {
+      const busqueda = this.busqueda.trim().toLowerCase();
+      if (this.tipoUsuario === 'Administrador') {
+        return this.listas.filter(lista =>
+          lista.equipo.user_id === this.user_id && lista.nombre.toLowerCase().includes(busqueda)
+        );
+      } else {
+        return this.listas.filter(lista =>
+          lista.equipo.user_id === this.user_id && lista.nombre.toLowerCase().includes(busqueda)
+        );
+      }
+    },
   },
   methods: {
     // Método para filtrar las listas según el tipo de usuario y su ID de usuario
-    filtrarListas() {
-      if (this.tipoUsuario == 'Administrador') {
-        return this.listas.filter(lista => lista.equipo.user_id === this.user_id);
-      } else {
-        return this.listas.filter(lista => lista.equipo.user_id === this.user_id);
-      }
-    },
+    // filtrarListas() {
+    //   if (this.tipoUsuario == 'Administrador') {
+    //     return this.listas.filter(lista => lista.equipo.user_id === this.user_id);
+
+    //   } else {
+    //     return this.listas.filter(lista => lista.equipo.user_id === this.user_id);
+    //   }
+    // },
     // Método para abrir el modal y seleccionar una lista
     abrirModal(lista) {
       this.listaSeleccionada = { ...lista }; // Clona la lista seleccionada
@@ -196,7 +210,7 @@ export default {
       window.location.href = `/listas/${listId}/multimedia`; // Redirige a la URL del contenido multimedia de la lista
     },
   }
-};
+}
 
 </script>
 
@@ -204,6 +218,12 @@ export default {
   <NavbarComponent></NavbarComponent>
 
   <div class="container mx-auto mt-4">
+    <div class="input-group my-4">
+      <span class="input-group-text">
+        <i class="bi bi-search"></i>
+      </span>
+      <input type="text" v-model="busqueda" class="form-control" placeholder="Buscar por nombre de lista" />
+    </div>
     <h1 class="text-2xl font-bold mb-4">Todas las Listas</h1>
 
     <button class="btn morado-btn" @click="abrirModalCrear">Crear Nueva Lista</button>
@@ -215,7 +235,7 @@ export default {
 
     <div v-else>
       <ul class="list-disc space-y-2">
-        <li v-for="lista in filtrarListas()" :key="lista.id_lista">
+        <li v-for="lista in filtrarListas" :key="lista.id_lista">
           <div class="flex items-center justify-between">
             <button class="btn eliminar-btn" @click="redirectToListaContent(lista.id_lista)">
               {{ lista.nombre }}
@@ -267,7 +287,7 @@ export default {
             <label for="equipoSeleccionado">Dispositivo:</label>
             <select v-model="equipoSeleccionado.equipo_id" id="equipoSeleccionado" class="form-control rounded-pill">
               <!-- <option value="global">Global (Sin equipo específico)</option> -->
-              <option v-for="equipo in equiposDisponibles" :value="equipo.equipo_id" :key="equipo.equipo_id">
+              <option v-for=" equipo  in  equiposDisponibles " :value="equipo.equipo_id" :key="equipo.equipo_id">
                 {{ equipo.nombre }}
               </option>
             </select>

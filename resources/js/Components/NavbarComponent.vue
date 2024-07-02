@@ -104,7 +104,7 @@ setTimeout(() => {
           <!-- Agregar v-if para mostrar el botón de usuarios solo si el usuario es administrador -->
           <button v-if="showUsuarios" @click="redirectUsuarios" class="siteLink usuarios">USUARIOS</button>
           <button class="siteLink listas" @click="redirectListas">LISTAS</button>
-          <button class="siteLink equipos" @click="redirectEquipos">EQUIPOS</button>
+          <button class="siteLink equipos" @click="redirectEquipos">DISPOSITIVOS</button>
         </div>
       </div>
     </div>
@@ -128,8 +128,8 @@ setTimeout(() => {
   justify-content: space-between;
   align-items: center;
   padding: 1em;
-  background-color: #fdfcfa;
-  border: 1px solid #fdfcfa;
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
   border-radius: 5px;
   padding-bottom: 0px;
   margin-bottom: -10px;
@@ -329,7 +329,7 @@ button.siteLink:hover {
 
 /* Navigation Styles */
 #mainNavigation {
-  background: #fdfcfa;
+  background: #ffffff;
 }
 
 /* Bounce Animation Styles */

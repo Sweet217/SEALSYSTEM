@@ -119,7 +119,7 @@ export default {
                     Swal.fire({
                         title: 'Imagen Creada',
                         text: 'Imagen creada correctamente',
-                        icon: 'sucess',
+                        icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -153,7 +153,7 @@ export default {
                     Swal.fire({
                         title: 'Video Creado',
                         text: 'Video creado correctamente',
-                        icon: 'sucess',
+                        icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -186,7 +186,7 @@ export default {
                     Swal.fire({
                         title: 'Enlace Creado',
                         text: 'Enlace creado correctamente',
-                        icon: 'sucess',
+                        icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -211,10 +211,18 @@ export default {
         // Maneja la selección de una imagen
         handleImagenSeleccionada(event) {
             this.nuevaImagen.archivo = event.target.files[0];
+            const file = event.target.files[0];
+            if (file) {
+                this.nuevaImagen.nombre_archivo = file.name;
+            }
         },
         // Maneja la selección de un video
         handleVideoSeleccionado(event) {
             this.nuevoVideo.archivo = event.target.files[0];
+            const file = event.target.files[0];
+            if (file) {
+                this.nuevoVideo.nombre_archivo = file.name;
+            }
         },
         // Método para eliminar una multimedia
         eliminarMultimedia(multimedia_id, video_id, imagen_id, enlace_id) {
@@ -230,7 +238,7 @@ export default {
                         Swal.fire({
                             title: 'Imagen Eliminada',
                             text: 'Imagen eliminada correctamente',
-                            icon: 'sucess',
+                            icon: 'success',
                             confirmButtonText: 'Aceptar'
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -263,7 +271,7 @@ export default {
                         Swal.fire({
                             title: 'Video Eliminado',
                             text: 'Video eliminado correctamente',
-                            icon: 'sucess',
+                            icon: 'success',
                             confirmButtonText: 'Aceptar'
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -296,7 +304,7 @@ export default {
                         Swal.fire({
                             title: 'Enlace Eliminado',
                             text: 'Enlace eliminado correctamente',
-                            icon: 'sucess',
+                            icon: 'success',
                             confirmButtonText: 'Aceptar'
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -391,12 +399,8 @@ export default {
                             </div>
 
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <template v-if="element.tipo === 'video'">
-                                    <!--Nada por ahora.-->
-                                </template>
-
-                                <template v-else-if="element.tipo === 'imagen'">
-                                    <div class=" input-container">
+                                <template v-if="element.tipo === 'imagen'">
+                                    <div class="input-container">
                                         <label>Duración:</label>
                                         <div class="input-wrapper col-12 col-md-3 mb-2 mb-md-0">
                                             <input type="text" v-model="element.data.tiempo"
@@ -405,11 +409,8 @@ export default {
                                                 class="text-center input-duracion-imagen">
                                             <span>Segundos</span>
                                         </div>
-
                                     </div>
                                 </template>
-
-
                             </div>
 
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
@@ -423,7 +424,6 @@ export default {
                     </template>
                 </draggable>
             </div>
-
 
             <div v-else>
                 <p>No hay multimedia disponible para esta lista.</p>
@@ -465,8 +465,9 @@ export default {
                                 <!-- Input para subir archivo de imagen -->
                                 <div class="form-group">
                                     <label for="subirImagen">Seleccionar imagen:</label>
-                                    <input type="file" class="form-control-file" @change="handleImagenSeleccionada"
-                                        id="subirImagen">
+                                    <input type="file" accept="image/*" class="form-control-file"
+                                        @change="handleImagenSeleccionada" id="subirImagen">
+                                    <span v-if="fileError" class="error-message">{{ fileError }}</span>
                                 </div>
                             </template>
 
@@ -480,8 +481,9 @@ export default {
                                 <!-- Input para subir archivo de video -->
                                 <div class="form-group">
                                     <label for="subirVideo">Seleccionar video:</label>
-                                    <input type="file" class="form-control-file" @change="handleVideoSeleccionado"
-                                        id="subirVideo">
+                                    <input type="file" accept="video/*" class="form-control-file"
+                                        @change="handleVideoSeleccionado" id="subirVideo">
+                                    <span v-if="fileError" class="error-message">{{ fileError }}</span>
                                 </div>
                             </template>
 
@@ -667,7 +669,7 @@ iframe {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: -10px;
 }
 
 .modal-content .guardar-btn:hover {
