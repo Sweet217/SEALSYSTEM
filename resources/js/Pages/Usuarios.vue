@@ -167,7 +167,7 @@ export default {
             })
                 .then(() => {
                     Swal.fire({
-                        title: 'Usuario editado correctamente',
+                        title: 'Usuario editado',
                         text: '',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
@@ -237,7 +237,7 @@ export default {
                     estado: this.nuevoUsuario.estado
                 });
                 Swal.fire({
-                    title: 'Usuario creado correctamente',
+                    title: 'Usuario agregado',
                     text: '',
                     icon: 'success',
                     confirmButtonText: 'Aceptar'

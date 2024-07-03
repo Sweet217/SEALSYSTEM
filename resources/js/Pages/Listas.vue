@@ -115,7 +115,7 @@ export default {
       })
         .then(() => {
           Swal.fire({
-            title: 'Lista eliminada correctamente',
+            title: 'Lista eliminada',
             text: '',
             icon: 'success',
             confirmButtonText: 'Aceptar'
@@ -153,7 +153,7 @@ export default {
       })
         .then(() => {
           Swal.fire({
-            title: 'Lista editada correctamente',
+            title: 'Lista editada',
             text: '',
             icon: 'success',
             confirmButtonText: 'Aceptar'
@@ -194,7 +194,7 @@ export default {
       })
         .then(() => {
           Swal.fire({
-            title: 'Lista creada correctamente',
+            title: 'Lista creada',
             text: '',
             icon: 'success',
             confirmButtonText: 'Aceptar'

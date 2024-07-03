@@ -117,8 +117,8 @@ export default {
             axios.post('/imagenesPOST', formData)
                 .then(response => {
                     Swal.fire({
-                        title: 'Imagen Creada',
-                        text: 'Imagen creada correctamente',
+                        title: 'Imagen agregada',
+                        text: '',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
@@ -151,8 +151,8 @@ export default {
             axios.post('/videosPOST', formData)
                 .then(response => {
                     Swal.fire({
-                        title: 'Video Creado',
-                        text: 'Video creado correctamente',
+                        title: 'Video agregado',
+                        text: '',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
@@ -184,8 +184,8 @@ export default {
             axios.post('/enlacesPOST', formData)
                 .then(response => {
                     Swal.fire({
-                        title: 'Enlace Creado',
-                        text: 'Enlace creado correctamente',
+                        title: 'Enlace agregado',
+                        text: '',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {

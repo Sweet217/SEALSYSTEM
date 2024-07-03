@@ -161,7 +161,7 @@ export default {// Define el estado del componente
             axios.delete(`/equiposDELETE/${equipo_id}`)
                 .then(() => {
                     Swal.fire({
-                        title: 'Dispositivo eliminado correctamente',
+                        title: 'Dispositivo eliminado',
                         text: '',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
@@ -204,7 +204,7 @@ export default {// Define el estado del componente
             })
                 .then(() => {
                     Swal.fire({
-                        title: 'Dispositivo editado correctamente',
+                        title: 'Dispositivo editado',
                         text: '',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
@@ -256,7 +256,7 @@ export default {// Define el estado del componente
 
             if (equipoExistente) {
                 Swal.fire({
-                    title: 'Dispositivo encontrado',
+                    title: 'Error al crear el dispositivo',
                     text: 'Ya tienes un dispositivo registrado con este nombre',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
@@ -280,7 +280,7 @@ export default {// Define el estado del componente
             })
                 .then(response => {
                     Swal.fire({
-                        title: 'Dispositivo agregado correctamente',
+                        title: 'Dispositivo agregado',
                         text: '',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
