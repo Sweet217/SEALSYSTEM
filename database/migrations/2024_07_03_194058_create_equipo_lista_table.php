@@ -10,7 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('equipo_lista', function (Blueprint $table) {
+
+        Schema::create('equipo_listas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('equipo_id');
             $table->unsignedBigInteger('lista_id');
@@ -18,9 +19,6 @@ return new class extends Migration {
 
             $table->foreign('equipo_id')->references('equipo_id')->on('equipos')->onDelete('cascade');
             $table->foreign('lista_id')->references('id_lista')->on('listas')->onDelete('cascade');
-
-            // Asegurar que no haya listas duplicadas asociadas al mismo equipo
-            $table->unique(['equipo_id', 'lista_id']);
         });
     }
 

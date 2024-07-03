@@ -149,6 +149,15 @@ export default {
         },
         // Método para editar un usuario
         editarUsuario(user_id) {
+            if (!this.usuarioSeleccionado.nombre || !this.usuarioSeleccionado.email || !this.usuarioSeleccionado.telefono || !this.usuarioSeleccionado.estado || !this.usuarioSeleccionado.tipo_usuario) {
+                Swal.fire({
+                    title: 'Error al editar el usuario',
+                    text: 'Por favor, complete todos los campos.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+                return;
+            }
             axios.put(`/usuariosPUT/${user_id}`, {
                 nombre: this.usuarioSeleccionado.nombre,
                 email: this.usuarioSeleccionado.email,

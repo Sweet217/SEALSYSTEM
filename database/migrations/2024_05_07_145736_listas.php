@@ -11,11 +11,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('listas', function (Blueprint $table) {
-            $table->id('id_lista'); // Use id() for auto-incrementing primary key
-            $table->string('nombre', 255)->unique(); // unique para evitar se repita el nombre de las listas, nombre es el nombre de la lista
-            $table->boolean('global')->default(false); // indicar si la lista es global para todos los dispositivos (nuevo requerimiento)
-            $table->unsignedBigInteger('equipo_id')->nullable(); // Use unsignedBigInteger for foreign keys
-            $table->foreign('equipo_id')->references('equipo_id')->on('equipos')->onDelete('cascade'); // Define foreign key relationship
+            $table->id('id_lista');
+            $table->string('nombre', 255)->unique();
+            $table->unsignedBigInteger('equipo_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable(); // Nueva columna para el usuario
+            $table->foreign('equipo_id')->references('equipo_id')->on('equipos')->onDelete('cascade');
+            $table->foreign('user_id')->references('user_id')->on('usuarios')->onDelete('cascade'); // Relacionar con usuarios
             $table->timestamps();
         });
     }

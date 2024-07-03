@@ -29,14 +29,36 @@ class ListasController extends Controller
   {
     // Valida los datos del formulario
     $request->validate([
-      'nombre' => 'required', // Asegura que el nombre sea obligatorio y tenga como máximo 255 caracteres
+      'nombre' => 'required',
+      'user_id' => 'required',
       'equipo_id' => 'required'
     ]);
 
+    $existeLista = Listas::where('nombre', $request->input('nombre'))->exists();
+    if ($existeLista) {
+      return response()->json(['error' => 'Nombre de lista ya registrado'], 400);
+    }
+
     // Crea una nueva instancia del modelo Lista
-    $lista = new listas();
-    $lista->nombre = $request->nombre; // Asigna el nombre de la lista desde el formulario
-    $lista->equipo_id = $request->equipo_id;
+    $lista = new Listas();
+    $lista->nombre = $request->input('nombre'); // Asigna el nombre de la lista desde el formulario
+    $equipo_id = $request->input('equipo_id');
+
+    // Obtener el user_id del request
+    $user_id = $request->input('user_id');
+
+    if ($equipo_id === 'todos') {
+      $lista->equipo_id = null;
+      $lista->user_id = $user_id;
+    } else {
+      $equipo = Equipos::where('id', $equipo_id)->where('user_id', $user_id)->first();
+      if (!$equipo) {
+        return response()->json(['error' => 'El equipo no pertenece al usuario especificado'], 400);
+      }
+      // Asignar lista a un equipo específico del usuario
+      $lista->equipo_id = $equipo_id;
+      $lista->user_id = $user_id;
+    }
 
     try {
       $lista->save();
@@ -59,34 +81,31 @@ class ListasController extends Controller
 
   public function editarLista(Request $request, $id_lista)
   {
-    //Validar se haya proporcionado un nombre
     $request->validate([
-      'nombre' => 'required'
+      'nombre' => 'required',
+      'user_id' => 'required',
+      'equipo_id' => 'required'
     ]);
-    //Encontrar el id de la lista   
+
     $lista = Listas::where('id_lista', $id_lista)->first();
-
-    //Actualizar el nombre de la lista
     $lista->nombre = $request->input('nombre');
-    // Actualizar el equipo al que pertenece la lista
-    $equipo_id = $request->input('equipo');
+    $equipo_id = $request->input('equipo_id');
 
-    if ($equipo_id === 'global') {
-      // Lista global, no se asigna ningún equipo específico
-      $lista->global = true;
-      $lista->equipo_id = null; // Asegúrate de manejar esto correctamente en tu lógica
+    // Obtener el user_id del request
+    $user_id = $request->input('user_id');
+
+    if ($equipo_id === 'todos') {
+      $lista->equipo_id = null;
+      $lista->user_id = $user_id;
     } else {
-      // Lista asociada a un equipo específico
-      $lista->global = false;
+      // Asignar lista a un equipo específico del usuario
       $lista->equipo_id = $equipo_id;
+      $lista->user_id = $user_id;
     }
-    //Guardar los cambios
+
     $lista->save();
 
-    return response()->json(['message' => 'Lista editada `correctamente'], 205);
+    return response()->json(['message' => 'Lista editada correctamente'], 205);
   }
-
-
-
 
 }

@@ -67,15 +67,9 @@ export default {
     },
     filtrarListas() {
       const busqueda = this.busqueda.trim().toLowerCase();
-      if (this.tipoUsuario === 'Administrador') {
-        return this.listas.filter(lista =>
-          lista.equipo.user_id === this.user_id && lista.nombre.toLowerCase().includes(busqueda)
-        );
-      } else {
-        return this.listas.filter(lista =>
-          lista.equipo.user_id === this.user_id && lista.nombre.toLowerCase().includes(busqueda)
-        );
-      }
+      return this.listas.filter(lista =>
+        (lista.equipo && lista.equipo.user_id === this.user_id || lista.user_id == this.user_id) && lista.nombre.toLowerCase().includes(busqueda)
+      );
     },
   },
   methods: {
@@ -143,9 +137,19 @@ export default {
     },
     // Método para editar una lista por su ID
     editarLista(id_lista) {
+      if (!this.listaSeleccionada.nombre || !this.listaSeleccionada.equipo_id) {
+        Swal.fire({
+          title: 'Error al editar la lista',
+          text: 'Por favor, complete todos los campos.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+        return;
+      }
       axios.put(`/listasPUT/${id_lista}`, {
         nombre: this.listaSeleccionada.nombre, // Envía el nuevo nombre de la lista
-        equipo: this.listaSeleccionada.equipo_id,
+        equipo_id: this.listaSeleccionada.equipo_id,
+        user_id: this.user_id, // Envía el ID del usuario que esta utilizando el sistema
       })
         .then(() => {
           Swal.fire({
@@ -163,7 +167,7 @@ export default {
           console.error('Error al editar la lista:', error); // Muestra un error en la consola
           Swal.fire({
             title: 'Error al editar la lista',
-            text: error.response.data.message,
+            text: error.response.data.error,
             icon: 'error',
             confirmButtonText: 'Aceptar'
           }).then((result) => {
@@ -174,9 +178,19 @@ export default {
     },
     // Método para crear una nueva lista
     crearLista() {
+      if (!this.nuevoNombre || !this.equipoSeleccionado.equipo_id) {
+        Swal.fire({
+          title: 'Error al crear la lista',
+          text: 'Por favor, complete todos los campos.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+        return;
+      }
       axios.post('/listasPOST', {
         nombre: this.nuevoNombre, // Envía el nombre de la nueva lista
-        equipo_id: this.equipoSeleccionado.equipo_id // Envía el ID del equipo seleccionado
+        equipo_id: this.equipoSeleccionado.equipo_id, // Envía el ID del equipo seleccionado
+        user_id: this.user_id, // Envía el ID del usuario que esta utilizando el sistema
       })
         .then(() => {
           Swal.fire({
@@ -195,7 +209,7 @@ export default {
           console.error('Error al crear la lista:', error); // Muestra un error en la consola
           Swal.fire({
             title: 'Error al crear la lista',
-            text: error.response.data.message,
+            text: error.response.data.error,
             icon: 'error',
             confirmButtonText: 'Aceptar'
           }).then((result) => {
@@ -240,6 +254,13 @@ export default {
             <button class="btn eliminar-btn" @click="redirectToListaContent(lista.id_lista)">
               {{ lista.nombre }}
             </button>
+            <div class="dispositivo-container">
+              <!-- Mostrar equipo_id si está presente, de lo contrario mostrar que es global -->
+              <a v-if="lista.equipo_id !== null" class="equipo-text">Lista perteneciente al equipo {{
+        lista.equipo.nombre
+      }}</a>
+              <a v-else class="equipo-text">Lista global en tus dispositivos</a>
+            </div>
             <div class="flex space-x-2">
               <button class="btn editar-btn" @click="abrirModal(lista)">Editar</button>
               <button class="btn btn-danger btn-trash bi-trash" @click="eliminarLista(lista.id_lista)">
@@ -256,7 +277,7 @@ export default {
                     <label for="equipo">Dispositivo:</label>
                     <select v-model="listaSeleccionada.equipo_id" id="equipoSeleccionado"
                       class="form-control rounded-pill">
-                      <!-- <option value="global">Global (Sin equipo específico)</option> -->
+                      <option value="todos">Todos mis dispositivos</option>
                       <option v-for="equipo in equiposDisponibles" :value="equipo.equipo_id" :key="equipo.equipo_id">
                         {{ equipo.nombre }}
                       </option>
@@ -286,7 +307,7 @@ export default {
           <div class="mb-3">
             <label for="equipoSeleccionado">Dispositivo:</label>
             <select v-model="equipoSeleccionado.equipo_id" id="equipoSeleccionado" class="form-control rounded-pill">
-              <!-- <option value="global">Global (Sin equipo específico)</option> -->
+              <option value="todos">Todos mis dispositivos</option>
               <option v-for=" equipo  in  equiposDisponibles " :value="equipo.equipo_id" :key="equipo.equipo_id">
                 {{ equipo.nombre }}
               </option>
@@ -303,7 +324,43 @@ export default {
   <FooterComponent></FooterComponent>
 </template>
 
+
 <style>
+.dispositivo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  /* Espacio entre el botón y el texto */
+}
+
+.equipo-text {
+  flex: 1;
+  /* Asegura que el texto ocupe el espacio restante */
+  text-align: center;
+  /* Centra el texto dentro del contenedor */
+}
+
+@media (max-width:320px) {
+
+  .dispositivo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    /* Espacio entre el botón y el texto */
+  }
+
+  .equipo-text {
+    flex: 1;
+    /* Asegura que el texto ocupe el espacio restante */
+    text-align: center;
+    /* Centra el texto dentro del contenedor */
+    font-size: 5px;
+    visibility: hidden;
+  }
+}
+
 .btn {
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
@@ -339,6 +396,8 @@ export default {
   background-color: #f78433;
   border: 1px solid #e3671f;
   color: white;
+  width: 180px;
+  text-align: left;
 }
 
 .eliminar-btn:hover {

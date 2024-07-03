@@ -186,6 +186,15 @@ export default {// Define el estado del componente
         },
 
         editarEquipo(equipo_id) {
+            if (!this.equipoSeleccionado.nombre || !this.equipoSeleccionado.numero_licencia || !this.equipoSeleccionado.nombre_usuario) {
+                Swal.fire({
+                    title: 'Error al editar el dispositivo',
+                    text: 'Por favor, complete todos los campos.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+                return;
+            }
             console.log('Numero de licencia:', this.nuevoEquipo.numero_licencia);
             console.log('Equipo ID: ', equipo_id);
             axios.put(`/equiposPUT/${equipo_id}`, {
@@ -234,6 +243,15 @@ export default {// Define el estado del componente
                 });
         },
         crearEquipo() {
+            if (!this.nuevoEquipo.nombre || !this.nuevoEquipo.numero_licencia || !this.nuevoEquipo.nombre_usuario || !this.nuevoEquipo.mac) {
+                Swal.fire({
+                    title: 'Error al crear el dispositivo',
+                    text: 'Por favor, complete todos los campos.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+                return;
+            }
             const equipoExistente = this.equiposUsuario.some(equipo => equipo.nombre === this.nuevoEquipo.nombre);
 
             if (equipoExistente) {
