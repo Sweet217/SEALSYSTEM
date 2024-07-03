@@ -21,9 +21,11 @@
     "dependencies": {
         "bootstrap-icons": "^1.11.3",
         "crypto-js": "^4.2.0",
+        "mkcert": "^3.2.0",
+        "nss": "^0.0.1",
         "sanctum": "^1.9.0",
         "sortablejs": "^1.15.2",
-        "sweetalert2": "^11.12.1",
+        "sweetalert2": "^11.6.13",
         "vmodal": "^0.1.13",
         "vue-router": "^4.3.2",
         "vuedraggable": "^4.1.0",

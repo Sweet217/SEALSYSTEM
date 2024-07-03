@@ -36,7 +36,7 @@ class listas extends Model
     {
         return $this->hasMany(multimedia::class, 'id_lista', 'id_lista');
     }
-     /**
+    /**
      * Relación con la tabla 'equipos'.
      *
      * Una lista pertenece a un equipo.
@@ -47,5 +47,5 @@ class listas extends Model
     {
         return $this->belongsTo(equipos::class, 'equipo_id');
     }
-    
+
 }

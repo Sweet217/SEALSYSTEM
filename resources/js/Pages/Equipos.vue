@@ -161,8 +161,8 @@ export default {// Define el estado del componente
             axios.delete(`/equiposDELETE/${equipo_id}`)
                 .then(() => {
                     Swal.fire({
-                        title: 'Dispositivo eliminado',
-                        text: 'Dispositivo eliminado correctamente',
+                        title: 'Dispositivo eliminado correctamente',
+                        text: '',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
@@ -195,8 +195,8 @@ export default {// Define el estado del componente
             })
                 .then(() => {
                     Swal.fire({
-                        title: 'Dispositivo editado',
-                        text: 'Dispositivo editado correctamente',
+                        title: 'Dispositivo editado correctamente',
+                        text: '',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
@@ -221,8 +221,8 @@ export default {// Define el estado del componente
                     } else {
                         console.error('Error al editar el dispositivo:', error);
                         Swal.fire({
-                            title: 'Dispositivo editado',
-                            text: 'Error al editar el dispositivo',
+                            title: 'Error al editar el dispositivo',
+                            text: '',
                             icon: 'error',
                             confirmButtonText: 'Aceptar'
                         }).then((result) => {
@@ -262,8 +262,8 @@ export default {// Define el estado del componente
             })
                 .then(response => {
                     Swal.fire({
-                        title: 'Dispositivo creado',
-                        text: 'Dispositivo creado correctamente',
+                        title: 'Dispositivo agregado correctamente',
+                        text: '',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
@@ -296,8 +296,8 @@ export default {// Define el estado del componente
             })
                 .then(response => {
                     Swal.fire({
-                        title: 'Server Key',
-                        text: 'Server key guardada correctamente',
+                        title: 'Server key guardada correctamente',
+                        text: '',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
@@ -353,8 +353,8 @@ export default {// Define el estado del componente
 
                 // Mostrar mensaje de éxito
                 Swal.fire({
-                    title: 'Copiado!',
-                    text: 'Licencia copiada al portapapeles.',
+                    title: 'Licencia copiada al portapapeless!',
+                    text: '',
                     icon: 'success',
                     confirmButtonText: 'Aceptar'
                 });

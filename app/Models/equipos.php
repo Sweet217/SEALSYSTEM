@@ -18,7 +18,7 @@ class equipos extends Model
     use HasFactory;
 
     protected $primaryKey = 'equipo_id'; // llave primaria
-    
+
     /**
      * Campos asignables masivamente.
      *
@@ -61,5 +61,5 @@ class equipos extends Model
     {
         return $this->hasMany(listas::class, 'equipo_id');
     }
-    
+
 }

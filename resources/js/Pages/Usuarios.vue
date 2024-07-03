@@ -40,6 +40,8 @@ export default {
             nombreUsuario: '',
             tipoUsuario: '',
             busqueda: '',
+            showPassword: false,
+            showConfirmPassword: false,
             error: ''
         };
     },
@@ -122,8 +124,8 @@ export default {
             axios.delete(`/usuariosDELETE/${user_id}`)
                 .then(() => {
                     Swal.fire({
-                        title: 'Usuario eliminado',
-                        text: 'Usuario eliminado correctamente',
+                        title: 'Usuario eliminado correctamente',
+                        text: '',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
@@ -156,8 +158,8 @@ export default {
             })
                 .then(() => {
                     Swal.fire({
-                        title: 'Usuario editado',
-                        text: 'Usuario editado correctamente',
+                        title: 'Usuario editado correctamente',
+                        text: '',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
@@ -209,15 +211,9 @@ export default {
             }
 
             // Validar que el teléfono contenga solo números y espacios
-            if (!/^\d+(\s\d+)*$/.test(this.nuevoUsuario.telefono)) {
+            if (!/^[\d\s]+$/.test(this.nuevoUsuario.telefono)) {
                 this.error = 'El teléfono debe contener solo números y espacios';
                 return; // Salimos de la función si el formato del teléfono no es válido
-            }
-
-            // Validar formato del teléfono //Se cambio tras cambio de requisitos
-            if (!/^\d+$/.test(this.nuevoUsuario.telefono.trim())) {
-                this.error = 'El teléfono solo puede contener números.';
-                return; // Salimos de la función si el campo del teléfono contiene caracteres no numéricos
             }
 
             try {
@@ -232,8 +228,8 @@ export default {
                     estado: this.nuevoUsuario.estado
                 });
                 Swal.fire({
-                    title: 'Usuario creado',
-                    text: 'Usuario creado correctamente',
+                    title: 'Usuario creado correctamente',
+                    text: '',
                     icon: 'success',
                     confirmButtonText: 'Aceptar'
                 }).then((result) => {
@@ -255,6 +251,14 @@ export default {
                     }
                 });
             }
+        },
+        togglePasswordVisibility() {
+            // Cambia el estado para mostrar u ocultar la contraseña en texto plano
+            this.showPassword = !this.showPassword;
+        },
+        toggleConfirmPasswordVisibility() {
+            // Cambia el estado para mostrar u ocultar la contraseña en texto plano
+            this.showConfirmPassword = !this.showConfirmPassword;
         }
     }
 }
@@ -362,12 +366,21 @@ export default {
                         class="form-control rounded-pill" autocomplete="off" />
 
                     <label for="crear-password">Contraseña:</label>
-                    <input type="password" v-model="nuevoUsuario.password" name="crear-password"
-                        class="form-control rounded-pill" autocomplete="new-password" />
+                    <div class="password-field">
+                        <input :type="showPassword ? 'text' : 'password'" v-model="nuevoUsuario.password"
+                            name="crear-password" class="form-control rounded-pill" autocomplete="new-password" />
+                        <i :class="showPassword ? 'fas fa-eye-slash eye-icon' : 'fas fa-eye eye-icon'"
+                            @click="togglePasswordVisibility"></i>
+                    </div>
 
                     <label for="crear-confirmPassword">Confirmar Contraseña:</label>
-                    <input type="password" v-model="nuevoUsuario.confirmPassword" name="crear-confirmPassword"
-                        class="form-control rounded-pill" autocomplete="new-password" />
+                    <div class="password-field">
+                        <input :type="showConfirmPassword ? 'text' : 'password'" v-model="nuevoUsuario.confirmPassword"
+                            name="crear-confirmPassword" class="form-control rounded-pill"
+                            autocomplete="new-password" />
+                        <i :class="showConfirmPassword ? 'fas fa-eye-slash eye-icon' : 'fas fa-eye eye-icon'"
+                            @click="toggleConfirmPasswordVisibility"></i>
+                    </div>
 
                     <label for="crear-telefono">Teléfono:</label>
                     <input type="tel" v-model="nuevoUsuario.telefono" name="crear-telefono"
@@ -396,6 +409,7 @@ export default {
 
     <FooterComponent></FooterComponent>
 </template>
+
 
 <style>
 .error-message {
@@ -438,6 +452,18 @@ export default {
     background-color: #f78433;
     border: 1px solid #e3671f;
     color: white;
+}
+
+.password-field {
+    position: relative;
+}
+
+.password-field .eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
 }
 
 .ver-dispositivos-btn:hover {

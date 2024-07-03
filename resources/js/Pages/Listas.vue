@@ -121,8 +121,8 @@ export default {
       })
         .then(() => {
           Swal.fire({
-            title: 'Lista',
-            text: 'Lista eliminada correctamente',
+            title: 'Lista eliminada correctamente',
+            text: '',
             icon: 'success',
             confirmButtonText: 'Aceptar'
           }).then((result) => {
@@ -149,8 +149,8 @@ export default {
       })
         .then(() => {
           Swal.fire({
-            title: 'Lista Editada',
-            text: 'Lista editada correctamente',
+            title: 'Lista editada correctamente',
+            text: '',
             icon: 'success',
             confirmButtonText: 'Aceptar'
           }).then((result) => {
@@ -180,8 +180,8 @@ export default {
       })
         .then(() => {
           Swal.fire({
-            title: 'Lista Creada',
-            text: 'Lista creada correctamente',
+            title: 'Lista creada correctamente',
+            text: '',
             icon: 'success',
             confirmButtonText: 'Aceptar'
           }).then((result) => {

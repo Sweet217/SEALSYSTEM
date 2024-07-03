@@ -19,12 +19,12 @@ export default defineConfig({
     ],
     build: {
         outDir: 'public/build', // Optional: Output directory for built assets
-        base: '/',  // Set base to '/' for production
+        base: 'https://caring-platypus-kind.ngrok-free.app/',  // Set base to '/https://caring-platypus-kind.ngrok-free.app/' for production
     },
     server: {
         host: '0.0.0.0',
         hmr: {
-            host: '192.168.1.45',
+            host: 'localhost',
             //host: 'localhost'
         },
     },
