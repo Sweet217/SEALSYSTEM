@@ -51,7 +51,7 @@ class ListasController extends Controller
       $lista->equipo_id = null;
       $lista->user_id = $user_id;
     } else {
-      $equipo = Equipos::where('id', $equipo_id)->where('user_id', $user_id)->first();
+      $equipo = Equipos::where('equipo_id', $equipo_id)->where('user_id', $user_id)->first();
       if (!$equipo) {
         return response()->json(['error' => 'El equipo no pertenece al usuario especificado'], 400);
       }
@@ -87,9 +87,19 @@ class ListasController extends Controller
       'equipo_id' => 'required'
     ]);
 
+    $nuevoNombre = $request->input('nombre');
     $lista = Listas::where('id_lista', $id_lista)->first();
     $lista->nombre = $request->input('nombre');
     $equipo_id = $request->input('equipo_id');
+
+    // Verificar si el nuevo nombre de lista ya existe (excepto la lista actual)
+    $existeOtroNombre = Listas::where('nombre', $nuevoNombre)
+      ->where('id_lista', '!=', $id_lista) // Excluye la lista actual
+      ->exists();
+
+    if ($existeOtroNombre) {
+      return response()->json(['error' => 'Nombre de lista ya registrado'], 400);
+    }
 
     // Obtener el user_id del request
     $user_id = $request->input('user_id');

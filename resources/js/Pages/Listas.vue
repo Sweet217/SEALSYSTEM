@@ -99,8 +99,7 @@ export default {
     // Método para abrir el modal de creación de listas
     abrirModalCrear() {
       this.modalCrearVisible = true; // Muestra el modal de creación
-      console.log(this.modalCrearVisible);
-      console.log('Tipo usuario', this.tipoUsuario);
+
     },
     // Método para cerrar el modal de creación y reiniciar el nombre de la nueva lista
     cerrarModalCrear() {

@@ -82,7 +82,7 @@ export default {// Define el estado del componente
         axios.get('/todosusuarios')
             .then(response => {
                 this.usuariosDisponibles = response.data;
-                console.log(response.data);
+
             }).catch(error => {
                 console.error('Error al botener los usuarios:', error);
             })
@@ -99,14 +99,12 @@ export default {// Define el estado del componente
                 });
         },
         filtrarEquipos() {
-            const busqueda = this.busqueda.trim().toLowerCase();
-            return this.equipos.filter(equipo => {
-                return (
-                    equipo.usuarios.nombre.toLowerCase() === this.nombreUsuario.toLowerCase() &&
-                    (equipo.nombre.toLowerCase().includes(busqueda) ||
-                        (equipo.numero_licencia && equipo.numero_licencia.toLowerCase().includes(busqueda)))
-                );
-            });
+            if (this.tipoUsuario == 'Administrador') {
+                return this.equipos
+            } else {
+                // Si el usuario es un operador, filtrar solo los equipos que son suyos
+                return this.equipos
+            }
         },
         abrirModal(equipo) {
             this.equipoSeleccionado = {
@@ -129,7 +127,7 @@ export default {// Define el estado del componente
 
         abrirCrearModal() {
             this.crearModalVisible = true;
-            console.log(this.mac);
+
             this.nuevoEquipo = {
                 nombre: '',
                 numero_licencia: '',
@@ -146,7 +144,7 @@ export default {// Define el estado del componente
             };
         },
         abrirModalGenerarLicencia(equipo) {
-            console.log(equipo)
+
             this.equipoSeleccionado = {
                 equipo_id: equipo.equipo_id,
                 mac: equipo.mac,
@@ -167,7 +165,7 @@ export default {// Define el estado del componente
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.reload();
+                            window.location.reload()
                         }
                     });
                 })
@@ -186,17 +184,16 @@ export default {// Define el estado del componente
         },
 
         editarEquipo(equipo_id) {
-            if (!this.equipoSeleccionado.nombre || !this.equipoSeleccionado.numero_licencia || !this.equipoSeleccionado.nombre_usuario) {
+            if (!this.equipoSeleccionado.nombre || !this.equipoSeleccionado.nombre_usuario) {
                 Swal.fire({
                     title: 'Error al editar el dispositivo',
-                    text: 'Por favor, complete todos los campos.',
+                    text: 'Por favor, complete los campos.',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });
                 return;
             }
-            console.log('Numero de licencia:', this.nuevoEquipo.numero_licencia);
-            console.log('Equipo ID: ', equipo_id);
+
             axios.put(`/equiposPUT/${equipo_id}`, {
                 nombre: this.equipoSeleccionado.nombre,
                 numero_licencia: this.equipoSeleccionado.numero_licencia,
@@ -217,7 +214,7 @@ export default {// Define el estado del componente
                 })
                 .catch(error => {
                     if (error.response && error.response.data.message) {
-                        console.error('Error al editar el equipo:', error);
+
                         Swal.fire({
                             title: 'Dispositivo no editado',
                             text: error.response.data.message,
@@ -228,7 +225,7 @@ export default {// Define el estado del componente
                             }
                         });
                     } else {
-                        console.error('Error al editar el dispositivo:', error);
+
                         Swal.fire({
                             title: 'Error al editar el dispositivo',
                             text: '',
@@ -243,15 +240,16 @@ export default {// Define el estado del componente
                 });
         },
         crearEquipo() {
-            if (!this.nuevoEquipo.nombre || !this.nuevoEquipo.numero_licencia || !this.nuevoEquipo.nombre_usuario || !this.nuevoEquipo.mac) {
+            if (!this.nuevoEquipo.nombre) {
                 Swal.fire({
                     title: 'Error al crear el dispositivo',
-                    text: 'Por favor, complete todos los campos.',
+                    text: 'Por favor, nombre el dispositivo.',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });
                 return;
             }
+
             const equipoExistente = this.equiposUsuario.some(equipo => equipo.nombre === this.nuevoEquipo.nombre);
 
             if (equipoExistente) {
@@ -260,14 +258,11 @@ export default {// Define el estado del componente
                     text: 'Ya tienes un dispositivo registrado con este nombre',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        return;
-                    }
                 });
+                return;
             }
 
-            console.log(this.nuevoEquipo.mac);
+
             //La key sera desencriptar
             let key = "desencriptar"
             let mac_encriptada = CryptoJS.AES.encrypt(this.nuevoEquipo.mac, key).toString()
@@ -292,22 +287,27 @@ export default {// Define el estado del componente
                     });
                 })
                 .catch(error => {
-                    console.error('Error al crear el equipo:', error);
-                    Swal.fire({
-                        title: 'Dispositivo no creado',
-                        text: error.response.data.message,
-                        icon: 'error',
-                        confirmButtonText: 'Aceptar'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                        }
-                    });
+
+                    if (error.response && error.response.data && error.response.data.message) {
+                        Swal.fire({
+                            title: 'Error al crear el dispositivo',
+                            text: error.response.data.message,
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error al crear el dispositivo',
+                            text: 'Ocurrió un error al procesar la solicitud.',
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    }
                 });
         },
+
         guardarServerKey(equipo_id) {
-            console.log(this.equipoSeleccionado);
-            console.log('Equipo_id: ', equipo_id);
-            console.log(this.licenciaGenerada);
+
             axios.post(`/equipos/agregarServerKey/${equipo_id}`, {
                 server_key: this.equipoSeleccionado.server_key,
                 licencia: this.licenciaGenerada
@@ -326,7 +326,7 @@ export default {// Define el estado del componente
                     });
                 })
                 .catch(error => {
-                    console.error('Error al guardar Server Key:', error);
+
                     Swal.fire({
                         title: 'Server Key',
                         text: error.response.data.message,
@@ -343,7 +343,7 @@ export default {// Define el estado del componente
             let key = 'desencriptar';
             let bytes = CryptoJS.AES.decrypt(this.equipoSeleccionado.mac, key);
             let mac_desencriptada = bytes.toString(CryptoJS.enc.Utf8);
-            console.log(mac_desencriptada);
+
             let key_combined = `${mac_desencriptada}-${this.equipoSeleccionado.server_key}`;
             let hash = CryptoJS.SHA256(key_combined).toString(CryptoJS.enc.Hex);
             let shortHash = hash.substring(0, 16); // Lograr una longitud similar a la de windows.
@@ -446,7 +446,7 @@ export default {// Define el estado del componente
                         class="form-control rounded-pill">
                     <label for="nombre_usuario">Nombre del Usuario Responsable:</label>
                     <select v-model="equipoSeleccionado.nombre_usuario" id="nombre_usuario"
-                        class="form-control rounded-pill">
+                        class="form-control rounded-pill" :disabled="tipoUsuario !== 'Administrador'">
                         <option v-for="usuario in usuariosDisponibles" :value="usuario.nombre" :key="usuario.id">
                             {{ usuario.nombre }}
                         </option>

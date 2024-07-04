@@ -18,8 +18,20 @@ class EquiposController extends Controller
      */
     public function showEquipos(Request $request)
     {
-        $data = Equipos::with('usuarios', 'licencias')->get();
+        // Validar que user_id esté presente en la solicitud
+        $request->validate([
+            'user_id' => 'required'
+        ]);
 
+        // Obtener el user_id de la solicitud
+        $userId = $request->input('user_id');
+
+        // Obtener solo los equipos que pertenecen al usuario especificado por user_id
+        $data = Equipos::where('user_id', $userId)
+            ->with('usuarios', 'licencias')
+            ->get();
+
+        // Renderizar la vista usando Inertia.js
         return Inertia::render('Equipos', [
             'equipos' => $data
         ]);
@@ -53,7 +65,7 @@ class EquiposController extends Controller
         if ($request->input('numero_licencia')) {
 
             if (!$licencia) {
-                return response()->json(['message' => 'Licencia no encontrada'], 404);
+                return response()->json(['message' => 'Licencia no valida'], 404);
             }
 
             // Verificar si la licencia ya está asociada a otro equipo

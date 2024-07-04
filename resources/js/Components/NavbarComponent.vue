@@ -36,6 +36,7 @@ export default {
       nombreUsuario: '',
       tipoUsuario: '',
       correoUsuario: '',
+      userId: '',
       showUsuarios: false,
       menuOpen: false,
       showDetails: false,
@@ -45,6 +46,7 @@ export default {
     axios.get('/api/usuario_actual')
       .then(response => {
         this.nombreUsuario = response.data.nombre;
+        this.userId = response.data.user_id;
         this.tipoUsuario = response.data.tipo_usuario;
         this.correoUsuario = response.data.email;
         if (this.tipoUsuario === 'Administrador') {
@@ -80,7 +82,9 @@ export default {
       window.location.href = '/listas';
     },
     redirectEquipos() {
-      window.location.href = '/equipos';
+      const userId = this.userId;
+      // Redireccionar a la ruta /equipos con el userId como parámetro query
+      window.location.href = `/equipos?user_id=${userId}`;
     },
     cerrarSesion() {
       window.location.href = '/';
