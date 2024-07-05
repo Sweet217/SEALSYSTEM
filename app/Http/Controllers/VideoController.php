@@ -24,7 +24,7 @@ class VideoController extends Controller
     {
         $request->validate([
             'nombre_archivo' => 'required|string|max:255',
-            'archivo' => 'required|file|mimes:mp4|max:102400', // Tamaño máximo de archivos en kilobytes (ajustar si es necesario)
+            'archivo' => 'required|file|mimes:mp4|max:250000', // Tamaño máximo de archivos en kilobytes (ajustar si es necesario)
         ]);
 
         $file = $request->file('archivo');

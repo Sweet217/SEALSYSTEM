@@ -92,7 +92,23 @@ export default {
         // Método para abrir el modal
         abrirModal() {
             this.modalVisible = true;
-            console.log('abierto');
+            this.nuevaImagen = {
+                nombre_archivo: '',
+                tiempo: 0,
+                archivo: null,
+            };
+            this.nuevoVideo = {
+                nombre_archivo: '',
+                archivo: null,
+            };
+            this.nuevoEnlace = {
+                nombre_enlace: '',
+                enlace: '',
+            };
+            this.nuevaMultimedia = { // Datos de la nueva multimedia
+                tipo: '',
+                id_lista: this.listaData.id_lista,
+            };
         },
         // Método para cerrar el modal
         cerrarModal() {
@@ -137,7 +153,11 @@ export default {
 
             this.loading = true; // Indicar que ha comenzado la carga
 
-            axios.post('/imagenesPOST', formData)
+            axios.post('/imagenesPOST', formData, {
+                onUploadProgress: (progressEvent) => {
+                    this.uploadProgress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                }
+            })
                 .then(response => {
                     this.loading = false; // Indicar que la carga ha terminado
                     this.uploadProgress = 0; // Reiniciar el progreso
@@ -178,7 +198,11 @@ export default {
 
             this.loading = true; // Indicar que ha comenzado la carga
 
-            axios.post('/videosPOST', formData)
+            axios.post('/videosPOST', formData, {
+                onUploadProgress: (progressEvent) => {
+                    this.uploadProgress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                }
+            })
                 .then(response => {
                     this.loading = false; // Indicar que la carga ha terminado
                     this.uploadProgress = 0; // Reiniciar el progreso
@@ -248,7 +272,7 @@ export default {
         handleImagenSeleccionada(event) {
             this.nuevaImagen.archivo = event.target.files[0];
             const file = event.target.files[0];
-            if (file) {
+            if (file & this.nuevaImagen.nombre_archivo === '') {
                 this.nuevaImagen.nombre_archivo = file.name;
             }
         },
@@ -256,7 +280,7 @@ export default {
         handleVideoSeleccionado(event) {
             this.nuevoVideo.archivo = event.target.files[0];
             const file = event.target.files[0];
-            if (file) {
+            if (file & this.nuevoVideo.nombre_archivo === '') {
                 this.nuevoVideo.nombre_archivo = file.name;
             }
         },

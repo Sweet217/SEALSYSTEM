@@ -99,12 +99,12 @@ export default {
     // Método para abrir el modal de creación de listas
     abrirModalCrear() {
       this.modalCrearVisible = true; // Muestra el modal de creación
-
+      this.nuevoNombre = '';
+      this.equipoSeleccionado = '';
     },
     // Método para cerrar el modal de creación y reiniciar el nombre de la nueva lista
     cerrarModalCrear() {
       this.modalCrearVisible = false; // Oculta el modal de creación
-      this.nuevoNombre = ''; // Reinicia el nombre de la nueva lista
       this.error = null; // Reinicia el error
     },
     // Método para eliminar una lista por su ID

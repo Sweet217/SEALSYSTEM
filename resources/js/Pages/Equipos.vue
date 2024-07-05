@@ -127,7 +127,6 @@ export default {// Define el estado del componente
 
         abrirCrearModal() {
             this.crearModalVisible = true;
-
             this.nuevoEquipo = {
                 nombre: '',
                 numero_licencia: '',
@@ -444,9 +443,10 @@ export default {// Define el estado del componente
                     <label for="numero_licencia">Número de Licencia:</label>
                     <input type="text" v-model="equipoSeleccionado.numero_licencia" id="numero_licencia"
                         class="form-control rounded-pill">
-                    <label for="nombre_usuario">Nombre del Usuario Responsable:</label>
+                    <label for="nombre_usuario" v-show="tipoUsuario == 'Administrador'">Nombre del Usuario
+                        Responsable:</label>
                     <select v-model="equipoSeleccionado.nombre_usuario" id="nombre_usuario"
-                        class="form-control rounded-pill" :disabled="tipoUsuario !== 'Administrador'">
+                        class="form-control rounded-pill" v-show="tipoUsuario == 'Administrador'">
                         <option v-for="usuario in usuariosDisponibles" :value="usuario.nombre" :key="usuario.id">
                             {{ usuario.nombre }}
                         </option>
@@ -469,10 +469,15 @@ export default {// Define el estado del componente
                     <label for="numero_licencia">Número de Licencia:</label>
                     <input type="text" v-model="nuevoEquipo.numero_licencia" id="numero_licencia"
                         class="form-control rounded-pill">
-                    <label for="nombre_usuario">Nombre del Usuario Responsable:</label>
-                    <input type="text" v-model="nuevoEquipo.nombre_usuario" id="nombre_usuario"
-                        class="form-control rounded-pill" disabled>
-                    <div class="text-center">
+                    <label for="nombre_usuario" v-show="tipoUsuario == 'Administrador'">Nombre del Usuario
+                        Responsable:</label>
+                    <select v-model="nuevoEquipo.nombre_usuario" id="nombre_usuario" class="form-control rounded-pill"
+                        v-show="tipoUsuario == 'Administrador'">
+                        <option v-for="usuario in usuariosDisponibles" :value="usuario.nombre" :key="usuario.id">
+                            {{ usuario.nombre }}
+                        </option>
+                    </select>
+                    <div class=" text-center">
                         <button type="submit">Agregar</button>
                     </div>
                 </form>
