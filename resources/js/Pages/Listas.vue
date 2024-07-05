@@ -255,7 +255,7 @@ export default {
             </button>
             <div class="dispositivo-container">
               <!-- Mostrar equipo_id si está presente, de lo contrario mostrar que es global -->
-              <a v-if="lista.equipo_id !== null" class="equipo-text">Lista perteneciente al equipo {{
+              <a v-if="lista.equipo_id !== null" class="equipo-text">Lista perteneciente al dispositivo {{
         lista.equipo.nombre
       }}</a>
               <a v-else class="equipo-text">Lista global en tus dispositivos</a>
