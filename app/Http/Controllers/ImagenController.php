@@ -43,12 +43,12 @@ class ImagenController extends Controller
         $request->validate([
             'nombre_archivo' => 'required|string|max:255',
             'tiempo' => 'required|integer',
-            'archivo' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:20480',
+            'archivo' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:102400', //tamano maximo en kilobytes (100mb) (ajustar si es necesario)
         ]);
 
         // Obtener el archivo cargado
         $file = $request->file('archivo');
-        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $filename = $request->nombre_archivo;
 
         // Almacenar el archivo en el almacenamiento público
         $path = Storage::disk('public')->put('/images/pruebas/' . $filename, file_get_contents($file));

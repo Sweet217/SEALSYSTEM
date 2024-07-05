@@ -23,9 +23,10 @@ class EnlaceSeeder extends Seeder
         $multimedia = Multimedia::where('tipo', 'enlace')->first();
 
         enlaces::create([
-            'data' => 'https://www.youtube.com/watch?v=jNQXAC9IVRw', 
+            'nombre_enlace' => "enlace seeder",
+            'data' => 'https://www.youtube.com/watch?v=jNQXAC9IVRw',
             'multimedia_id' => $multimedia->multimedia_id,
         ]);
-        
+
     }
 }

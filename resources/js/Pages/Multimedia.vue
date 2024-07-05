@@ -47,8 +47,12 @@ export default {
                 archivo: null,
             },
             nuevoEnlace: { // Datos del nuevo enlace
+                nombre_enlace: '',
                 enlace: '',
+
             },
+            loading: false, // Estado de carga
+            uploadProgress: 0, // Progreso de carga
         };
     },
     mounted() {
@@ -66,6 +70,23 @@ export default {
                     this.error = 'Error al obtener el usuario actual.'; // Asigna un mensaje de error
                 }
             });
+    },
+    watch: {
+        'nuevoVideo.nombre_archivo'(newVal) {
+            if (newVal.length > 25) {
+                this.nuevoVideo.nombre_archivo = newVal.slice(0, 25);
+            }
+        },
+        'nuevaImagen.nombre_archivo'(newVal) {
+            if (newVal.length > 25) {
+                this.nuevaImagen.nombre_archivo = newVal.slice(0, 25);
+            }
+        },
+        'nuevoEnlace.nombre_enlace'(newVal) {
+            if (newVal.length > 25) {
+                this.nuevoEnlace.nombre_enlace = newVal.slice(0, 25);
+            }
+        },
     },
     methods: {
         // Método para abrir el modal
@@ -114,8 +135,13 @@ export default {
             formData.append('archivo', this.nuevaImagen.archivo);
             formData.append('id_lista', this.nuevaMultimedia.id_lista);
 
+            this.loading = true; // Indicar que ha comenzado la carga
+
             axios.post('/imagenesPOST', formData)
                 .then(response => {
+                    this.loading = false; // Indicar que la carga ha terminado
+                    this.uploadProgress = 0; // Reiniciar el progreso
+
                     Swal.fire({
                         title: 'Imagen agregada',
                         text: '',
@@ -129,6 +155,8 @@ export default {
                     });
                 })
                 .catch(error => {
+                    this.loading = false; // Indicar que la carga ha terminado
+                    this.uploadProgress = 0; // Reiniciar el progreso
                     console.error('Error al crear la imagen:', error); // Muestra un error en la consola
                     Swal.fire({
                         title: 'Error al crear la imagen',
@@ -148,8 +176,12 @@ export default {
             formData.append('archivo', this.nuevoVideo.archivo);
             formData.append('id_lista', this.nuevaMultimedia.id_lista);
 
+            this.loading = true; // Indicar que ha comenzado la carga
+
             axios.post('/videosPOST', formData)
                 .then(response => {
+                    this.loading = false; // Indicar que la carga ha terminado
+                    this.uploadProgress = 0; // Reiniciar el progreso
                     Swal.fire({
                         title: 'Video agregado',
                         text: '',
@@ -163,6 +195,8 @@ export default {
                     });
                 })
                 .catch(error => {
+                    this.loading = false; // Indicar que la carga ha terminado
+                    this.uploadProgress = 0; // Reiniciar el progreso
                     console.error('Error al crear el video:', error); // Muestra un error en la consola
                     Swal.fire({
                         title: 'Error al crear el video',
@@ -178,6 +212,8 @@ export default {
         // Método para crear un nuevo enlace
         crearEnlace() {
             const formData = new FormData();
+            console.log(this.nuevoEnlace.nombre_enlace);
+            formData.append('nombre_enlace', this.nuevoEnlace.nombre_enlace);
             formData.append('data', this.nuevoEnlace.enlace);
             formData.append('id_lista', this.nuevaMultimedia.id_lista);
 
@@ -376,6 +412,7 @@ export default {
                                 <template v-if="element.tipo === 'video'">
                                     <div class="video">
                                         <h2 class="text-2l font-bold mb-4">Video</h2>
+                                        <a>{{ element.data.nombre_archivo }} </a>
                                         <video :src="`/storage/${element.data.data}`" controls></video>
                                     </div>
                                 </template>
@@ -383,6 +420,7 @@ export default {
                                 <template v-else-if="element.tipo === 'imagen'">
                                     <div class="image">
                                         <h2 class="text-2l font-bold mb-4">Imagen</h2>
+                                        <a> {{ element.data.nombre_archivo }} </a>
                                         <img :src="`/storage/${element.data.data}`"
                                             :alt="element.data.nombre_archivo" />
                                     </div>
@@ -391,7 +429,9 @@ export default {
                                 <template v-else-if="element.tipo === 'enlace'">
                                     <div class="link">
                                         <h2 class="text-2l font-bold mb-4">Enlace</h2>
-                                        <a :href="element.data.data" target="_blank" class="youtube-link">{{
+                                        <a class="nombre_enlace">{{ element.data.nombre_enlace }} </a>
+                                        <a :href="element.data.data" target="_blank"
+                                            class="youtube-link enlace-youtube">{{
                 element.data.data }}</a>
                                         <iframe :src="getEmbedUrl(element.data.data)"></iframe>
                                     </div>
@@ -453,9 +493,10 @@ export default {
                             <template v-if="nuevaMultimedia.tipo === 'imagen'">
                                 <!-- Campos para cargar imagen -->
                                 <div class="form-group">
-                                    <label for="nombreArchivoImagen">Nombre de archivo:</label>
+                                    <label for="nombreArchivoImagen">Nombre de archivo: </label>
                                     <input type="text" class="form-control rounded-pill"
-                                        v-model="nuevaImagen.nombre_archivo" id="nombreArchivoImagen">
+                                        v-model="nuevaImagen.nombre_archivo" id="nombreArchivoImagen"
+                                        placeholder="Maximo 25 caracteres">
                                 </div>
                                 <div class="form-group">
                                     <label for="tiempoImagen">Tiempo (segundos):</label>
@@ -469,6 +510,19 @@ export default {
                                         @change="handleImagenSeleccionada" id="subirImagen">
                                     <span v-if="fileError" class="error-message">{{ fileError }}</span>
                                 </div>
+
+                                <!-- Barra de progreso -->
+                                <div v-if="loading" class="form-group">
+                                    <label>Subiendo imagen:</label>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                            role="progressbar" :style="{ width: uploadProgress + '%' }"
+                                            :aria-valuenow="uploadProgress" aria-valuemin="0" aria-valuemax="100">
+                                            {{ uploadProgress }}%
+                                        </div>
+                                    </div>
+                                    <p>Cargando... {{ uploadProgress }}%</p>
+                                </div>
                             </template>
 
                             <template v-if="nuevaMultimedia.tipo === 'video'">
@@ -476,7 +530,8 @@ export default {
                                 <div class="form-group">
                                     <label for="nombreArchivoVideo">Nombre de archivo:</label>
                                     <input type="text" class="form-control rounded-pill"
-                                        v-model="nuevoVideo.nombre_archivo" id="nombreArchivoVideo">
+                                        v-model="nuevoVideo.nombre_archivo" id="nombreArchivoVideo"
+                                        placeholder="Maximo 25 caracteres">
                                 </div>
                                 <!-- Input para subir archivo de video -->
                                 <div class="form-group">
@@ -485,14 +540,31 @@ export default {
                                         @change="handleVideoSeleccionado" id="subirVideo">
                                     <span v-if="fileError" class="error-message">{{ fileError }}</span>
                                 </div>
+
+                                <!-- Barra de progreso -->
+                                <div v-if="loading" class="form-group">
+                                    <label>Subiendo video:</label>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                            role="progressbar" :style="{ width: uploadProgress + '%' }"
+                                            :aria-valuenow="uploadProgress" aria-valuemin="0" aria-valuemax="100">
+                                            {{ uploadProgress }}%
+                                        </div>
+                                    </div>
+                                    <p>Cargando... {{ uploadProgress }}%</p>
+                                </div>
                             </template>
 
                             <template v-if="nuevaMultimedia.tipo === 'enlace'">
                                 <!-- Campos para cargar enlace -->
                                 <div class="form-group">
+                                    <label for="enlace">Nombre del Enlace:</label>
+                                    <input type="text" class="form-control rounded-pill"
+                                        v-model="nuevoEnlace.nombre_enlace" id="nombreEnlace"
+                                        placeholder="Maximo 25 caracteres">
                                     <label for="enlace">Enlace:</label>
                                     <input type="text" class="form-control rounded-pill" v-model="nuevoEnlace.enlace"
-                                        id="enlace">
+                                        id="enlace" placeholder="Ejemplo: https://www.youtube.com/watch?v=jNQXAC">
                                 </div>
                             </template>
                         </div>
@@ -543,7 +615,9 @@ export default {
 
 .youtube-link {
     position: relative;
-    left: 30%;
+    display: flex;
+    left: 70%;
+    top: 60px;
 }
 
 .video,
@@ -554,15 +628,15 @@ export default {
 
 .content .video video,
 .content .image img {
-    width: 75px;
-    height: 75px;
+    width: 80px;
+    height: 80px;
 }
 
 h2 {
     margin-bottom: 10px;
 }
 
-a {
+a.enlace-youtube {
     color: #0800ff;
     /* Cambié el color para que coincida con los estilos de los botones */
     text-decoration: none;
@@ -570,9 +644,9 @@ a {
 }
 
 iframe {
-    height: 75px;
-    width: 75px;
-    margin-top: -45px;
+    height: 80px;
+    width: 80px;
+    margin-top: -20px;
 }
 
 /* Estilos para los botones */
@@ -652,7 +726,7 @@ iframe {
     font-size: 2rem;
     font-weight: bold;
     margin: 0;
-    padding: 20px 0;
+    padding: 10px 10;
 }
 
 .close:hover,
@@ -685,6 +759,29 @@ iframe {
         max-width: unset;
         min-height: unset;
         max-height: unset;
+    }
+
+    .btn-trash {
+        top: -100px;
+    }
+
+    .youtube-link {
+        top: 110px;
+        left: 0%;
+    }
+
+    .video,
+    .image,
+    .link {
+        margin: 0%;
+        margin-top: -40px;
+    }
+
+    .morado-btn {
+        background-color: #302f51;
+        border: 1px solid #302f51;
+        color: white;
+        margin-bottom: 100px;
     }
 }
 </style>

@@ -7,28 +7,28 @@ use App\Models\videos;
 use App\Models\multimedia;
 use Inertia\Inertia;
 
-use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Facades\Storage;
 
 class VideoController extends Controller
 {
-        /**
+    /**
      * Almacena un nuevo video en el sistema.
      *
      * @param Request $request Objeto de solicitud HTTP que contiene los datos del video.
      * @return \Illuminate\Http\Response Respuesta JSON con un mensaje de éxito o error.
      * 
      * @throws \Illuminate\Validation\ValidationException Si la validación de los datos del video falla.
-     * @throws \Illuminate\Http\ClientException Si ocurre un error al almacenar el archivo de video.
+     * 
      */
     public function crearVideo(Request $request)
     {
         $request->validate([
             'nombre_archivo' => 'required|string|max:255',
-            'archivo' => 'required|file|mimes:mp4|max:20480', // Tamaño máximo de 20MB (ajustar si es necesario)
+            'archivo' => 'required|file|mimes:mp4|max:102400', // Tamaño máximo de archivos en kilobytes (ajustar si es necesario)
         ]);
 
         $file = $request->file('archivo');
-        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $filename = $request->nombre_archivo;
 
         try {
             // Almacenar el archivo de video

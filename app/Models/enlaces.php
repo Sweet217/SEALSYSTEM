@@ -21,7 +21,7 @@ class enlaces extends Model
      * @var array
      * 
      */
-    protected $fillable = ['data', 'multimedia_id'];
+    protected $fillable = ['data', 'multimedia_id', 'nombre_enlace'];
 
     /**
      * Relación con la tabla 'multimedia'.

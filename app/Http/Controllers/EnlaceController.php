@@ -12,13 +12,16 @@ class EnlaceController extends Controller
     /**
      * Crea un nuevo enlace multimedia y lo asocia a una lista.
      */
-    
-    public function crearEnlace(Request $request) {
+
+    public function crearEnlace(Request $request)
+    {
+        \Log::info('Datos recibidos:', $request->all());
         $request->validate([
+            'nombre_enlace' => 'required|string',
             'data' => 'required|string',
         ]);
 
-         // Crear un nuevo registro de multimedia de tipo 'enlace'
+        // Crear un nuevo registro de multimedia de tipo 'enlace'
 
         $multimedia = Multimedia::create([
             'tipo' => 'enlace',
@@ -26,6 +29,7 @@ class EnlaceController extends Controller
         ]);
         // Crear el enlace en la tabla Enlaces asociándolo al multimedia creado
         enlaces::create([
+            'nombre_enlace' => $request->nombre_enlace,
             'data' => $request->data,
             'multimedia_id' => $multimedia->multimedia_id,
         ]);
@@ -35,9 +39,10 @@ class EnlaceController extends Controller
 
     /** 
      *  Elimina un enlace multimedia y su correspondiente registro en Multimedia.
-    */
+     */
 
-    public function eliminarEnlace(Request $request, $multimedia_id, $enlace_id) {
+    public function eliminarEnlace(Request $request, $multimedia_id, $enlace_id)
+    {
         // Buscar el enlace por su ID
         $enlace = Enlaces::find($enlace_id);
         // Verificar si el enlace existe y si pertenece al multimedia indicado
@@ -53,6 +58,6 @@ class EnlaceController extends Controller
         }
 
         return response()->json(['message' => 'Enlace eliminado correctamente'], 200);
-        
+
     }
 }
