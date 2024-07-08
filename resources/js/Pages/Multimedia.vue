@@ -272,7 +272,7 @@ export default {
         handleImagenSeleccionada(event) {
             this.nuevaImagen.archivo = event.target.files[0];
             const file = event.target.files[0];
-            if (file & this.nuevaImagen.nombre_archivo === '') {
+            if (file && this.nuevaImagen.nombre_archivo === '') {
                 this.nuevaImagen.nombre_archivo = file.name;
             }
         },
@@ -280,7 +280,7 @@ export default {
         handleVideoSeleccionado(event) {
             this.nuevoVideo.archivo = event.target.files[0];
             const file = event.target.files[0];
-            if (file & this.nuevoVideo.nombre_archivo === '') {
+            if (file && this.nuevoVideo.nombre_archivo === '') {
                 this.nuevoVideo.nombre_archivo = file.name;
             }
         },
