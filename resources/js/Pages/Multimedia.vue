@@ -236,7 +236,7 @@ export default {
         // Método para crear un nuevo enlace
         crearEnlace() {
             const formData = new FormData();
-            console.log(this.nuevoEnlace.nombre_enlace);
+            //console.log(this.nuevoEnlace.nombre_enlace);
             formData.append('nombre_enlace', this.nuevoEnlace.nombre_enlace);
             formData.append('data', this.nuevoEnlace.enlace);
             formData.append('id_lista', this.nuevaMultimedia.id_lista);
@@ -302,7 +302,7 @@ export default {
                             confirmButtonText: 'Aceptar'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                console.log(response.data.message);
+                                //console.log(response.data.message);
                                 window.location.reload(); // Recarga la página
                             }
                         });
@@ -335,7 +335,7 @@ export default {
                             confirmButtonText: 'Aceptar'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                console.log(response.data.message);
+                                //  console.log(response.data.message);
                                 window.location.reload(); // Recarga la página
                             }
                         });
@@ -368,7 +368,7 @@ export default {
                             confirmButtonText: 'Aceptar'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                console.log(response.data.message);
+                                // console.log(response.data.message);
                                 window.location.reload(); // Recarga la página
                             }
                         });
@@ -393,11 +393,11 @@ export default {
                 multimedia_id: item.data.multimedia_id,
                 nueva_posicion: index + 1, // +1 porque las posiciones usualmente empiezan desde 1
             }));
-            console.log(positions);
+            //console.log(positions);
 
             try {
                 const response = await axios.put('/actualizarOrdenMultimedia', { positions });
-                console.log('Posiciones actualizadas correctamente:', response.data.message);
+                //console.log('Posiciones actualizadas correctamente:', response.data.message);
             } catch (error) {
                 console.error('Error al actualizar posiciones:', error.response.data || error.message);
             }
@@ -640,8 +640,8 @@ export default {
 .youtube-link {
     position: relative;
     display: flex;
-    left: 70%;
-    top: 60px;
+    left: 25%;
+    top: 65px;
 }
 
 .video,
@@ -790,7 +790,7 @@ iframe {
     }
 
     .youtube-link {
-        top: 110px;
+        top: 90px;
         left: 0%;
     }
 

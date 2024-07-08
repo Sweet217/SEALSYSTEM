@@ -415,8 +415,7 @@ export default {// Define el estado del componente
                             <div>
                                 <h3>Dispositivo: {{ equipo.nombre }}</h3>
                                 <p>Licencia: {{ equipo.licencias ? equipo.licencias.licencia : 'Sin Licencia' }}</p>
-                                <p v-show="tipoUsuario == 'Administrador'">Usuario Responsable: {{ equipo.usuarios ?
-                    equipo.usuarios.nombre : 'Sin Usuario' }}</p>
+                                <p>Usuario: {{ equipo.usuarios ? equipo.usuarios.nombre : 'Sin Usuario' }}</p>
                             </div>
                             <div class="flex space-x-2">
                                 <button v-if="showGenerarLicencia" class="btn generar-licencia-btn"
