@@ -23,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         $this->app['router']->middleware([Cors::class]);
-        //$schedule->command('app:delete-expired-licenses')->daily();
+        // $schedule->command('app:delete-expired-licenses')->daily();
     }
 }
