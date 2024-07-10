@@ -159,10 +159,6 @@ class EquiposController extends Controller
         } else if (!$licencia) {
             return response()->json(['message' => 'Licencia no encontrada'], 404);
         } else {
-            // Verificar si la licencia ya está asociada a otro equipo
-            if ($licencia->equipo_id && $licencia->equipo_id != $equipo_id) {
-                return response()->json(['message' => 'Esta licencia ya está asociada a otro equipo'], 400);
-            }
 
             // Verificar si el equipo ya está asociado con otra licencia
             $licenciaExistente = Licencias::where('equipo_id', $equipo_id)->first();
@@ -170,6 +166,11 @@ class EquiposController extends Controller
                 // Si el equipo ya tiene una licencia asociada, desasociarla
                 $licenciaExistente->equipo_id = null;
                 $licenciaExistente->save();
+            }
+
+            // Verificar que el equipo_id de la licencia y del equipo que se está editando sean iguales
+            if ($licencia->equipo_id != $equipo_id) {
+                return response()->json(['message' => 'Licencia no valida para este dispositivo'], 400);
             }
 
             // Asignar el ID de la licencia
@@ -281,7 +282,7 @@ class EquiposController extends Controller
                 $licencia->periodo = $validatedData['periodo'];
                 $licencia->licencia_inicio = $licencia_inicio;
                 $licencia->licencia_final = $licencia_final;
-                //$licencia->equipo_id = $equipo->equipo_id; //SOLO SE RELACIONARA LA LICENCIA CON EL EQUIPO CUANDO EL EQUIPO AL AGREGAR LA LICENCIA
+                $licencia->equipo_id = $equipo->equipo_id; //SOLO SE RELACIONARA LA LICENCIA CON EL EQUIPO CUANDO EL EQUIPO AL AGREGAR LA LICENCIA
                 $licencia->save();
             }
 

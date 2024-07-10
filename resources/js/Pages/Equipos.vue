@@ -341,11 +341,15 @@ export default {// Define el estado del componente
             if (!this.equipoSeleccionado.mac) {
                 return null;  // O devuelve un mensaje de error o licencia inválida
             }
+            // Obtener la fecha y la hora actuales
+            let fechaHoy = new Date();
+            let fecha = fechaHoy.toLocaleDateString(); // Obtiene la fecha en formato local
+            let hora = fechaHoy.toLocaleTimeString(); // Obtiene la hora en formato local
             let key = 'desencriptar';
             let bytes = CryptoJS.AES.decrypt(this.equipoSeleccionado.mac, key);
             let mac_desencriptada = bytes.toString(CryptoJS.enc.Utf8);
 
-            let key_combined = `${mac_desencriptada}-${this.equipoSeleccionado.server_key}`;
+            let key_combined = `${mac_desencriptada}-${this.equipoSeleccionado.server_key} - ${this.periodoSeleccionado} - ${fecha} -${hora}`;
             let hash = CryptoJS.SHA256(key_combined).toString(CryptoJS.enc.Hex);
             let shortHash = hash.substring(0, 16); // Lograr una longitud similar a la de windows.
             let formattedHash = shortHash.match(/.{1,4}/g).join('-').toUpperCase(); //Lograr que la substring sea similar a una licencia de windows XXXX-XXXX-XXXX-XXXX
@@ -514,16 +518,6 @@ export default {// Define el estado del componente
                             v-model="equipoSeleccionado.server_key" disabled>
                     </div>
                     <div class="campo">
-                        <label for="licencia">Licencia:</label>
-                        <div class="input-group">
-                            <input :value="licenciaGenerada" type="text" class="form-control rounded-pill" id="licencia"
-                                rows="4" disabled>
-                            <button @click="copiarLicencia" class="btn btn-outline-secondary rounded" type="button">
-                                <i class="bi bi-clipboard"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="campo">
                         <label for="periodo">Periodo:</label>
                         <select v-model="periodoSeleccionado" id="periodo" class="form-control rounded-pill">
                             <option value="PRUEBA">Prueba</option>
@@ -532,6 +526,16 @@ export default {// Define el estado del componente
                             <option value="SEMESTRAL">Semestral</option>
                             <option value="ANUAL">Anual</option>
                         </select>
+                    </div>
+                    <div class="campo">
+                        <label for="licencia">Licencia:</label>
+                        <div class="input-group">
+                            <input :value="licenciaGenerada" type="text" class="form-control rounded-pill" id="licencia"
+                                rows="4" disabled>
+                            <button @click="copiarLicencia" class="btn btn-outline-secondary rounded" type="button">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="text-center">
                         <button type="submit">Generar licencia</button>
