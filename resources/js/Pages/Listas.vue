@@ -177,7 +177,8 @@ export default {
     },
     // Método para crear una nueva lista
     crearLista() {
-      if (!this.nuevoNombre || !this.equipoSeleccionado.equipo_id) {
+      console.log(this.nuevoNombre, this.listaSeleccionada.equipo_id);
+      if (!this.nuevoNombre || !this.listaSeleccionada.equipo_id) {
         Swal.fire({
           title: 'Error al crear la lista',
           text: 'Por favor, complete todos los campos.',
@@ -188,7 +189,7 @@ export default {
       }
       axios.post('/listasPOST', {
         nombre: this.nuevoNombre, // Envía el nombre de la nueva lista
-        equipo_id: this.equipoSeleccionado.equipo_id, // Envía el ID del equipo seleccionado
+        equipo_id: this.listaSeleccionada.equipo_id, // Envía el ID del equipo seleccionado
         user_id: this.user_id, // Envía el ID del usuario que esta utilizando el sistema
       })
         .then(() => {
@@ -255,9 +256,7 @@ export default {
             </button>
             <div class="dispositivo-container">
               <!-- Mostrar equipo_id si está presente, de lo contrario mostrar que es global -->
-              <a v-if="lista.equipo_id !== null" class="equipo-text">Lista perteneciente al dispositivo {{
-        lista.equipo.nombre
-      }}</a>
+              <a v-if="lista.equipo_id !== null" class="equipo-text">{{ lista.equipo.nombre }}</a>
               <a v-else class="equipo-text">Lista global en tus dispositivos</a>
             </div>
             <div class="flex space-x-2">
@@ -305,9 +304,9 @@ export default {
           </div>
           <div class="mb-3">
             <label for="equipoSeleccionado">Dispositivo:</label>
-            <select v-model="equipoSeleccionado.equipo_id" id="equipoSeleccionado" class="form-control rounded-pill">
+            <select v-model="listaSeleccionada.equipo_id" id="equipoSeleccionado" class="form-control rounded-pill">
               <option value="todos">Todos mis dispositivos</option>
-              <option v-for=" equipo  in  equiposDisponibles " :value="equipo.equipo_id" :key="equipo.equipo_id">
+              <option v-for="equipo in equiposDisponibles" :value="equipo.equipo_id" :key="equipo.equipo_id">
                 {{ equipo.nombre }}
               </option>
             </select>

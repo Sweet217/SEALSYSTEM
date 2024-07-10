@@ -7,6 +7,9 @@ use Inertia\Inertia;
 use App\Models\equipos; //Importa el modelo equipos
 use App\Models\Users;   //Importa el modelo users
 use App\Models\licencias; //Importa el modelo licencias
+use Carbon\Carbon;
+
+use Illuminate\Support\Facades\Crypt;
 
 class EquiposController extends Controller
 {
@@ -49,7 +52,7 @@ class EquiposController extends Controller
             'nombre' => 'required',
             'numero_licencia' => 'nullable',
             'nombre_usuario' => 'required',
-            'mac' => 'required'
+            'mac' => 'nullable'
         ]);
 
         // Buscar el ID del usuario por su nombre
@@ -238,38 +241,55 @@ class EquiposController extends Controller
     {
         $validatedData = $request->validate([
             'server_key' => 'required|string',
-            'licencia' => 'required'
+            'licencia' => 'required|string',
+            'mac' => 'required|string',
+            'periodo' => 'required|string|in:PRUEBA,MENSUAL,TRIMESTRAL,SEMESTRAL,ANUAL'
         ]);
 
         try {
             // Encontrar el equipo por ID
             $equipo = Equipos::find($equipo_id);
 
-
             // Verificar si el equipo existe
             if (!$equipo) {
                 return response()->json(['error' => 'Equipo no encontrado'], 404);
             }
 
-            // Actualizar la server_key del equipo
+            // Actualizar la server_key y la mac del equipo
             $equipo->server_key = $validatedData['server_key'];
+            $equipo->mac = $validatedData['mac'];
             $equipo->save();
 
-            // Checar si la licencia ya existe 
+            // Determinar fechas de inicio y final según el período seleccionado
+            $licencia_inicio = Carbon::now();
+            $licencia_final = match ($validatedData['periodo']) {
+                'PRUEBA' => $licencia_inicio->copy()->addDays(7),
+                'MENSUAL' => $licencia_inicio->copy()->addMonth(),
+                'TRIMESTRAL' => $licencia_inicio->copy()->addMonths(3),
+                'SEMESTRAL' => $licencia_inicio->copy()->addMonths(6),
+                'ANUAL' => $licencia_inicio->copy()->addYear(),
+                default => $licencia_inicio->copy()->addMonth(), // Default a 1 mes
+            };
+
+            // Checar si la licencia ya existe
             $licenciaExistente = Licencias::where('licencia', $validatedData['licencia'])->first();
 
             if (!$licenciaExistente) {
                 // Guardar la licencia si no existe
                 $licencia = new Licencias();
                 $licencia->licencia = $validatedData['licencia'];
+                $licencia->periodo = $validatedData['periodo'];
+                $licencia->licencia_inicio = $licencia_inicio;
+                $licencia->licencia_final = $licencia_final;
+                //$licencia->equipo_id = $equipo->equipo_id; //SOLO SE RELACIONARA LA LICENCIA CON EL EQUIPO CUANDO EL EQUIPO AL AGREGAR LA LICENCIA
                 $licencia->save();
             }
 
             // Devolver una respuesta exitosa
-            return response()->json(['message' => 'Server Key guardada correctamente'], 200);
+            return response()->json(['message' => 'Server Key y licencia guardadas correctamente'], 200);
         } catch (\Exception $e) {
-            \Log::error('Error al agregar la serverkey ' . $e->getMessage());
-            return response()->json(['message' => 'Error al agregar la serverkey'], 500);
+            \Log::error('Error al agregar la server key: ' . $e->getMessage());
+            return response()->json(['message' => 'Error al agregar la server key'], 500);
         }
     }
 }

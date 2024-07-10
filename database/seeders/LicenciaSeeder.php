@@ -21,9 +21,10 @@ class LicenciaSeeder extends Seeder
     public function run(): void
     {
         $equipo1 = equipos::first(); // Assuming EquipoSeeder runs first
-        
+
         licencias::create([
             'licencia' => '12403024',
+            'periodo' => 'PRUEBA',
             'licencia_inicio' => now(),
             'licencia_final' => now()->addMonth(),
             'equipo_id' => $equipo1->equipo_id,
@@ -31,6 +32,7 @@ class LicenciaSeeder extends Seeder
 
         licencias::create([
             'licencia' => '123456',
+            'periodo' => 'PRUEBA',
             'licencia_inicio' => now(),
             'licencia_final' => now()->addMonth(),
             'equipo_id' => null,

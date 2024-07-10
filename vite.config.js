@@ -24,8 +24,8 @@ export default defineConfig({
     server: {
         host: '0.0.0.0',
         hmr: {
-            host: 'https://caring-platypus-kind.ngrok-free.app/',
-            //host: 'localhost'
+            //host: 'https://caring-platypus-kind.ngrok-free.app/',
+            host: 'localhost'
         },
     },
 });

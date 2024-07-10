@@ -1,9 +1,9 @@
 <template>
   <nav id="mainNavigation" class="navbar">
-    <div class="navbar-container">
-      <div class="navbar-brand">
+    <div class="navbar-container d-flex justify-content-between align-items-center">
+      <div class="navbar-brand d-flex align-items-center">
         <img class="solytec-logo rounded" src="@/images/SOLYTEC LOGO.jpg" @click="redirectPantallaPrincipal" />
-        <span class="nombre-usuario rounded" @mouseover="showDetails = true" @mouseleave="showDetails = false">
+        <span class="nombre-usuario rounded ml-2" @mouseover="showDetails = true" @mouseleave="showDetails = false">
           {{ nombreUsuario }}
         </span>
         <transition name="fade">
@@ -12,9 +12,8 @@
             <p>Correo Electrónico: {{ correoUsuario }}</p>
           </div>
         </transition>
-        <!-- <span>{{ nombreUsuario }}</span> -->
       </div>
-      <button class="navbar-toggler" @click="toggleMenu">
+      <button class="navbar-toggler ml-auto" @click="toggleMenu">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div :class="{ 'navbar-menu': true, 'is-active': menuOpen }">
@@ -234,6 +233,13 @@ export default {
 
   .navbar-toggler {
     display: block;
+  }
+
+  .navbar-toggler-icon {
+    display: inline-block;
+    width: 1.25em;
+    height: 1.25em;
+    background-color: white;
   }
 
   .navbar-item {

@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('equipos', function (Blueprint $table) {
             $table->id('equipo_id'); //Id de la tabla autoincremental
             $table->string('nombre'); //Nombre del equipo "Kiosko Sonora"
-            $table->string('mac'); //Mac del equipo, se terminara guardando una encriptacion AES
+            $table->string('mac')->nullable(); //Mac del equipo, se terminara guardando una encriptacion AES
             $table->string('server_key')->nullable(); //Server key del equipo que se genera al querer crear una licencia. //Su valor puede ser nulo
             $table->unsignedBigInteger('licencia_id')->nullable(); //Relacion con licencia // Usar unsignedBigInteger para llaves foraneas (es un requerimiento de laravel)
             $table->unsignedBigInteger('user_id'); //Relacion con usuario // Usar unsignedBigInteger para llaves foraneas (es un requerimiento de laravel)

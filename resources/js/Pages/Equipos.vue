@@ -43,12 +43,21 @@ export default {// Define el estado del componente
             showGenerarLicencia: false, // Indica si se muestra el botón para generar licencia
             usuariosDisponibles: [],
             busqueda: '',
+            periodoSeleccionado: 'PRUEBA',
             error: null, // Almacena el error en caso de que ocurra uno
         };
     },
     computed: {
         licenciaGenerada() {
             return this.generarLicencia() //Para lograr poner el generarLicencia() dentro de un input con v-model
+        },
+        macDesencriptada: {
+            get() {
+                return this.equipoSeleccionado.mac ? this.desencriptarMac(this.equipoSeleccionado.mac) : '';
+            },
+            set(value) {
+                this.equipoSeleccionado.mac = this.encriptarMac(value);
+            }
         }
     },
     mounted() {
@@ -143,12 +152,12 @@ export default {// Define el estado del componente
             };
         },
         abrirModalGenerarLicencia(equipo) {
-
             this.equipoSeleccionado = {
                 equipo_id: equipo.equipo_id,
-                mac: equipo.mac,
+                mac: equipo.mac || '',
                 server_key: equipo.server_key ? equipo.server_key : this.generarServerKey() //Si ya tiene una server_key pasar esa, si no, generar una.
             };
+
             this.generarLicenciaModalVisible = true;
         },
         cerrarModalGenerarLicencia() {
@@ -260,11 +269,7 @@ export default {// Define el estado del componente
                 });
                 return;
             }
-
-
-            //La key sera desencriptar
-            let key = "desencriptar"
-            let mac_encriptada = CryptoJS.AES.encrypt(this.nuevoEquipo.mac, key).toString()
+            let mac_encriptada = null;
 
             axios.post('/equiposPOST', {
                 nombre: this.nuevoEquipo.nombre,
@@ -286,30 +291,25 @@ export default {// Define el estado del componente
                     });
                 })
                 .catch(error => {
-
+                    let errorMessage = 'Ocurrió un error al procesar la solicitud.';
                     if (error.response && error.response.data && error.response.data.message) {
-                        Swal.fire({
-                            title: 'Error al crear el dispositivo',
-                            text: error.response.data.message,
-                            icon: 'error',
-                            confirmButtonText: 'Aceptar'
-                        });
-                    } else {
-                        Swal.fire({
-                            title: 'Error al crear el dispositivo',
-                            text: 'Ocurrió un error al procesar la solicitud.',
-                            icon: 'error',
-                            confirmButtonText: 'Aceptar'
-                        });
+                        errorMessage = error.response.data.message;
                     }
+
+                    Swal.fire({
+                        title: 'Error al crear el dispositivo',
+                        text: errorMessage,
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
                 });
         },
-
         guardarServerKey(equipo_id) {
-
             axios.post(`/equipos/agregarServerKey/${equipo_id}`, {
                 server_key: this.equipoSeleccionado.server_key,
-                licencia: this.licenciaGenerada
+                licencia: this.licenciaGenerada,
+                mac: this.equipoSeleccionado.mac,
+                periodo: this.periodoSeleccionado
             })
                 .then(response => {
                     Swal.fire({
@@ -333,12 +333,14 @@ export default {// Define el estado del componente
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            this.cerrarModalGenerarLicencia();
                         }
                     });
                 });
         },
         generarLicencia() {
+            if (!this.equipoSeleccionado.mac) {
+                return null;  // O devuelve un mensaje de error o licencia inválida
+            }
             let key = 'desencriptar';
             let bytes = CryptoJS.AES.decrypt(this.equipoSeleccionado.mac, key);
             let mac_desencriptada = bytes.toString(CryptoJS.enc.Utf8);
@@ -385,6 +387,16 @@ export default {// Define el estado del componente
                     confirmButtonText: 'Aceptar'
                 });
             }
+        },
+        desencriptarMac(mac) {
+            if (!mac) return null;
+            let key = 'desencriptar';
+            let bytes = CryptoJS.AES.decrypt(mac, key);
+            return bytes.toString(CryptoJS.enc.Utf8);
+        },
+        encriptarMac(mac) {
+            let key = 'desencriptar';
+            return CryptoJS.AES.encrypt(mac, key).toString();
         }
     }
 }
@@ -415,7 +427,9 @@ export default {// Define el estado del componente
                             <div>
                                 <h3>Dispositivo: {{ equipo.nombre }}</h3>
                                 <p>Licencia: {{ equipo.licencias ? equipo.licencias.licencia : 'Sin Licencia' }}</p>
-                                <p>Usuario: {{ equipo.usuarios ? equipo.usuarios.nombre : 'Sin Usuario' }}</p>
+                                <p>Mac: {{ desencriptarMac(equipo.mac) }} </p>
+                                <p v-show="tipoUsuario == 'Administrador'">Usuario: {{ equipo.usuarios ?
+                    equipo.usuarios.nombre : 'Sin Usuario' }}</p>
                             </div>
                             <div class="flex space-x-2">
                                 <button v-if="showGenerarLicencia" class="btn generar-licencia-btn"
@@ -458,11 +472,11 @@ export default {// Define el estado del componente
             </div>
         </div>
 
-        <!-- Modal para crear equipo -->
+        <!-- Modal para agregar equipo -->
         <div v-if="crearModalVisible" class="modal">
             <div class="modal-content">
                 <span class="close" @click="cerrarCrearModal">&times;</span>
-                <h2>Crear Nuevo Dispositivo</h2>
+                <h2>Agregar Nuevo Dispositivo</h2>
                 <form @submit.prevent="crearEquipo">
                     <label for="nombre">Nombre del Dispositivo:</label>
                     <input type="text" v-model="nuevoEquipo.nombre" id="nombre" class="form-control rounded-pill">
@@ -483,8 +497,6 @@ export default {// Define el estado del componente
                 </form>
             </div>
         </div>
-
-
         <!-- Modal para generar licencia -->
         <div v-if="generarLicenciaModalVisible" class="modal">
             <div class="modal-content">
@@ -493,8 +505,8 @@ export default {// Define el estado del componente
                 <form @submit.prevent="guardarServerKey(equipoSeleccionado.equipo_id)">
                     <div class="campo">
                         <label for="mac">Mac:</label>
-                        <input type="text" v-model="equipoSeleccionado.mac" id="mac" class="form-control rounded-pill"
-                            disabled>
+                        <input type="text" v-model="macDesencriptada" id="mac" class="form-control rounded-pill"
+                            :disabled="equipoSeleccionado.mac !== ''">
                     </div>
                     <div class="campo">
                         <label for="serverKey">Server Key:</label>
@@ -511,8 +523,18 @@ export default {// Define el estado del componente
                             </button>
                         </div>
                     </div>
+                    <div class="campo">
+                        <label for="periodo">Periodo:</label>
+                        <select v-model="periodoSeleccionado" id="periodo" class="form-control rounded-pill">
+                            <option value="PRUEBA">Prueba</option>
+                            <option value="MENSUAL">Mensual</option>
+                            <option value="TRIMESTRAL">Trimestral</option>
+                            <option value="SEMESTRAL">Semestral</option>
+                            <option value="ANUAL">Anual</option>
+                        </select>
+                    </div>
                     <div class="text-center">
-                        <button type="submit">Guardar</button>
+                        <button type="submit">Generar licencia</button>
                     </div>
                 </form>
             </div>

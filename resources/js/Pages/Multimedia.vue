@@ -431,11 +431,12 @@ export default {
             <div v-if="multimedia.length">
                 <draggable :list="multimedia" :item-key="item => item.data.id" @end="handleDragEnd">
                     <template #item="{ element }">
-                        <div class="row align-items-center justify-content-between mb-4">
+                        <div class="multimedia-content row align-items-center justify-content-between mb-4">
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
                                 <template v-if="element.tipo === 'video'">
                                     <div class="video">
-                                        <h2 class="text-2l font-bold mb-4">Video</h2>
+                                        <h2 class="text-2l font-bold mb-4"><i
+                                                class="bi bi-arrow-down-up arrow-icon"></i>Video</h2>
                                         <a>{{ element.data.nombre_archivo }} </a>
                                         <video :src="`/storage/${element.data.data}`" controls></video>
                                     </div>
@@ -443,7 +444,9 @@ export default {
 
                                 <template v-else-if="element.tipo === 'imagen'">
                                     <div class="image">
-                                        <h2 class="text-2l font-bold mb-4">Imagen</h2>
+                                        <h2 class="text-2l font-bold mb-4"><i
+                                                class="bi bi-arrow-down-up arrow-icon"></i>Imagen
+                                        </h2>
                                         <a> {{ element.data.nombre_archivo }} </a>
                                         <img :src="`/storage/${element.data.data}`"
                                             :alt="element.data.nombre_archivo" />
@@ -452,7 +455,8 @@ export default {
 
                                 <template v-else-if="element.tipo === 'enlace'">
                                     <div class="link">
-                                        <h2 class="text-2l font-bold mb-4">Enlace</h2>
+                                        <h2 class="text-2l font-bold mb-4"><i
+                                                class="bi bi-arrow-down-up arrow-icon"></i>Enlace</h2>
                                         <a class="nombre_enlace">{{ element.data.nombre_enlace }} </a>
                                         <a :href="element.data.data" target="_blank"
                                             class="youtube-link enlace-youtube">{{
@@ -604,6 +608,10 @@ export default {
 </template>
 
 <style scoped>
+.arrow-icon {
+    margin-right: 10px;
+}
+
 .content {
     padding: 40px;
 }
@@ -777,6 +785,11 @@ iframe {
 
 /* Responsive design */
 @media (max-width: 600px) {
+    .multimedia-content {
+        width: 220px;
+        height: auto;
+    }
+
     .modal-content {
         width: 90%;
         min-width: unset;
@@ -790,7 +803,7 @@ iframe {
     }
 
     .youtube-link {
-        top: 90px;
+        top: 110px;
         left: 0%;
     }
 
