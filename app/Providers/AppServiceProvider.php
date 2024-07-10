@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Console\Scheduling\Schedule;
 use App\Http\Middleware\Cors;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,5 +23,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         $this->app['router']->middleware([Cors::class]);
+        //$schedule->command('app:delete-expired-licenses')->daily();
     }
 }

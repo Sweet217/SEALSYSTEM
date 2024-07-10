@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Carbon\Carbon;
+use App\Models\licencias;
 
 class DeleteExpiredLicenses extends Command
 {
@@ -18,7 +20,7 @@ class DeleteExpiredLicenses extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Delete licenses that have expired';
 
     /**
      * Execute the console command.
@@ -26,5 +28,14 @@ class DeleteExpiredLicenses extends Command
     public function handle()
     {
         //
+        $now = Carbon::now();
+        $expiredLicenses = Licencias::where('licencia_final', '<', $now)->get();
+
+        foreach ($expiredLicenses as $licencia) {
+            $licencia->delete();
+            $this->info('Deleted license with ID: ' . $licencia->licencia_id);
+        }
+
+        $this->info('Expired licenses deleted successfully.');
     }
 }
