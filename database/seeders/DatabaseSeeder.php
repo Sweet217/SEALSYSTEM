@@ -23,14 +23,14 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UsuarioSeeder::class,
-            
-            EquipoSeeder::class,
-            LicenciaSeeder::class,
-            ListaSeeder::class,
-            MultimediaSeeder::class,
-            ImagenSeeder::class,
-            EnlaceSeeder::class,
-            VideoSeeder::class
+
+            // EquipoSeeder::class,
+            // LicenciaSeeder::class,
+            // ListaSeeder::class,
+            // MultimediaSeeder::class,
+            // ImagenSeeder::class,
+            // EnlaceSeeder::class,
+            // VideoSeeder::class
         ]);
     }
 }

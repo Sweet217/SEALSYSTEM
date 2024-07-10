@@ -81,13 +81,6 @@ export default {// Define el estado del componente
                     this.error = 'Error al obtener el usuario actual.';
                 }
             });
-        axios.get('/api/get_mac')
-            .then(response => {
-                this.mac = response.data.mac;
-            })
-            .catch(error => {
-                console.error('Error al obtener la mac:', error);
-            })
         axios.get('/todosusuarios')
             .then(response => {
                 this.usuariosDisponibles = response.data;
@@ -305,6 +298,19 @@ export default {// Define el estado del componente
                 });
         },
         guardarServerKey(equipo_id) {
+            if (!this.validarFormatoMAC(this.desencriptarMac(this.equipoSeleccionado.mac))) {
+                Swal.fire({
+                    title: 'MAC inválida',
+                    text: 'El formato de la dirección MAC es incorrecto. Debe tener el formato XX:XX:XX:XX:XX:XX.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.cerrarModalGenerarLicencia();
+                    }
+                });
+                return; // Detener la función si el formato de MAC es incorrecto
+            }
             axios.post(`/equipos/agregarServerKey/${equipo_id}`, {
                 server_key: this.equipoSeleccionado.server_key,
                 licencia: this.licenciaGenerada,
@@ -313,7 +319,7 @@ export default {// Define el estado del componente
             })
                 .then(response => {
                     Swal.fire({
-                        title: 'Server key guardada correctamente',
+                        title: 'Guardado correctamente',
                         text: '',
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
@@ -401,7 +407,12 @@ export default {// Define el estado del componente
         encriptarMac(mac) {
             let key = 'desencriptar';
             return CryptoJS.AES.encrypt(mac, key).toString();
-        }
+        },
+        validarFormatoMAC(mac) {
+            // Expresión regular para validar el formato de una dirección MAC XX:XX:XX:XX:XX:XX
+            const regexMAC = /^([0-9A-Fa-f]{2}[:-]?){5}([0-9A-Fa-f]{2})$/;
+            return regexMAC.test(mac);
+        },
     }
 }
 </script>
@@ -510,9 +521,9 @@ export default {// Define el estado del componente
                     <div class="campo">
                         <label for="mac">Mac:</label>
                         <input type="text" v-model="macDesencriptada" id="mac" class="form-control rounded-pill"
-                            :disabled="equipoSeleccionado.mac !== ''">
+                            :disabled="macDesencriptada.length === 17">
                     </div>
-                    <div class="campo">
+                    <div class=" campo">
                         <label for="serverKey">Server Key:</label>
                         <input class="form-control rounded-pill" type="text" id="serverKey"
                             v-model="equipoSeleccionado.server_key" disabled>

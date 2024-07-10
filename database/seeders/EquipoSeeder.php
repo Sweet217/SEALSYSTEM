@@ -19,28 +19,28 @@ class EquipoSeeder extends Seeder
      * Run the database seeds.
      */
 
-     
+
     public function run(): void
     {
         $user1 = Users::first(); // Assuming UsuarioSeeder runs first
         $licencia1 = Licencias::first();
-        
-        if($licencia1){
-        equipos::create([
-            'nombre' => 'Kiosko Sonora',
-            'licencia_id' => $licencia1->licencia_id,
-            'mac' => '12:52:A1:B2:A1',
-            'server_key' => NULL,
-            'user_id' => $user1->user_id,
-        ]);
-        } else {
+
+        if ($licencia1) {
             equipos::create([
                 'nombre' => 'Kiosko Sonora',
-                'mac' => '12:52:A1:B2:A1',
+                'licencia_id' => $licencia1->licencia_id,
+                'mac' => NULL,
                 'server_key' => NULL,
                 'user_id' => $user1->user_id,
             ]);
-        
-    }
+        } else {
+            equipos::create([
+                'nombre' => 'Kiosko Sonora',
+                'mac' => NULL,
+                'server_key' => NULL,
+                'user_id' => $user1->user_id,
+            ]);
+
+        }
     }
 }
