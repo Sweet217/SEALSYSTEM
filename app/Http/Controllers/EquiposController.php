@@ -164,7 +164,7 @@ class EquiposController extends Controller
             $licenciaExistente = Licencias::where('equipo_id', $equipo_id)->first();
             if ($licenciaExistente && $licenciaExistente->licencia_id != $licencia->licencia_id) {
                 // Si el equipo ya tiene una licencia asociada, desasociarla
-                $licenciaExistente->equipo_id = null;
+                $licenciaExistente->equipo_id = $equipo_id;
                 $licenciaExistente->save();
             }
 
@@ -180,7 +180,7 @@ class EquiposController extends Controller
             if ($equipo->licencia_id && $equipo->licencia_id != $licencia_id) {
                 $licencia_anterior = Licencias::find($equipo->licencia_id);
                 if ($licencia_anterior) {
-                    $licencia_anterior->equipo_id = null;
+                    $licencia_anterior->equipo_id = $equipo_id;
                     $licencia_anterior->save();
                 }
             }
@@ -198,7 +198,7 @@ class EquiposController extends Controller
         $licenciaEquipo = Licencias::where('equipo_id', $equipo_id)->first();
         if ($licenciaEquipo) {
             // Si el equipo tenía una licencia asociada, desasociarla
-            $licenciaEquipo->equipo_id = null;
+            $licenciaEquipo->equipo_id = $equipo_id;
             $licenciaEquipo->save();
         }
 

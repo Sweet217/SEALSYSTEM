@@ -382,7 +382,7 @@ export default {// Define el estado del componente
 
                 // Mostrar mensaje de éxito
                 Swal.fire({
-                    title: 'Licencia copiada al portapapeless!',
+                    title: 'Licencia copiada al portapapeles!',
                     text: '',
                     icon: 'success',
                     confirmButtonText: 'Aceptar'
