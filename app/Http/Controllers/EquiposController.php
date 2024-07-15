@@ -197,7 +197,6 @@ class EquiposController extends Controller
 
         $licenciaEquipo = Licencias::where('equipo_id', $equipo_id)->first();
         if ($licenciaEquipo) {
-            // Si el equipo tenía una licencia asociada, desasociarla
             $licenciaEquipo->equipo_id = $equipo_id;
             $licenciaEquipo->save();
         }

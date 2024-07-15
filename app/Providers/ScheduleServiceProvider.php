@@ -22,6 +22,5 @@ class ScheduleServiceProvider extends ServiceProvider
     public function boot(Schedule $schedule): void
     {
         $schedule->command('app:delete-expired-licenses')->daily();
-        //
     }
 }

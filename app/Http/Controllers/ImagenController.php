@@ -43,7 +43,7 @@ class ImagenController extends Controller
         $request->validate([
             'nombre_archivo' => 'required|string|max:255',
             'tiempo' => 'required|integer',
-            'archivo' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:250000', //tamano maximo en kilobytes (100mb) (ajustar si es necesario)
+            'archivo' => 'required|file|mimes:jpeg,png,jpg,gif,svg', //tamano maximo en kilobytes (100mb) (ajustar si es necesario)
         ]);
 
         // Obtener el archivo cargado

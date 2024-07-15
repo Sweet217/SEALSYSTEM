@@ -29,6 +29,9 @@ export default {// Define el estado del componente
                 mac: '', //Mac del equipo
                 server_key: '', //Server key del equipo
                 nombre_usuario: '', //Nombre del usuario del equipo
+                licencia_inicio: '',
+                licencia_final: '',
+                periodo: ''
             },
             nuevoEquipo: { // Nuevo equipo a crear
                 nombre: '', //Nombre del equipo que se creara
@@ -53,11 +56,20 @@ export default {// Define el estado del componente
         },
         macDesencriptada: {
             get() {
-                return this.equipoSeleccionado.mac ? this.desencriptarMac(this.equipoSeleccionado.mac) : '';
+                return this.equipoSeleccionado.mac || '';
             },
             set(value) {
-                this.equipoSeleccionado.mac = this.encriptarMac(value);
+                this.equipoSeleccionado.mac = value;
             }
+        },
+        formattedLicensePeriod() {
+            const { licencia_inicio, licencia_final } = this.equipoSeleccionado;
+
+            // Verifica si ambas fechas están presentes
+            if (!licencia_inicio || !licencia_final) {
+                return 'Añadir Licencia';
+            }
+            return `${licencia_inicio} - ${licencia_final}`;
         }
     },
     mounted() {
@@ -104,7 +116,6 @@ export default {// Define el estado del componente
             if (this.tipoUsuario == 'Administrador') {
                 return this.equipos
             } else {
-                // Si el usuario es un operador, filtrar solo los equipos que son suyos
                 return this.equipos
             }
         },
@@ -113,9 +124,13 @@ export default {// Define el estado del componente
                 equipo_id: equipo.equipo_id,
                 nombre: equipo.nombre,
                 numero_licencia: equipo.licencias ? equipo.licencias.licencia : '',
-                nombre_usuario: equipo.usuarios ? equipo.usuarios.nombre : ''
+                nombre_usuario: equipo.usuarios ? equipo.usuarios.nombre : '',
+                licencia_inicio: equipo.licencias ? equipo.licencias.licencia_inicio : '',
+                licencia_final: equipo.licencias ? equipo.licencias.licencia_inicio : '',
+                periodo: equipo.licencias ? equipo.licencias.periodo : '',
             };
             this.modalVisible = true;
+            console.log(this.equipoSeleccionado.licencia_inicio);
         },
         cerrarModal() {
             this.modalVisible = false;
@@ -123,7 +138,9 @@ export default {// Define el estado del componente
                 equipo_id: null,
                 nombre: '',
                 numero_licencia: '',
-                nombre_usuario: ''
+                nombre_usuario: '',
+                licencia_inicio: '',
+                licencia_final: ''
             };
         },
 
@@ -440,11 +457,20 @@ export default {// Define el estado del componente
                     <li v-for="equipo in filtrarEquipos()" :key="equipo.equipo_id">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3>Dispositivo: {{ equipo.nombre }}</h3>
-                                <p>Licencia: {{ equipo.licencias ? equipo.licencias.licencia : 'Sin Licencia' }}</p>
-                                <p>Mac: {{ desencriptarMac(equipo.mac) }} </p>
+                                <h3>{{ equipo.nombre }}</h3>
+                                <p v-show="tipoUsuario == 'Administrador'">Licencia: {{ equipo.licencias ?
+                    equipo.licencias.licencia : 'Sin Licencia' }}</p>
+                                <!-- <p v-show="tipoUsuario == 'Administrador'">Mac: {{ desencriptarMac(equipo.mac) }} </p> -->
                                 <p v-show="tipoUsuario == 'Administrador'">Usuario: {{ equipo.usuarios ?
                     equipo.usuarios.nombre : 'Sin Usuario' }}</p>
+                                <!-- <p>Vigencia: {{ equipo.licencias && equipo.licencias.licencia_inicio ?
+                    equipo.licencias.licencia_inicio : 'N/A' }} - {{ equipo.licencias &&
+                    equipo.licencias.licencia_final ? equipo.licencias.licencia_final : 'N/A' }}</p>
+                                <p>
+                                    Periodo:
+                                    {{ equipo.licencias && equipo.licencias.periodo ? equipo.licencias.periodo : 'N/A'
+                                    }}
+                                </p> -->
                             </div>
                             <div class="flex space-x-2">
                                 <button v-if="showGenerarLicencia" class="btn generar-licencia-btn"
@@ -466,6 +492,11 @@ export default {// Define el estado del componente
                 <span class="close" @click="cerrarModal">&times;</span>
                 <h2>Editar Dispositivo</h2>
                 <form @submit.prevent="editarEquipo(equipoSeleccionado.equipo_id)">
+                    <label for="vigencia">Vigencia:</label>
+                    <input type="text" :value="formattedLicensePeriod" id="vigencia_inicio"
+                        class="form-control rounded-pill" disabled />
+                    <input type="text" :value="equipoSeleccionado.periodo" id="periodo"
+                        class="form-control rounded-pill" disabled />
                     <label for="nombre">Nombre del Dispositivo:</label>
                     <input type="text" v-model="equipoSeleccionado.nombre" id="nombre"
                         class="form-control rounded-pill">
@@ -476,7 +507,7 @@ export default {// Define el estado del componente
                         Responsable:</label>
                     <select v-model="equipoSeleccionado.nombre_usuario" id="nombre_usuario"
                         class="form-control rounded-pill" v-show="tipoUsuario == 'Administrador'">
-                        <option v-for="usuario in usuariosDisponibles" :value="usuario.nombre" :key="usuario.id">
+                        <option v-for=" usuario  in  usuariosDisponibles " :value="usuario.nombre" :key="usuario.id">
                             {{ usuario.nombre }}
                         </option>
                     </select>
@@ -502,7 +533,7 @@ export default {// Define el estado del componente
                         Responsable:</label>
                     <select v-model="nuevoEquipo.nombre_usuario" id="nombre_usuario" class="form-control rounded-pill"
                         v-show="tipoUsuario == 'Administrador'">
-                        <option v-for="usuario in usuariosDisponibles" :value="usuario.nombre" :key="usuario.id">
+                        <option v-for=" usuario  in  usuariosDisponibles " :value="usuario.nombre" :key="usuario.id">
                             {{ usuario.nombre }}
                         </option>
                     </select>
@@ -520,9 +551,8 @@ export default {// Define el estado del componente
                 <form @submit.prevent="guardarServerKey(equipoSeleccionado.equipo_id)">
                     <div class="campo">
                         <label for="mac">Mac:</label>
-                        <input type="text" v-model="macDesencriptada" id="mac" class="form-control rounded-pill"
-                            :disabled="macDesencriptada.length === 17">
-                    </div>
+                        <input type="text" v-model="macDesencriptada" id="mac" class="form-control rounded-pill">
+                    </div>xx
                     <div class=" campo">
                         <label for="serverKey">Server Key:</label>
                         <input class="form-control rounded-pill" type="text" id="serverKey"
