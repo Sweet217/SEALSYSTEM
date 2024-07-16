@@ -67,9 +67,27 @@ export default {// Define el estado del componente
 
             // Verifica si ambas fechas están presentes
             if (!licencia_inicio || !licencia_final) {
-                return 'Añadir Licencia';
+                return '';
             }
-            return `${licencia_inicio} - ${licencia_final}`;
+
+            // Función para formatear las fechas en español
+            function formatDateToSpanish(dateString) {
+                const months = [
+                    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+                    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+                ];
+                const date = new Date(dateString);
+                const day = date.getDate();
+                const month = months[date.getMonth()];
+                const year = date.getFullYear();
+
+                return `${day} de ${month} del ${year}`;
+            }
+
+            const inicioFormatted = formatDateToSpanish(licencia_inicio);
+            const finalFormatted = formatDateToSpanish(licencia_final);
+
+            return `Licencia válida del ${inicioFormatted} al ${finalFormatted}`;
         }
     },
     mounted() {
@@ -126,7 +144,7 @@ export default {// Define el estado del componente
                 numero_licencia: equipo.licencias ? equipo.licencias.licencia : '',
                 nombre_usuario: equipo.usuarios ? equipo.usuarios.nombre : '',
                 licencia_inicio: equipo.licencias ? equipo.licencias.licencia_inicio : '',
-                licencia_final: equipo.licencias ? equipo.licencias.licencia_inicio : '',
+                licencia_final: equipo.licencias ? equipo.licencias.licencia_final : '',
                 periodo: equipo.licencias ? equipo.licencias.periodo : '',
             };
             this.modalVisible = true;
@@ -220,7 +238,7 @@ export default {// Define el estado del componente
                 .then(() => {
                     Swal.fire({
                         title: 'Dispositivo editado',
-                        text: '',
+                        text: this.formattedLicensePeriod,
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
@@ -336,8 +354,11 @@ export default {// Define el estado del componente
             })
                 .then(response => {
                     Swal.fire({
-                        title: 'Guardado correctamente',
-                        text: '',
+                        title: 'Licencia Generada Correctamente',
+                        text: this.licenciaGenerada,
+                        html: `${this.licenciaGenerada} <button id="copyButton" class="btn btn-outline-secondary rounded" type="button">
+                    <i class="bi bi-clipboard"></i>
+                </button>`,
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then((result) => {
@@ -345,6 +366,16 @@ export default {// Define el estado del componente
                             this.cerrarModalGenerarLicencia();
                             window.location.reload();
                         }
+                    });
+                    Swal.getHtmlContainer().querySelector('#copyButton').addEventListener('click', (event) => {
+                        navigator.clipboard.writeText(this.licenciaGenerada).then(() => {
+                            // Swal.fire('Copiado', 'La licencia ha sido copiada al portapapeles', 'success');
+                            event.target.innerHTML = '<i class="bi bi-check"></i>';
+                            event.target.classList.remove('btn-outline-secondary');
+                            event.target.classList.add('btn-outline-success');
+                        }).catch(err => {
+                            Swal.fire('Error', 'No se pudo copiar la licencia', 'error');
+                        });
                     });
                 })
                 .catch(error => {
@@ -396,23 +427,8 @@ export default {// Define el estado del componente
             try {
                 // Intentar copiar el texto al portapapeles
                 navigator.clipboard.writeText(licenciaInput.value);
-
-                // Mostrar mensaje de éxito
-                Swal.fire({
-                    title: 'Licencia copiada al portapapeles!',
-                    text: '',
-                    icon: 'success',
-                    confirmButtonText: 'Aceptar'
-                });
             } catch (err) {
                 console.error('Error al copiar al portapapeles:', err);
-                // Manejar errores si es necesario
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'No se pudo copiar la licencia al portapapeles.',
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar'
-                });
             }
         },
         desencriptarMac(mac) {
@@ -445,7 +461,7 @@ export default {// Define el estado del componente
                 </span>
                 <input type="text" v-model="busqueda" class="form-control" placeholder="Buscar nombre de dispositivo" />
             </div>
-            <h1 class="text-2xl font-bold mb-4">Todos los Dispositivos</h1>
+            <h1 class="text-2xl font-bold mb-4">Todos los Dispositivos de {{ nombreUsuario }} </h1>
             <button class="btn morado-btn" @click="abrirCrearModal">Crear Nuevo Dispositivo</button>
 
             <div v-if="equipos.length === 0" class="text-gray-500">
@@ -461,8 +477,8 @@ export default {// Define el estado del componente
                                 <p v-show="tipoUsuario == 'Administrador'">Licencia: {{ equipo.licencias ?
                     equipo.licencias.licencia : 'Sin Licencia' }}</p>
                                 <!-- <p v-show="tipoUsuario == 'Administrador'">Mac: {{ desencriptarMac(equipo.mac) }} </p> -->
-                                <p v-show="tipoUsuario == 'Administrador'">Usuario: {{ equipo.usuarios ?
-                    equipo.usuarios.nombre : 'Sin Usuario' }}</p>
+                                <!-- <p v-show="tipoUsuario == 'Administrador'">Usuario: {{ equipo.usuarios ?
+                    equipo.usuarios.nombre : 'Sin Usuario' }}</p> -->
                                 <!-- <p>Vigencia: {{ equipo.licencias && equipo.licencias.licencia_inicio ?
                     equipo.licencias.licencia_inicio : 'N/A' }} - {{ equipo.licencias &&
                     equipo.licencias.licencia_final ? equipo.licencias.licencia_final : 'N/A' }}</p>
@@ -492,17 +508,15 @@ export default {// Define el estado del componente
                 <span class="close" @click="cerrarModal">&times;</span>
                 <h2>Editar Dispositivo</h2>
                 <form @submit.prevent="editarEquipo(equipoSeleccionado.equipo_id)">
-                    <label for="vigencia">Vigencia:</label>
-                    <input type="text" :value="formattedLicensePeriod" id="vigencia_inicio"
-                        class="form-control rounded-pill" disabled />
-                    <input type="text" :value="equipoSeleccionado.periodo" id="periodo"
-                        class="form-control rounded-pill" disabled />
                     <label for="nombre">Nombre del Dispositivo:</label>
                     <input type="text" v-model="equipoSeleccionado.nombre" id="nombre"
                         class="form-control rounded-pill">
                     <label for="numero_licencia">Número de Licencia:</label>
                     <input type="text" v-model="equipoSeleccionado.numero_licencia" id="numero_licencia"
                         class="form-control rounded-pill">
+                    <label for="periodo">Periodo:</label>
+                    <input type="text" :value="equipoSeleccionado.periodo" id="periodo"
+                        class="form-control rounded-pill" disabled />
                     <label for="nombre_usuario" v-show="tipoUsuario == 'Administrador'">Nombre del Usuario
                         Responsable:</label>
                     <select v-model="equipoSeleccionado.nombre_usuario" id="nombre_usuario"
@@ -552,7 +566,7 @@ export default {// Define el estado del componente
                     <div class="campo">
                         <label for="mac">Mac:</label>
                         <input type="text" v-model="macDesencriptada" id="mac" class="form-control rounded-pill">
-                    </div>xx
+                    </div>
                     <div class=" campo">
                         <label for="serverKey">Server Key:</label>
                         <input class="form-control rounded-pill" type="text" id="serverKey"
@@ -567,16 +581,6 @@ export default {// Define el estado del componente
                             <option value="SEMESTRAL">Semestral</option>
                             <option value="ANUAL">Anual</option>
                         </select>
-                    </div>
-                    <div class="campo">
-                        <label for="licencia">Licencia:</label>
-                        <div class="input-group">
-                            <input :value="licenciaGenerada" type="text" class="form-control rounded-pill" id="licencia"
-                                rows="4" disabled>
-                            <button @click="copiarLicencia" class="btn btn-outline-secondary rounded" type="button">
-                                <i class="bi bi-clipboard"></i>
-                            </button>
-                        </div>
                     </div>
                     <div class="text-center">
                         <button type="submit">Generar licencia</button>
