@@ -184,6 +184,20 @@ class EquiposController extends Controller
                     $licencia_anterior->save();
                 }
             }
+            //Determinar fechas de inicio y final según el período seleccionado
+            if (is_null($licencia->licencia_inicio) && is_null($licencia->licencia_final)) {
+                $licencia_inicio = Carbon::now();
+                $licencia_final = match ($licencia->periodo) {
+                    'PRUEBA' => $licencia_inicio->copy()->addDays(7),
+                    'MENSUAL' => $licencia_inicio->copy()->addMonth(),
+                    'TRIMESTRAL' => $licencia_inicio->copy()->addMonths(3),
+                    'SEMESTRAL' => $licencia_inicio->copy()->addMonths(6),
+                    'ANUAL' => $licencia_inicio->copy()->addYear(),
+                };
+
+                $licencia->licencia_inicio = $licencia_inicio;
+                $licencia->licencia_final = $licencia_final;
+            }
         }
 
         // Actualizar los datos del equipo y la licencia
@@ -261,15 +275,14 @@ class EquiposController extends Controller
             $equipo->save();
 
             // Determinar fechas de inicio y final según el período seleccionado
-            $licencia_inicio = Carbon::now();
-            $licencia_final = match ($validatedData['periodo']) {
-                'PRUEBA' => $licencia_inicio->copy()->addDays(7),
-                'MENSUAL' => $licencia_inicio->copy()->addMonth(),
-                'TRIMESTRAL' => $licencia_inicio->copy()->addMonths(3),
-                'SEMESTRAL' => $licencia_inicio->copy()->addMonths(6),
-                'ANUAL' => $licencia_inicio->copy()->addYear(),
-                default => $licencia_inicio->copy()->addMonth(), // Default a 1 mes
-            };
+            // $licencia_inicio = Carbon::now();
+            // $licencia_final = match ($validatedData['periodo']) {
+            //     'PRUEBA' => $licencia_inicio->copy()->addDays(7),
+            //     'MENSUAL' => $licencia_inicio->copy()->addMonth(),
+            //     'TRIMESTRAL' => $licencia_inicio->copy()->addMonths(3),
+            //     'SEMESTRAL' => $licencia_inicio->copy()->addMonths(6),
+            //     'ANUAL' => $licencia_inicio->copy()->addYear(),
+            // };
 
             // Checar si la licencia ya existe
             $licenciaExistente = Licencias::where('licencia', $validatedData['licencia'])->first();
@@ -279,8 +292,8 @@ class EquiposController extends Controller
                 $licencia = new Licencias();
                 $licencia->licencia = $validatedData['licencia'];
                 $licencia->periodo = $validatedData['periodo'];
-                $licencia->licencia_inicio = $licencia_inicio;
-                $licencia->licencia_final = $licencia_final;
+                // $licencia->licencia_inicio = $licencia_inicio;
+                // $licencia->licencia_final = $licencia_final;
                 $licencia->equipo_id = $equipo->equipo_id; //SOLO SE RELACIONARA LA LICENCIA CON EL EQUIPO CUANDO EL EQUIPO AL AGREGAR LA LICENCIA
                 $licencia->save();
             }

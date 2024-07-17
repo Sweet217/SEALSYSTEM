@@ -369,10 +369,12 @@ export default {// Define el estado del componente
                     });
                     Swal.getHtmlContainer().querySelector('#copyButton').addEventListener('click', (event) => {
                         navigator.clipboard.writeText(this.licenciaGenerada).then(() => {
-                            // Swal.fire('Copiado', 'La licencia ha sido copiada al portapapeles', 'success');
-                            event.target.innerHTML = '<i class="bi bi-check"></i>';
-                            event.target.classList.remove('btn-outline-secondary');
-                            event.target.classList.add('btn-outline-success');
+                            const button = event.target.closest('button');
+                            if (button) {
+                                button.innerHTML = '<i class="bi bi-check"></i>';
+                                button.classList.remove('btn-outline-secondary');
+                                button.classList.add('btn-outline-success');
+                            }
                         }).catch(err => {
                             Swal.fire('Error', 'No se pudo copiar la licencia', 'error');
                         });
