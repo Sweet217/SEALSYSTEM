@@ -70,24 +70,24 @@ export default {// Define el estado del componente
                 return '';
             }
 
-            // Función para formatear las fechas en español
-            function formatDateToSpanish(dateString) {
-                const months = [
-                    "enero", "febrero", "marzo", "abril", "mayo", "junio",
-                    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
-                ];
+            // Función para formatear las fechas en formato Día/Mes/Año
+            function formatDateToDMY(dateString) {
                 const date = new Date(dateString);
-                const day = date.getDate();
-                const month = months[date.getMonth()];
+                const day = date.getDate().toString().padStart(2, '0');
+                const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Meses son 0-indexados
                 const year = date.getFullYear();
 
-                return `${day} de ${month} del ${year}`;
+                return `${day}/${month}/${year}`;
             }
 
-            const inicioFormatted = formatDateToSpanish(licencia_inicio);
-            const finalFormatted = formatDateToSpanish(licencia_final);
+            const inicioFormatted = formatDateToDMY(licencia_inicio);
+            const finalFormatted = formatDateToDMY(licencia_final);
 
-            return `Licencia válida del ${inicioFormatted} al ${finalFormatted}`;
+            return `${inicioFormatted} al ${finalFormatted}`;
+        },
+        usuariosResponsables() {
+            const usuarios = this.equipos.map(equipo => equipo.usuarios.nombre);
+            return [...new Set(usuarios)]; // Eliminar duplicados
         }
     },
     mounted() {
@@ -463,7 +463,9 @@ export default {// Define el estado del componente
                 </span>
                 <input type="text" v-model="busqueda" class="form-control" placeholder="Buscar nombre de dispositivo" />
             </div>
-            <h1 class="text-2xl font-bold mb-4">Todos los Dispositivos de {{ nombreUsuario }} </h1>
+            <h1 class="text-2xl font-bold mb-4" v-for="usuario in usuariosResponsables" :key="usuario">
+                Dispositivos de {{ usuario }}
+            </h1>
             <button class="btn morado-btn" @click="abrirCrearModal">Crear Nuevo Dispositivo</button>
 
             <div v-if="equipos.length === 0" class="text-gray-500">
@@ -518,6 +520,9 @@ export default {// Define el estado del componente
                         class="form-control rounded-pill">
                     <label for="periodo">Periodo:</label>
                     <input type="text" :value="equipoSeleccionado.periodo" id="periodo"
+                        class="form-control rounded-pill" disabled />
+                    <label for="Vigencia">Vigencia:</label>
+                    <input type="text" :value="this.formattedLicensePeriod" id="vigencia"
                         class="form-control rounded-pill" disabled />
                     <label for="nombre_usuario" v-show="tipoUsuario == 'Administrador'">Nombre del Usuario
                         Responsable:</label>
