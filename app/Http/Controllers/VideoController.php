@@ -30,6 +30,19 @@ class VideoController extends Controller
         $file = $request->file('archivo');
         $filename = $request->nombre_archivo;
 
+        // Obtener la extensión del archivo
+        $extension = 'mp4'; // Para videos, siempre será mp4
+
+        // Verificar si el nombre del archivo ya tiene una extensión
+        if (!str_contains($filename, '.')) {
+            // Añadir la extensión al nombre del archivo si no tiene
+            $filename .= '.' . $extension;
+        } else {
+            // Si ya tiene una extensión, asegurarse de que sea la correcta
+            $filenameWithoutExtension = pathinfo($filename, PATHINFO_FILENAME);
+            $filename = $filenameWithoutExtension . '.' . $extension;
+        }
+
         try {
             // Almacenar el archivo de video
             $path = Storage::disk('public')->put('videos/pruebas/' . $filename, file_get_contents($file));

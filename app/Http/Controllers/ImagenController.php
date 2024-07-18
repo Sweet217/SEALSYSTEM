@@ -36,19 +36,31 @@ class ImagenController extends Controller
 
     /*  Crear una nueva imagen mediante la creacion de una multimedia y enlazarlos.
      */
-
     public function crearImagen(Request $request)
     {
         // Validar los datos de entrada
         $request->validate([
             'nombre_archivo' => 'required|string|max:255',
             'tiempo' => 'required|integer',
-            'archivo' => 'required|file|mimes:jpeg,png,jpg,gif,svg', //tamano maximo en kilobytes (100mb) (ajustar si es necesario)
+            'archivo' => 'required|file|mimes:jpeg,png,jpg,gif,svg', // Ajustar tamaño máximo si es necesario
         ]);
 
         // Obtener el archivo cargado
         $file = $request->file('archivo');
         $filename = $request->nombre_archivo;
+
+        // Obtener la extensión del archivo
+        $extension = $file->getClientOriginalExtension();
+
+        // Verificar si el nombre del archivo ya tiene una extensión
+        if (!str_contains($filename, '.')) {
+            // Añadir la extensión al nombre del archivo si no tiene
+            $filename .= '.' . $extension;
+        } else {
+            // Si ya tiene una extensión, asegurarse de que no se agregue una nueva
+            $filenameWithoutExtension = pathinfo($filename, PATHINFO_FILENAME);
+            $filename = $filenameWithoutExtension . '.' . $extension;
+        }
 
         // Almacenar el archivo en el almacenamiento público
         $path = Storage::disk('public')->put('/images/pruebas/' . $filename, file_get_contents($file));
@@ -70,6 +82,7 @@ class ImagenController extends Controller
         // Respuesta exitosa
         return response()->json(['message' => 'Imagen creada correctamente'], 201);
     }
+
 
     /**
      * Elimina una imagen y su correspondiente registro en Multimedia.
