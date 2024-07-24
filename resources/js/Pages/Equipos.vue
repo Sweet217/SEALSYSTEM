@@ -148,7 +148,7 @@ export default {// Define el estado del componente
                 periodo: equipo.licencias ? equipo.licencias.periodo : '',
             };
             this.modalVisible = true;
-            console.log(this.equipoSeleccionado.licencia_inicio);
+            // console.log(this.equipoSeleccionado.licencia_inicio);
         },
         cerrarModal() {
             this.modalVisible = false;
@@ -333,6 +333,8 @@ export default {// Define el estado del componente
                 });
         },
         guardarServerKey(equipo_id) {
+            console.log(this.desencriptarMac(this.equipoSeleccionado.mac))
+            console.log(this.equipoSeleccionado.mac)
             if (!this.validarFormatoMAC(this.desencriptarMac(this.equipoSeleccionado.mac))) {
                 Swal.fire({
                     title: 'MAC inválida',
@@ -435,12 +437,12 @@ export default {// Define el estado del componente
         },
         desencriptarMac(mac) {
             if (!mac) return null;
-            let key = 'desencriptar';
-            let bytes = CryptoJS.AES.decrypt(mac, key);
-            return bytes.toString(CryptoJS.enc.Utf8);
+            let key = CryptoJS.enc.Utf8.parse('desencriptar1234'); // Ensure key is correctly formatted
+            let decrypted = CryptoJS.AES.decrypt(mac, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 });
+            return decrypted.toString(CryptoJS.enc.Utf8);
         },
         encriptarMac(mac) {
-            let key = 'desencriptar';
+            let key = 'desencriptar1234';
             return CryptoJS.AES.encrypt(mac, key).toString();
         },
         validarFormatoMAC(mac) {
@@ -522,8 +524,8 @@ export default {// Define el estado del componente
                     <input type="text" :value="equipoSeleccionado.periodo" id="periodo"
                         class="form-control rounded-pill" disabled />
                     <label for="Vigencia">Vigencia:</label>
-                    <input type="text" :value="this.formattedLicensePeriod" id="vigencia"
-                        class="form-control rounded-pill" disabled />
+                    <input type="text" :value="formattedLicensePeriod" id="vigencia" class="form-control rounded-pill"
+                        disabled />
                     <label for="nombre_usuario" v-show="tipoUsuario == 'Administrador'">Nombre del Usuario
                         Responsable:</label>
                     <select v-model="equipoSeleccionado.nombre_usuario" id="nombre_usuario"

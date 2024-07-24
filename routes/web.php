@@ -15,6 +15,7 @@ use App\Http\Controllers\ImagenController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\EnlaceController;
 use App\Http\Controllers\SignupController;
+use App\Http\Controllers\LocalPythonWsController;
 
 
 //Importacion de algunos modelos
@@ -114,6 +115,10 @@ Route::delete('/videosDELETE/{multimedia_id}/{video_id}', [VideoController::clas
 //Rutas para Enlaces
 Route::post('/enlacesPOST', [EnlaceController::class, 'crearEnlace']);
 Route::delete('/enlacesDELETE/{multimedia_id}/{enlace_id}', [EnlaceController::class, 'eliminarEnlace']);
+
+//Rutas para aplicacion local
+Route::get('EquipoInfoGet{mac}', [LocalPythonWSController::class, 'GetAllInfoMac']);
+
 
 
 Route::middleware([
