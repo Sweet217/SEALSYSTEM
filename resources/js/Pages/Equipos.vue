@@ -437,9 +437,34 @@ export default {// Define el estado del componente
         },
         desencriptarMac(mac) {
             if (!mac) return null;
-            let key = CryptoJS.enc.Utf8.parse('desencriptar1234'); // Ensure key is correctly formatted
-            let decrypted = CryptoJS.AES.decrypt(mac, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 });
-            return decrypted.toString(CryptoJS.enc.Utf8);
+
+            // Function to decode URL-safe base64 to standard base64
+            function urlSafeBase64Decode(base64) {
+                let base64Url = base64.replace(/-/g, '+').replace(/_/g, '/');
+                return base64Url;
+            }
+
+            try {
+                // Decode the URL-safe base64 string
+                let macBase64 = urlSafeBase64Decode(mac);
+
+                // Prepare the decryption key
+                let key = CryptoJS.enc.Utf8.parse('desencriptar1234'); // Ensure key is correctly formatted
+
+                // Decrypt the base64-encoded string
+                let decrypted = CryptoJS.AES.decrypt(macBase64, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 });
+
+                // Convert the decrypted data to UTF-8 string
+                let result = decrypted.toString(CryptoJS.enc.Utf8);
+
+                // Check if decryption was successful
+                if (!result) throw new Error("Decryption failed, resulting data is empty.");
+
+                return result;
+            } catch (error) {
+                console.error("Decryption error:", error);
+                return null;
+            }
         },
         encriptarMac(mac) {
             let key = 'desencriptar1234';

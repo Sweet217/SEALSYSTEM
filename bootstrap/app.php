@@ -19,6 +19,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->append(Cors::class);
         //
+        // Exclude specific URIs from CSRF validation
+        $middleware->validateCsrfTokens(except: [
+            'EquipoAddLicense/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

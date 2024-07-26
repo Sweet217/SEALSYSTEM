@@ -117,7 +117,8 @@ Route::post('/enlacesPOST', [EnlaceController::class, 'crearEnlace']);
 Route::delete('/enlacesDELETE/{multimedia_id}/{enlace_id}', [EnlaceController::class, 'eliminarEnlace']);
 
 //Rutas para aplicacion local
-Route::get('EquipoInfoGet{mac}', [LocalPythonWSController::class, 'GetAllInfoMac']);
+Route::get('EquipoInfoGet/{mac}', [LocalPythonWSController::class, 'getDataByMac']);
+Route::post('EquipoAddLicense/{mac}', [LocalPythonWSController::class, 'addLicense']);
 
 
 
