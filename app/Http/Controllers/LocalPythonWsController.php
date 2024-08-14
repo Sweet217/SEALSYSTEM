@@ -16,6 +16,33 @@ use Illuminate\Support\Facades\Crypt;
 
 class LocalPythonWsController extends Controller
 {
+
+    public function doesTheDeviceHasALicense(Request $request, $mac)
+    {
+        $equipo = Equipos::where('mac', $mac)->first();
+
+        if (!$equipo) {
+            return response()->json(['error' => 'Equipo not found'], 404);
+        }
+
+        // Check if the equipo has at least one license
+        $licencia = Licencias::where('equipo_id', $equipo->equipo_id)->first();
+
+        if (!$licencia) {
+            return response()->json(['has_license' => false, 'license_number' => null]);
+        }
+
+        // Format the license dates
+        $licencia_inicio = Carbon::parse($licencia->licencia_inicio)->format('d/m/Y');
+        $licencia_final = Carbon::parse($licencia->licencia_final)->format('d/m/Y');
+        $formatted_dates = "$licencia_inicio al $licencia_final";
+
+        return response()->json([
+            'has_license' => true,
+            'license_number' => $licencia->licencia,
+            'license_dates' => $formatted_dates
+        ]);
+    }
     public function getDataByMac(Request $request, $mac)
     {
         // Find the equipo with the given MAC address
@@ -85,46 +112,36 @@ class LocalPythonWsController extends Controller
 
     public function addLicense(Request $request)
     {
-        // Validate the request parameters
+        // Validar los parámetros de la solicitud
         $request->validate([
             'mac' => 'required|string',
             'licencia' => 'required|string',
         ]);
 
         $mac = $request->input('mac');
-        $licencia = $request->input('licencia');
+        $licenciaNumero = $request->input('licencia');
 
-        // Find the team by MAC address
+        // Encontrar el equipo por la dirección MAC
         $equipo = Equipos::where('mac', $mac)->first();
 
         if (!$equipo) {
             return response()->json(['message' => 'Equipo no encontrado'], 404);
         }
 
-        // Find the license by license number
-        $licencia = Licencias::where('licencia', $licencia)->first();
+        // Encontrar la licencia por el número de licencia
+        $licencia = Licencias::where('licencia', $licenciaNumero)->first();
 
         if (!$licencia) {
             return response()->json(['message' => 'Licencia no encontrada'], 404);
         }
 
-        // Check if the team is already associated with another license
-        $licenciaExistente = Licencias::where('equipo_id', $equipo->equipo_id)->first();
-        if ($licenciaExistente && $licenciaExistente->licencia_id != $licencia->licencia_id) {
-            // If the team already has an associated license, disassociate it
-            $licenciaExistente->equipo_id = null;
-            $licenciaExistente->save();
-        }
+        // // Eliminar las licencias anteriores asociadas al equipo
+        // Licencias::where('equipo_id', $equipo->equipo_id)->delete();
 
-        // Check if the team_id of the license and the team being edited are the same
-        if ($licencia->equipo_id != $equipo->equipo_id) {
-            return response()->json(['message' => 'Licencia no válida para este dispositivo'], 400);
-        }
-
-        // Assign the team_id to the license
+        // Asignar el equipo_id a la nueva licencia
         $licencia->equipo_id = $equipo->equipo_id;
 
-        // Determine start and end dates based on the selected period
+        // Determinar fechas de inicio y fin basadas en el periodo seleccionado
         if (is_null($licencia->licencia_inicio) && is_null($licencia->licencia_final)) {
             $licencia_inicio = Carbon::now();
             $licencia_final = match ($licencia->periodo) {
@@ -140,8 +157,12 @@ class LocalPythonWsController extends Controller
             $licencia->licencia_final = $licencia_final;
         }
 
-        // Save changes to the database
+        // Guardar los cambios en la base de datos para la licencia
         $licencia->save();
+
+        // Actualizar el equipo con el nuevo licencia_id
+        $equipo->licencia_id = $licencia->licencia_id;
+        $equipo->save();
 
         return response()->json(['message' => 'Licencia asignada correctamente'], 200);
     }

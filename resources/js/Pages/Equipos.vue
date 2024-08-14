@@ -542,9 +542,9 @@ export default {// Define el estado del componente
                     <label for="nombre">Nombre del Dispositivo:</label>
                     <input type="text" v-model="equipoSeleccionado.nombre" id="nombre"
                         class="form-control rounded-pill">
-                    <label for="numero_licencia">Número de Licencia:</label>
+                    <!-- <label for="numero_licencia">Número de Licencia:</label>
                     <input type="text" v-model="equipoSeleccionado.numero_licencia" id="numero_licencia"
-                        class="form-control rounded-pill">
+                        class="form-control rounded-pill"> -->
                     <label for="periodo">Periodo:</label>
                     <input type="text" :value="equipoSeleccionado.periodo" id="periodo"
                         class="form-control rounded-pill" disabled />
@@ -574,9 +574,9 @@ export default {// Define el estado del componente
                 <form @submit.prevent="crearEquipo">
                     <label for="nombre">Nombre del Dispositivo:</label>
                     <input type="text" v-model="nuevoEquipo.nombre" id="nombre" class="form-control rounded-pill">
-                    <label for="numero_licencia">Número de Licencia:</label>
+                    <!-- <label for="numero_licencia">Número de Licencia:</label>
                     <input type="text" v-model="nuevoEquipo.numero_licencia" id="numero_licencia"
-                        class="form-control rounded-pill">
+                        class="form-control rounded-pill"> -->
                     <label for="nombre_usuario" v-show="tipoUsuario == 'Administrador'">Nombre del Usuario
                         Responsable:</label>
                     <select v-model="nuevoEquipo.nombre_usuario" id="nombre_usuario" class="form-control rounded-pill"
