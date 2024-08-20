@@ -120,6 +120,7 @@ Route::delete('/enlacesDELETE/{multimedia_id}/{enlace_id}', [EnlaceController::c
 Route::get('EquipoInfoGet/{mac}', [LocalPythonWSController::class, 'getDataByMac']);
 Route::post('EquipoAddLicense/{mac}', [LocalPythonWSController::class, 'addLicense']);
 Route::get('HasLicense/{mac}', [LocalPythonWsController::class, 'doesTheDeviceHasALicense']);
+Route::get('GetListasByMac/{mac}', [LocalPythonWsController::class, 'getListasByMac']);
 
 
 Route::middleware([

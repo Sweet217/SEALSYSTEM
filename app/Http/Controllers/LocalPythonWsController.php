@@ -61,6 +61,11 @@ class LocalPythonWsController extends Controller
 
         $lista_ids = $listas->toArray();
 
+        // If a specific lista_id is provided, filter by it
+        if ($request->has('lista_id')) {
+            $lista_ids = [$request->input('lista_id')];
+        }
+
         // Retrieve multimedia data
         $videos = videos::whereIn('id_lista', $lista_ids)
             ->join('multimedia', 'videos.multimedia_id', '=', 'multimedia.multimedia_id')
@@ -108,6 +113,25 @@ class LocalPythonWsController extends Controller
         $mediaData = $mediaData->sortBy('posicion')->values()->all();
 
         return response()->json($mediaData);
+    }
+
+    public function getListasByMac($mac)
+    {
+        // Find the equipo with the given MAC address
+        $equipo = equipos::where('mac', $mac)->first();
+
+        if (!$equipo) {
+            return response()->json(['error' => 'Equipo not found'], 404);
+        }
+
+        // Get the listas associated with the equipo
+        $listas = listas::where('equipo_id', $equipo->equipo_id)->get(['id_lista', 'nombre']);
+
+        if ($listas->isEmpty()) {
+            return response()->json(['error' => 'No listas found for this equipo'], 404);
+        }
+
+        return response()->json($listas);
     }
 
     public function addLicense(Request $request)
