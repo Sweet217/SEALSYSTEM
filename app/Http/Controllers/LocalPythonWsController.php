@@ -125,7 +125,9 @@ class LocalPythonWsController extends Controller
         }
 
         // Get the listas associated with the equipo
-        $listas = listas::where('equipo_id', $equipo->equipo_id)->get(['id_lista', 'nombre']);
+        $listas = listas::where('equipo_id', $equipo->equipo_id)
+            ->where('seleccionado', 1) // Filter by selected lists
+            ->get(['id_lista', 'nombre']);
 
         if ($listas->isEmpty()) {
             return response()->json(['error' => 'No listas found for this equipo'], 404);
@@ -190,4 +192,63 @@ class LocalPythonWsController extends Controller
 
         return response()->json(['message' => 'Licencia asignada correctamente'], 200);
     }
+
+    public function getListaData(Request $request, $id_lista)
+    {
+        // Validate the incoming lista_id
+        $lista = listas::find($id_lista);
+
+        if (!$lista) {
+            return response()->json(['error' => 'Lista not found'], 404);
+        }
+
+        // Retrieve multimedia data associated with the provided lista_id
+        $videos = videos::where('id_lista', $id_lista)
+            ->join('multimedia', 'videos.multimedia_id', '=', 'multimedia.multimedia_id')
+            ->orderBy('posicion')
+            ->get(['data', 'posicion']);
+
+        $imagenes = imagenes::where('id_lista', $id_lista)
+            ->join('multimedia', 'imagenes.multimedia_id', '=', 'multimedia.multimedia_id')
+            ->orderBy('posicion')
+            ->get(['data', 'tiempo', 'posicion']);
+
+        $enlaces = enlaces::where('id_lista', $id_lista)
+            ->join('multimedia', 'enlaces.multimedia_id', '=', 'multimedia.multimedia_id')
+            ->orderBy('posicion')
+            ->get(['data', 'posicion']);
+
+        // Merge and format media data
+        $mediaData = collect();
+
+        foreach ($videos as $video) {
+            $mediaData->push([
+                'data' => url("storage/" . $video->data), // Encode URL
+                'tiempo' => 0,
+                'posicion' => $video->posicion
+            ]);
+        }
+
+        foreach ($imagenes as $imagen) {
+            $mediaData->push([
+                'data' => url("storage/" . $imagen->data), // Encode URL
+                'tiempo' => $imagen->tiempo,
+                'posicion' => $imagen->posicion
+            ]);
+        }
+
+        foreach ($enlaces as $enlace) {
+            $mediaData->push([
+                'data' => $enlace->data, // Assume URLs in enlaces are already well-formatted
+                'tiempo' => 0,
+                'posicion' => $enlace->posicion
+            ]);
+        }
+
+        // Sort media data by 'posicion'
+        $mediaData = $mediaData->sortBy('posicion')->values()->all();
+
+        return response()->json($mediaData);
+    }
+
 }

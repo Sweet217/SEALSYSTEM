@@ -60,6 +60,9 @@ Route::get('/listas', [ListasController::class, 'showListas']);
 Route::post('/listasPOST', [ListasController::class, 'crearLista']);
 Route::delete('/listasDELETE/{id_lista}', [ListasController::class, 'borrarLista']);
 Route::put('/listasPUT/{id_lista}', [ListasController::class, 'editarLista']);
+Route::post('/SelectListas/seleccionar/{id_lista}', [listasController::class, 'seleccionarLista']);
+//Route::get('/SelectListas/seleccionar/{id_lista}', [listasController::class, 'seleccionarLista']);
+
 
 // Rutas para Usuarios
 Route::get('/usuarios', [UserController::class, 'showUsuarios'])->name('usuarios');
@@ -121,6 +124,7 @@ Route::get('EquipoInfoGet/{mac}', [LocalPythonWSController::class, 'getDataByMac
 Route::post('EquipoAddLicense/{mac}', [LocalPythonWSController::class, 'addLicense']);
 Route::get('HasLicense/{mac}', [LocalPythonWsController::class, 'doesTheDeviceHasALicense']);
 Route::get('GetListasByMac/{mac}', [LocalPythonWsController::class, 'getListasByMac']);
+Route::get('GetListaData/{id_lista}', [LocalPythonWsController::class, 'getListaData']);
 
 
 Route::middleware([

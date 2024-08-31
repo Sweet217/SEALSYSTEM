@@ -223,6 +223,33 @@ export default {
       this.currentListId = listId; // Establece el ID de la lista actual
       window.location.href = `/listas/${listId}/multimedia`; // Redirige a la URL del contenido multimedia de la lista
     },
+
+    seleccionarLista(id_lista) {
+      axios.post(`/SelectListas/seleccionar/${id_lista}`, {
+        user_id: this.user_id
+      })
+        .then(response => {
+          // Recarga las listas para reflejar el cambio de selección
+          this.listas.forEach(lista => {
+            lista.seleccionado = lista.id_lista === id_lista;
+          });
+          Swal.fire({
+            title: 'Lista seleccionada',
+            text: response.data.message,
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          });
+        })
+        .catch(error => {
+          console.error('Error al seleccionar la lista:', error);
+          Swal.fire({
+            title: 'Error al seleccionar la lista',
+            text: 'No se pudo seleccionar la lista.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        });
+    }
   }
 }
 
@@ -242,7 +269,6 @@ export default {
 
     <button class="btn morado-btn" @click="abrirModalCrear">Crear Nueva Lista</button>
 
-
     <div v-if="listas.length === 0" class="text-gray-500">
       No hay listas disponibles.
     </div>
@@ -255,7 +281,6 @@ export default {
               {{ lista.nombre }}
             </button>
             <div class="dispositivo-container">
-              <!-- Mostrar equipo_id si está presente, de lo contrario mostrar que es global -->
               <a v-if="lista.equipo_id !== null" class="equipo-text">{{ lista.equipo.nombre }}</a>
               <a v-else class="equipo-text">Lista global en tus dispositivos</a>
             </div>
@@ -263,33 +288,33 @@ export default {
               <button class="btn editar-btn" @click="abrirModal(lista)">Editar</button>
               <button class="btn btn-danger btn-trash bi-trash" @click="eliminarLista(lista.id_lista)">
               </button>
-
-
-              <div v-if="modalVisible" class="modal">
-                <div class="modal-content">
-                  <span class="close" @click="cerrarModal">&times;</span>
-                  <h2>Editar Lista</h2>
-                  <form @submit.prevent="editarLista(listaSeleccionada.id_lista)">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" v-model="listaSeleccionada.nombre" id="nombre" class="form-control rounded-pill">
-                    <label for="equipo">Dispositivo:</label>
-                    <select v-model="listaSeleccionada.equipo_id" id="equipoSeleccionado"
-                      class="form-control rounded-pill">
-                      <option value="todos">Todos mis dispositivos</option>
-                      <option v-for="equipo in equiposDisponibles" :value="equipo.equipo_id" :key="equipo.equipo_id">
-                        {{ equipo.nombre }}
-                      </option>
-                    </select>
-                    <div class="text-center">
-                      <button type="submit">Guardar</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
+              <input type="radio" :checked="lista.seleccionado" @change="seleccionarLista(lista.id_lista)" />
             </div>
           </div>
         </li>
       </ul>
+    </div>
+
+    <!-- Modal de Edición de Lista -->
+    <div v-if="modalVisible" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="cerrarModal">&times;</span>
+        <h2>Editar Lista</h2>
+        <form @submit.prevent="editarLista(listaSeleccionada.id_lista)">
+          <label for="nombre">Nombre:</label>
+          <input type="text" v-model="listaSeleccionada.nombre" id="nombre" class="form-control rounded-pill">
+          <label for="equipo">Dispositivo:</label>
+          <select v-model="listaSeleccionada.equipo_id" id="equipoSeleccionado" class="form-control rounded-pill">
+            <option value="todos">Todos mis dispositivos</option>
+            <option v-for="equipo in equiposDisponibles" :value="equipo.equipo_id" :key="equipo.equipo_id">
+              {{ equipo.nombre }}
+            </option>
+          </select>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary rounded-pill">Guardar</button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- Modal de Creación de Lista -->
@@ -321,7 +346,6 @@ export default {
 
   <FooterComponent></FooterComponent>
 </template>
-
 
 <style>
 .dispositivo-container {

@@ -118,4 +118,29 @@ class ListasController extends Controller
     return response()->json(['message' => 'Lista editada correctamente'], 205);
   }
 
+  public function seleccionarLista(Request $request, $id_lista)
+  {
+    // Fetch the user_id from the request or session
+    $user_id = $request->input('user_id'); // Make sure this is passed in the request
+
+    // Deseleccionar todas las listas para este usuario
+    Listas::where('user_id', $user_id)->update(['seleccionado' => false]);
+
+    // Seleccionar la lista especificada
+    $lista = Listas::where('id_lista', $id_lista)
+      ->where('user_id', $user_id) // Ensure that the list belongs to the user
+      ->first();
+
+    if (!$lista) {
+      return response()->json(['error' => 'Lista no encontrada o no pertenece al usuario'], 404);
+    }
+
+    $lista->seleccionado = true;
+    $lista->save();
+
+    return response()->json(['message' => 'Lista seleccionada correctamente']);
+  }
+
+
+
 }

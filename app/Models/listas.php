@@ -23,7 +23,7 @@ class listas extends Model
      *
      * @var array
      */
-    protected $fillable = ['nombre', 'id_lista'];
+    protected $fillable = ['nombre', 'id_lista', 'seleccionado'];
 
     /**
      * Relación con la tabla 'multimedia'.
@@ -47,5 +47,7 @@ class listas extends Model
     {
         return $this->belongsTo(equipos::class, 'equipo_id');
     }
+
+
 
 }

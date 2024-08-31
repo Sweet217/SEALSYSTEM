@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\equipos;
 
 /**
  * Representa un usuario en la base de datos.
@@ -52,7 +53,7 @@ class Users extends Model implements Authenticatable
      */
     public function equipos()
     {
-        return $this->hasMany(Equipo::class, 'user_id');
+        return $this->hasMany(Equipos::class, 'user_id');
     }
 
     // Implementations of Authenticatable interface methods (for Laravel authentication)

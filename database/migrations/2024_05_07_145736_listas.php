@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('nombre', 255)->unique();
             $table->unsignedBigInteger('equipo_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable(); // Nueva columna para el usuario
+            $table->boolean('seleccionado')->nullable();
             $table->foreign('equipo_id')->references('equipo_id')->on('equipos')->onDelete('cascade');
             $table->foreign('user_id')->references('user_id')->on('usuarios')->onDelete('cascade'); // Relacionar con usuarios
             $table->timestamps();
