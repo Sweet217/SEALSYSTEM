@@ -284,11 +284,22 @@ export default {
               <a v-if="lista.equipo_id !== null" class="equipo-text">{{ lista.equipo.nombre }}</a>
               <a v-else class="equipo-text">Lista global en tus dispositivos</a>
             </div>
-            <div class="flex space-x-2">
+            <div class="flex space-x-2 items-center">
               <button class="btn editar-btn" @click="abrirModal(lista)">Editar</button>
               <button class="btn btn-danger btn-trash bi-trash" @click="eliminarLista(lista.id_lista)">
               </button>
-              <input type="radio" :checked="lista.seleccionado" @change="seleccionarLista(lista.id_lista)" />
+
+              <!-- Hidden Radio Button -->
+              <input type="radio" id="play-btn-{{ lista.id_lista }}" :value="lista.id_lista"
+                :checked="lista.seleccionado" @change="seleccionarLista(lista.id_lista)" class="hidden-radio" />
+
+              <!-- Custom Play Button Style -->
+              <label :for="'play-btn-' + lista.id_lista" :class="['play-btn', lista.seleccionado ? 'selected' : '']"
+                @click="seleccionarLista(lista.id_lista)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                  <path d="M8 5v14l11-7L8 5z" />
+                </svg>
+              </label>
             </div>
           </div>
         </li>
@@ -512,5 +523,32 @@ export default {
 .modal-content button:hover {
   background-color: #e3671f;
   border-color: #d4551a;
+}
+
+.play-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.3s;
+}
+
+.play-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.play-btn.selected {
+  color: green;
+  /* Green if selected */
+}
+
+.play-btn:not(.selected) {
+  color: gray;
+  /* Gray if not selected */
+}
+
+.hidden-radio {
+  display: none;
 }
 </style>
