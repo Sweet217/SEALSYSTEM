@@ -138,7 +138,7 @@ class ListasController extends Controller
     $lista->seleccionado = true;
     $lista->save();
 
-    return response()->json(['message' => 'Lista seleccionada correctamente']);
+    return response()->json(['message' => 'Tras la descarga de la lista, esta sera reproducida']);
   }
 
 
