@@ -274,16 +274,6 @@ class EquiposController extends Controller
             $equipo->mac = $validatedData['mac'];
             $equipo->save();
 
-            // Determinar fechas de inicio y final según el período seleccionado
-            // $licencia_inicio = Carbon::now();
-            // $licencia_final = match ($validatedData['periodo']) {
-            //     'PRUEBA' => $licencia_inicio->copy()->addDays(7),
-            //     'MENSUAL' => $licencia_inicio->copy()->addMonth(),
-            //     'TRIMESTRAL' => $licencia_inicio->copy()->addMonths(3),
-            //     'SEMESTRAL' => $licencia_inicio->copy()->addMonths(6),
-            //     'ANUAL' => $licencia_inicio->copy()->addYear(),
-            // };
-
             // Checar si la licencia ya existe
             $licenciaExistente = Licencias::where('licencia', $validatedData['licencia'])->first();
 

@@ -19,12 +19,18 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 
-     # Ajuste del tamaño máximo de archivos subidos
-     php_value upload_max_filesize 1200M
+    # Ajuste del tamaño máximo de archivos subidos
+    php_value upload_max_filesize 1200M
 
-     # Ajuste del tamaño máximo de los datos POST
-     php_value post_max_size 1200M
+    # Ajuste del tamaño máximo de los datos POST
+    php_value post_max_size 1200M
 
-     # Ajuste del límite de memoria
-     php_value memory_limit 1300M
+    # Ajuste del límite de memoria
+    php_value memory_limit 1300M
+
+    <IfModule mod_headers.c>
+       Header set Access-Control-Allow-Origin "*"
+       Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+       Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+    </IfModule>
 </IfModule>

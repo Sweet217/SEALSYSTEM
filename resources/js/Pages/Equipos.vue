@@ -598,7 +598,7 @@ export default {// Define el estado del componente
                 <h2>Generar Licencia</h2>
                 <form @submit.prevent="guardarServerKey(equipoSeleccionado.equipo_id)">
                     <div class="campo">
-                        <label for="mac">Mac:</label>
+                        <label for="mac">Device Key:</label>
                         <input type="text" v-model="macDesencriptada" id="mac" class="form-control rounded-pill">
                     </div>
                     <div class=" campo">
@@ -741,7 +741,6 @@ export default {// Define el estado del componente
     }
 }
 
-/* Custom button styles (optional) */
 .modal-content button {
     background-color: #f78433;
     color: #fdfcfa;

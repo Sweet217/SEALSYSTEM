@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
-        $middleware->append(Cors::class);
+        $middleware->append(middleware: Cors::class);
         //
         // Exclude specific URIs from CSRF validation
         $middleware->validateCsrfTokens(except: [

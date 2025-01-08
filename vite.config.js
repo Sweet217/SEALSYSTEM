@@ -19,14 +19,13 @@ export default defineConfig({
     ],
     build: {
         outDir: 'public/build', // Optional: Output directory for built assets
-        base: 'https://caring-platypus-kind.ngrok-free.app/',  // Set base to '/https://caring-platypus-kind.ngrok-free.app/' for production
+        base: 'https://pd.solytecmx.com/',
     },
     server: {
         host: '0.0.0.0',
         hmr: {
-            // host: 'https://caring-platypus-kind.ngrok-free.app/',
-            // protocol: 'wss'
-            host: 'localhost'
+            protocol: 'wss',
+            host: 'https://pd.solytecmx.com/'
         },
     },
 });
