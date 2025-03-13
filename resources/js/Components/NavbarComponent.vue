@@ -2,7 +2,7 @@
   <nav id="mainNavigation" class="navbar">
     <div class="navbar-container d-flex justify-content-between align-items-center">
       <div class="navbar-brand d-flex align-items-center">
-        <img class="solytec-logo rounded" src="@/images/51Qqh-JOmGL._AC_UF1000,1000_QL80_.jpg" @click="redirectPantallaPrincipal" />
+        <img class="seal-logo rounded" src="@/images/51Qqh-JOmGL._AC_UF1000,1000_QL80_.jpg" @click="redirectPantallaPrincipal" />
         <span class="nombre-usuario rounded ml-2" @mouseover="showDetails = true" @mouseleave="showDetails = false">
           {{ nombreUsuario }}
         </span>
@@ -266,14 +266,14 @@ export default {
   }
 }
 
-.solytec-logo {
+.seal-logo {
   width: 100px;
   cursor: pointer;
   margin-right: 15px;
   transition: transform 0.3s, border-color 0.3s;
 }
 
-.solytec-logo:hover {
+.seal-logo:hover {
   transform: scale(1.1);
   cursor: pointer;
 }

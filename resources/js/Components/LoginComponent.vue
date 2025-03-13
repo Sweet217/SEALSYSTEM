@@ -92,7 +92,7 @@ export default {
 
                     <div class="d-flex align-items-center mb-3 pb-1">
                       <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
-                      <img class="solytec-logo" src="@/images/51Qqh-JOmGL._AC_UF1000,1000_QL80_.jpg" />
+                      <img class="seal-logo" src="@/images/51Qqh-JOmGL._AC_UF1000,1000_QL80_.jpg" />
                     </div>
 
                     <div class="text-danger" v-if="errors">
@@ -159,30 +159,25 @@ export default {
   display: none;
 }
 
-.letra-naranja {
-  color: #f78433;
-  /* Cambia "orange" al color deseado */
-}
-
 .color-boton {
-  background-color: #c4bccc;
+  background-color: #37abda;
   color: #302f51;
   transition: transform 0.3s ease-in-out;
 }
 
 .login-boton:hover {
-  background-color: #302f51;
+  background-color: #0094c5;
   color: #fdfcfa;
   transform: scale(1.1);
   transition: transform 0.3s ease-in-out;
 }
 
 .main-section {
-  animation: gradient-animation 2s infinite alternate;
-  background-color: #dba075;
+  animation: gradient-animation 5s infinite alternate;
+  background-color: #75cadb;
 }
 
-.solytec-logo {
+.seal-logo {
   margin-left: -55px;
   margin-top: -48px;
   margin-bottom: -40px;
@@ -214,7 +209,7 @@ export default {
 @media (max-width: 768px) {
 
   /* Media query para dispositivos móviles */
-  .solytec-logo {
+  .seal-logo {
     margin-left: -40px;
     margin-top: 0px;
     width: 50%;
@@ -225,7 +220,7 @@ export default {
 @media (max-width: 480px) {
 
   /* Media query para smartphones */
-  .solytec-logo {
+  .seal-logo {
     margin-left: -40px;
     margin-top: 0px;
     width: 50%;

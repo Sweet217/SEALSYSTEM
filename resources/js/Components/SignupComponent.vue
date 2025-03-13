@@ -52,7 +52,7 @@ export default {
                                     <form @submit.prevent="submitForm" autocomplete="off">
                                         <div class="d-flex align-items-center mb-3 pb-1">
                                             <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
-                                            <img class="solytec-logo" src="@/images/SOLYTEC LOGO.jpg">
+                                            <img class="seal-logo" src="@/images/imagen_ejemplo.jpg">
                                         </div>
 
                                         <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">
@@ -150,7 +150,7 @@ export default {
     background-color: #1e8edb;
 }
 
-.solytec-logo {
+.seal-logo {
     margin-left: -55px;
     margin-top: -48px;
     margin-bottom: -40px;
@@ -160,7 +160,7 @@ export default {
 }
 
 @media (max-width: 768px) {
-    .solytec-logo {
+    .seal-logo {
         margin-left: -40px;
         margin-top: 0px;
         width: 50%;
@@ -171,7 +171,7 @@ export default {
 
 /* Para pantallas con un ancho máximo de 480px (por ejemplo, smartphones): */
 @media (max-width: 480px) {
-    .solytec-logo {
+    .seal-logo {
         margin-left: -40px;
         margin-top: 0px;
         width: 50%;
