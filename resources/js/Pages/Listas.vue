@@ -359,41 +359,6 @@ export default {
 </template>
 
 <style>
-.dispositivo-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  /* Espacio entre el botón y el texto */
-}
-
-.equipo-text {
-  flex: 1;
-  /* Asegura que el texto ocupe el espacio restante */
-  text-align: center;
-  /* Centra el texto dentro del contenedor */
-}
-
-@media (max-width:320px) {
-
-  .dispositivo-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    /* Espacio entre el botón y el texto */
-  }
-
-  .equipo-text {
-    flex: 1;
-    /* Asegura que el texto ocupe el espacio restante */
-    text-align: center;
-    /* Centra el texto dentro del contenedor */
-    font-size: 5px;
-    visibility: hidden;
-  }
-}
-
 .btn {
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
@@ -402,16 +367,15 @@ export default {
 }
 
 .morado-btn {
-  background-color: #302f51;
-  border: 1px solid #302f51;
+  background-color: #00406d;
+  border: 1px solid #004271;
   color: white;
   margin-bottom: 15px;
 }
 
-
 .morado-btn:hover {
-  background-color: #4a4978;
-  border-color: #4a4978;
+  background-color: #1e8edb;
+  border-color: #1e8edb;
 }
 
 .editar-btn {
@@ -426,16 +390,16 @@ export default {
 }
 
 .eliminar-btn {
-  background-color: #f78433;
-  border: 1px solid #e3671f;
+  background-color: #34a5f8;
+  border: 1px solid #1e8edb;
   color: white;
   width: 180px;
   text-align: left;
 }
 
 .eliminar-btn:hover {
-  background-color: #e3671f;
-  border-color: #d4551a;
+  background-color: #1e8edb;
+  border-color: #1e8edb;
 }
 
 /* Estilos para el modal */
@@ -484,7 +448,7 @@ export default {
 
 .close:hover,
 .close:focus {
-  color: #f78433;
+  color: #34a5f8;
   text-decoration: none;
   cursor: pointer;
 }
@@ -510,7 +474,7 @@ export default {
 
 /* Custom button styles (optional) */
 .modal-content button {
-  background-color: #f78433;
+  background-color: #34a5f8;
   color: #fdfcfa;
   border: none;
   padding: 10px 20px;
@@ -521,8 +485,8 @@ export default {
 }
 
 .modal-content button:hover {
-  background-color: #e3671f;
-  border-color: #d4551a;
+  background-color: #1e8edb;
+  border-color: #1e8edb;
 }
 
 .play-btn {

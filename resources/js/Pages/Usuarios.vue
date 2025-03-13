@@ -434,8 +434,8 @@ export default {
 }
 
 .morado-btn {
-    background-color: #302f51;
-    border: 1px solid #302f51;
+    background-color: #00406d;
+    border: 1px solid #004271;
     color: white;
     margin-top: -10px;
     margin-bottom: 20px;
@@ -458,8 +458,8 @@ export default {
 }
 
 .ver-dispositivos-btn {
-    background-color: #f78433;
-    border: 1px solid #e3671f;
+    background-color: #34a5f8;
+    border: 1px solid #1e8edb;
     color: white;
 }
 
@@ -476,8 +476,8 @@ export default {
 }
 
 .ver-dispositivos-btn:hover {
-    background-color: #e3671f;
-    border-color: #d4551a;
+    background-color: #34a5f8;
+    border-color:#1e8edb;
 }
 
 .ver-dispositivos-btn,
@@ -532,7 +532,7 @@ export default {
 
 .close:hover,
 .close:focus {
-    color: #f78433;
+    color: 1px solid #1e8edb;
     text-decoration: none;
     cursor: pointer;
 }
@@ -558,7 +558,7 @@ export default {
 
 /* Custom button styles (optional) */
 .modal-content button {
-    background-color: #f78433;
+    background-color: #1e8edb;;
     color: #fdfcfa;
     border: none;
     padding: 10px 20px;
@@ -569,8 +569,8 @@ export default {
 }
 
 .modal-content button:hover {
-    background-color: #e3671f;
-    border-color: #d4551a;
+    background-color: #34a5f8;
+    border-color:#1e8edb;
 }
 
 @media (max-width: 600px) {

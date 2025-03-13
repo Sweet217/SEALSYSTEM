@@ -636,8 +636,8 @@ export default {// Define el estado del componente
 }
 
 .morado-btn {
-    background-color: #302f51;
-    border: 1px solid #302f51;
+    background-color: #00406d;
+    border: 1px solid #004271;
     color: white;
     margin-bottom: 10px;
     margin-top: -10px;
@@ -659,16 +659,15 @@ export default {// Define el estado del componente
     border-color: #cccccc;
 }
 
-
 .generar-licencia-btn {
-    background-color: #f78433;
-    border: 1px solid #e3671f;
+    background-color: #34a5f8;
+    border: 1px solid #34a5f8;
     color: white;
 }
 
 .generar-licencia-btn:hover {
-    background-color: #e3671f;
-    border-color: #d4551a;
+    background-color: #1e8edb;
+    border-color: #1e8edb;
 }
 
 /* Estilos para el modal */
@@ -717,7 +716,7 @@ export default {// Define el estado del componente
 
 .close:hover,
 .close:focus {
-    color: #f78433;
+    color: #34a5f8;
     text-decoration: none;
     cursor: pointer;
 }
@@ -742,7 +741,7 @@ export default {// Define el estado del componente
 }
 
 .modal-content button {
-    background-color: #f78433;
+    background-color: #34a5f8;
     color: #fdfcfa;
     border: none;
     padding: 10px 20px;
@@ -753,7 +752,7 @@ export default {// Define el estado del componente
 }
 
 .modal-content button:hover {
-    background-color: #e3671f;
-    border-color: #d4551a;
+    background-color: #1e8edb;
+    border-color: #1e8edb;
 }
 </style>

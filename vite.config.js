@@ -19,13 +19,13 @@ export default defineConfig({
     ],
     build: {
         outDir: 'public/build', // Optional: Output directory for built assets
-        base: 'https://pd.solytecmx.com/',
+        base: '/',
     },
     server: {
         host: '0.0.0.0',
         hmr: {
-            protocol: 'wss',
-            host: 'https://pd.solytecmx.com/'
+            protocol: 'ws',
+            host: 'localhost'
         },
     },
 });

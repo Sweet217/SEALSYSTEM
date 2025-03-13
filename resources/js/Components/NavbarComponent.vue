@@ -2,7 +2,7 @@
   <nav id="mainNavigation" class="navbar">
     <div class="navbar-container d-flex justify-content-between align-items-center">
       <div class="navbar-brand d-flex align-items-center">
-        <img class="solytec-logo rounded" src="@/images/SOLYTEC LOGO.jpg" @click="redirectPantallaPrincipal" />
+        <img class="solytec-logo rounded" src="@/images/51Qqh-JOmGL._AC_UF1000,1000_QL80_.jpg" @click="redirectPantallaPrincipal" />
         <span class="nombre-usuario rounded ml-2" @mouseover="showDetails = true" @mouseleave="showDetails = false">
           {{ nombreUsuario }}
         </span>
@@ -115,11 +115,12 @@ export default {
 .nombre-usuario {
   padding: 5px;
   transition: transform 0.3s, border-color 0.3s;
+  color: #465c6c
 }
 
 .nombre-usuario:hover {
   transform: scale(1.1);
-  border: 1px solid #f78433;
+  border: 1px solid #34a5f8;
   cursor: pointer;
 }
 
@@ -136,13 +137,14 @@ export default {
 .user-details {
   background-color: #ffffff;
   padding: 10px;
-  border: 1px solid #f78433;
+  border: 1px solid #34a5f8;
   border-radius: 5px;
   position: absolute;
   top: 30px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 999;
+  color: #465c6c;
 }
 
 .navbar {
@@ -153,7 +155,7 @@ export default {
   padding: 1rem;
   color: white;
   border: 1px;
-  border-color: #f78433;
+  border-color: #34a5f8;
 }
 
 .navbar-container {
@@ -191,7 +193,7 @@ export default {
   margin: 0rem;
   padding: 0 1rem;
   cursor: pointer;
-  color: rgb(0, 0, 0);
+  color: #465c6c;
   text-decoration: none;
   font-size: 20px;
   transition: transform 0.3s, border-color 0.3s;
@@ -199,7 +201,7 @@ export default {
 
 .navbar-item:hover {
   transform: scale(1.1);
-  background: #f78433;
+  background: #34a5f8;
 }
 
 .navbar-end {
@@ -265,7 +267,7 @@ export default {
 }
 
 .solytec-logo {
-  width: 150px;
+  width: 100px;
   cursor: pointer;
   margin-right: 15px;
   transition: transform 0.3s, border-color 0.3s;
@@ -274,6 +276,5 @@ export default {
 .solytec-logo:hover {
   transform: scale(1.1);
   cursor: pointer;
-  border: 2px solid #f78433;
 }
 </style>

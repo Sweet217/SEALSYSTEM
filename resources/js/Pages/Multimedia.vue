@@ -670,9 +670,7 @@ h2 {
 
 a.enlace-youtube {
     color: #0800ff;
-    /* Cambié el color para que coincida con los estilos de los botones */
     text-decoration: none;
-    /* Quité la subrayado del enlace */
 }
 
 iframe {
@@ -681,7 +679,6 @@ iframe {
     margin-top: -20px;
 }
 
-/* Estilos para los botones */
 .btn {
     padding: 0.5rem 1rem;
     border-radius: 0.25rem;
@@ -690,8 +687,8 @@ iframe {
 }
 
 .morado-btn {
-    background-color: #302f51;
-    border: 1px solid #302f51;
+    background-color: #00406d;
+    border: 1px solid #004271;    
     color: white;
     margin-bottom: 15px;
 }
@@ -714,7 +711,6 @@ iframe {
     border-color: #cccccc;
 }
 
-/* Modal container */
 .modal {
     display: flex;
     justify-content: center;
@@ -730,7 +726,6 @@ iframe {
     padding: 20px;
 }
 
-/* Modal content */
 .modal-content {
     background-color: #fdfcfa;
     padding: 20px;
@@ -743,10 +738,8 @@ iframe {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     animation: fadeIn 0.3s ease-in-out;
     margin: 0 auto;
-    /* Centrar el modal horizontalmente */
 }
 
-/* Close button */
 .close {
     color: #aaa;
     float: right;
@@ -763,15 +756,15 @@ iframe {
 
 .close:hover,
 .close:focus {
-    color: #f78433;
+    color: #34a5f8;
     text-decoration: none;
     cursor: pointer;
 }
 
 .modal-content .guardar-btn {
-    background-color: #f78433;
+    background-color: #34a5f8;
     color: #fdfcfa;
-    border: none;
+    border: 1px solid #1e8edb;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
@@ -779,11 +772,10 @@ iframe {
 }
 
 .modal-content .guardar-btn:hover {
-    background-color: #e3671f;
-    border-color: #d4551a;
+    background-color: #1e8edb;
+    border-color: #1e8edb;
 }
 
-/* Responsive design */
 @media (max-width: 600px) {
     .multimedia-content {
         width: 220px;

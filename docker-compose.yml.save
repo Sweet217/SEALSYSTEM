@@ -94,7 +94,7 @@ services:
             - sail
     selenium:
         image: seleniarm/standalone-chromium:latest
-        platform: linux/arm64
+    	platform: linux/arm64
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         volumes:
