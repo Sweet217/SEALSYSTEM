@@ -1,17 +1,18 @@
- Sistema de Gestión de Publicidad ✨
-Descripción del proyecto:
+SEALSYSTEM Media Management System ✨
 
-Este proyecto te permite gestionar y mostrar publicidad en equipos remotos de forma fácil y efectiva.
+Project Description:
 
-Tecnologías utilizadas:
+This project allows you to easily and effectively manage and display media such as videos and images on remote devices.
+
+Technologies Used:
 
 Backend:
-Laravel 11 
+Laravel 11
 
 Frontend: ✨
 Vue 3 Imagen de Vue 3 logo
 
-Paquetes adicionales: npm
+Additional Packages: npm
 @inertiajs/vue3
 @tailwindcss/forms
 @tailwindcss/typography
@@ -34,45 +35,43 @@ vmodal
 vue-router
 vuedraggable
 ziggy-js
-Funcionalidades:
 
-Sistema de Gestión de Publicidad: ‍
+Functionalities:
 
-Autenticación de usuarios
-Registro de usuarios ✍️
-Correo
-Contraseña
-Estado activo/inactivo ☑️/❌
-Tipo de usuario (Administrador/Operador) ‍‍
-Registro y edición de usuarios (solo administradores) ✏️
-Registro de equipos ️
-Configuración de la orientación de la pantalla
-Creación y configuración de listas de reproducción para cada equipo
-Selección del tipo de presentación ️/fullscreen ️
-Activación/desactivación del sensor de presencia ️
-Carga de imágenes (JPEG, PNG, BMP 1080x1960) con especificación del tiempo de visualización Maximo de 100MB ⏳
-Carga de videos (MP4, WMV, AVI, WEBM 1080x1960) Maximo de 100MB
-Carga y Reproducción de enlaces de YouTube
+Media Management System: ‍
 
-Sistema de Publicidad Para kisokos SOLYTEC: ✨
-Autenticación de usuarios
-Descarga de listas de reproducción y tipo de presentación
-Visualización en pantalla de la publicidad programada
-Opción de desactivación mediante sensor de presencia o touch ✋
-Licenciamiento mensual o anual
-Almacenamiento de contenido sin necesidad de internet
-Utilizable en equipos con Windows 10 o superior ️A traves de un navegador web
-Utilizable en equipos Andorid y iOS a traves de un navegador web
+User Authentication
+User Registration ✍️
+Email
+Password
+Active/Inactive Status ☑️/❌
+User Type (Administrator/Operator) ‍‍
+User Registration and Editing (Administrators only) ✏️
+Device Registration ️
+Screen Orientation Configuration
+Creation and Configuration of Playlists for each device
+Presentation Type Selection ️/fullscreen ️
+Image Upload (JPEG, PNG, BMP 1080x1960) with display time specification Max 100MB ⏳
+Video Upload (MP4, WMV, AVI, WEBM 1080x1960) Max 100MB
+YouTube Link Upload and Playback
 
-Licencia: ⚖️
+Media Playback System: ✨
+User Authentication
+Download of Playlists and Presentation Type
+On-screen display of scheduled media
+Monthly or annual licensing
+Content storage without internet access
+Usable on Windows 10 or higher devices ️ via a web browser
+Usable on Android and iOS devices via a web browser
 
-Este proyecto está bajo la licencia MIT.
+License: ⚖️
 
-Información adicional: ℹ️
+This project is licensed under the MIT License.
 
-Próximos pasos:
+Additional Information: ℹ️
 
-Completar la implementación de las funcionalidades del sistema ️
-Realizar pruebas exhaustivas para garantizar el correcto funcionamiento
-Implementar un sistema de documentación completo
-Publicar el proyecto a un servidor
+Next Steps:
+
+Complete the implementation of the system functionalities ️
+Conduct thorough testing to ensure proper operation
+Publish the project to a server
