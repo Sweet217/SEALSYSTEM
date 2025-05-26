@@ -10,8 +10,8 @@ export default {
       <div class="row pt-5">
         <div class="col-md-8 text-center text-md-start mx-auto">
           <div class="text-center">
-            <h1 class="text-publicidad display-4 fw-bold mb-5">FOCAS</h1>
-            <p class="text-publicidad fs-5 mb-5">SISTEMA DE FOCAS</p>
+            <h1 class="text-publicidad display-4 fw-bold mb-5">SEALS!!</h1>
+            <p class="text-publicidad fs-5 mb-5">SEAL SYSTEM</p>
             <!--Titulo principal que se muestra junto con el background animado.-->
             <form class="d-flex justify-content-center flex-wrap" method="post" data-bs-theme="light">
               <div class="shadow-lg mb-3"></div>

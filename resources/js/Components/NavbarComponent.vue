@@ -8,8 +8,8 @@
         </span>
         <transition name="fade">
           <div v-if="showDetails" class="user-details">
-            <p>Tipo de Usuario: {{ tipoUsuario }}</p>
-            <p>Correo Electrónico: {{ correoUsuario }}</p>
+            <p>User: {{ tipoUsuario }}</p>
+            <p>Email: {{ correoUsuario }}</p>
           </div>
         </transition>
       </div>
@@ -18,10 +18,10 @@
       </button>
       <div :class="{ 'navbar-menu': true, 'is-active': menuOpen }">
         <a class="navbar-item rounded font-weight-light" @click="redirectUsuarios"
-          v-if="tipoUsuario === 'Administrador'">Usuarios</a>
-        <a class="navbar-item rounded font-weight-light" @click="redirectListas">Listas</a>
-        <a class="navbar-item rounded font-weight-light" @click="redirectEquipos">Dispositivos</a>
-        <a @click="cerrarSesion" class="navbar-item rounded font-weight-light">Cerrar Sesión</a>
+          v-if="tipoUsuario === 'Administrador'">Users</a>
+        <a class="navbar-item rounded font-weight-light" @click="redirectListas">Lists</a>
+        <a class="navbar-item rounded font-weight-light" @click="redirectEquipos">Devices</a>
+        <a @click="cerrarSesion" class="navbar-item rounded font-weight-light">Sign Out</a>
       </div>
     </div>
   </nav>

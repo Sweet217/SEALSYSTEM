@@ -163,10 +163,10 @@ export default {
                     this.uploadProgress = 0; // Reiniciar el progreso
 
                     Swal.fire({
-                        title: 'Imagen agregada',
+                        title: 'Image added',
                         text: '',
                         icon: 'success',
-                        confirmButtonText: 'Aceptar'
+                        confirmButtonText: 'Accept'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             this.cerrarModal();
@@ -177,12 +177,12 @@ export default {
                 .catch(error => {
                     this.loading = false; // Indicar que la carga ha terminado
                     this.uploadProgress = 0; // Reiniciar el progreso
-                    console.error('Error al crear la imagen:', error); // Muestra un error en la consola
+                    console.error('Error creating image:', error); // Muestra un error en la consola
                     Swal.fire({
-                        title: 'Error al crear la imagen',
+                        title: 'Error creating image',
                         text: error.response.data.message,
                         icon: 'error',
-                        confirmButtonText: 'Aceptar'
+                        confirmButtonText: 'Accept'
                     }).then((result) => {
                         if (result.isConfirmed) {
                         }
@@ -207,10 +207,10 @@ export default {
                     this.loading = false; // Indicar que la carga ha terminado
                     this.uploadProgress = 0; // Reiniciar el progreso
                     Swal.fire({
-                        title: 'Video agregado',
+                        title: 'Video added',
                         text: '',
                         icon: 'success',
-                        confirmButtonText: 'Aceptar'
+                        confirmButtonText: 'Accept'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             this.cerrarModal();
@@ -221,12 +221,12 @@ export default {
                 .catch(error => {
                     this.loading = false; // Indicar que la carga ha terminado
                     this.uploadProgress = 0; // Reiniciar el progreso
-                    console.error('Error al crear el video:', error); // Muestra un error en la consola
+                    console.error('Error creating video:', error); // Muestra un error en la consola
                     Swal.fire({
-                        title: 'Error al crear el video',
+                        title: 'Error creating video',
                         text: error.response.data.message,
                         icon: 'error',
-                        confirmButtonText: 'Aceptar'
+                        confirmButtonText: 'Accept'
                     }).then((result) => {
                         if (result.isConfirmed) {
                         }
@@ -244,10 +244,10 @@ export default {
             axios.post('/enlacesPOST', formData)
                 .then(response => {
                     Swal.fire({
-                        title: 'Enlace agregado',
+                        title: 'Link added',
                         text: '',
                         icon: 'success',
-                        confirmButtonText: 'Aceptar'
+                        confirmButtonText: 'Accept'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             this.cerrarModal();
@@ -256,12 +256,12 @@ export default {
                     });
                 })
                 .catch(error => {
-                    console.error('Error al crear el enlace:', error); // Muestra un error en la consola
+                    console.error('Error creating link:', error); // Muestra un error en la consola
                     Swal.fire({
-                        title: 'Error al crear el enlace',
+                        title: 'Error creating link',
                         text: error.response.data.message,
                         icon: 'error',
-                        confirmButtonText: 'Aceptar'
+                        confirmButtonText: 'Accept'
                     }).then((result) => {
                         if (result.isConfirmed) {
                         }
@@ -296,10 +296,10 @@ export default {
                 })
                     .then(response => {
                         Swal.fire({
-                            title: 'Imagen Eliminada',
-                            text: 'Imagen eliminada correctamente',
+                            title: 'Image deleted',
+                            text: 'Image deleted successfully',
                             icon: 'success',
-                            confirmButtonText: 'Aceptar'
+                            confirmButtonText: 'Accept'
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 //console.log(response.data.message);
@@ -308,12 +308,12 @@ export default {
                         });
                     })
                     .catch(error => {
-                        console.error('Error al eliminar la imagen:', error); // Muestra un error en la consola
+                        console.error('Error deleting image:', error); // Muestra un error en la consola
                         Swal.fire({
-                            title: 'Error al eliminar la imagen',
+                            title: 'Error deleting image',
                             text: error.response.data.message,
                             icon: 'error',
-                            confirmButtonText: 'Aceptar'
+                            confirmButtonText: 'Accept'
                         }).then((result) => {
                             if (result.isConfirmed) {
                             }
@@ -329,10 +329,10 @@ export default {
                 })
                     .then(response => {
                         Swal.fire({
-                            title: 'Video Eliminado',
-                            text: 'Video eliminado correctamente',
+                            title: 'Video deleted',
+                            text: 'Video deleted successfully',
                             icon: 'success',
-                            confirmButtonText: 'Aceptar'
+                            confirmButtonText: 'Accept'
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 //  console.log(response.data.message);
@@ -341,12 +341,12 @@ export default {
                         });
                     })
                     .catch(error => {
-                        console.error('Error al eliminar el video:', error); // Muestra un error en la consola
+                        console.error('Error deleting video:', error); // Muestra un error en la consola
                         Swal.fire({
-                            title: 'Error al eliminar el video',
+                            title: 'Error deleting video',
                             text: error.response.data.message,
                             icon: 'error',
-                            confirmButtonText: 'Aceptar'
+                            confirmButtonText: 'Accept'
                         }).then((result) => {
                             if (result.isConfirmed) {
                             }
@@ -362,10 +362,10 @@ export default {
                 })
                     .then(response => {
                         Swal.fire({
-                            title: 'Enlace Eliminado',
-                            text: 'Enlace eliminado correctamente',
+                            title: 'Link deleted',
+                            text: 'Link deleted successfully',
                             icon: 'success',
-                            confirmButtonText: 'Aceptar'
+                            confirmButtonText: 'Accept'
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 // console.log(response.data.message);
@@ -374,12 +374,12 @@ export default {
                         });
                     })
                     .catch(error => {
-                        console.error('Error al eliminar el enlace:', error); // Muestra un error en la consola
+                        console.error('Error deleting link:', error); // Muestra un error en la consola
                         Swal.fire({
-                            title: 'Error al eliminar el video',
+                            title: 'Error deleting link',
                             text: error.response.data.message,
                             icon: 'error',
-                            confirmButtonText: 'Aceptar'
+                            confirmButtonText: 'Accept'
                         }).then((result) => {
                             if (result.isConfirmed) {
                             }
@@ -399,7 +399,7 @@ export default {
                 const response = await axios.put('/actualizarOrdenMultimedia', { positions });
                 //console.log('Posiciones actualizadas correctamente:', response.data.message);
             } catch (error) {
-                console.error('Error al actualizar posiciones:', error.response.data || error.message);
+                console.error('Error updating positions:', error.response.data || error.message);
             }
         },
         // Obtiene la URL de embed de YouTube a partir de una URL estándar
@@ -426,7 +426,7 @@ export default {
         <NavbarComponent />
         <div class="content container mx-auto mt-4">
             <h1 class="text-3xl font-bold mb-4">Multimedia {{ listaData.nombre }} </h1>
-            <button class="btn morado-btn" @click="abrirModal">Agregar Elemento</button>
+            <button class="btn morado-btn" @click="abrirModal">Add Item</button>
 
             <div v-if="multimedia.length">
                 <draggable :list="multimedia" :item-key="item => item.data.id" @end="handleDragEnd">
@@ -445,7 +445,7 @@ export default {
                                 <template v-else-if="element.tipo === 'imagen'">
                                     <div class="image">
                                         <h2 class="text-2l font-bold mb-4"><i
-                                                class="bi bi-arrow-down-up arrow-icon"></i>Imagen
+                                                class="bi bi-arrow-down-up arrow-icon"></i>Image
                                         </h2>
                                         <a> {{ element.data.nombre_archivo }} </a>
                                         <img :src="`/storage/${element.data.data}`"
@@ -456,7 +456,7 @@ export default {
                                 <template v-else-if="element.tipo === 'enlace'">
                                     <div class="link">
                                         <h2 class="text-2l font-bold mb-4"><i
-                                                class="bi bi-arrow-down-up arrow-icon"></i>Enlace</h2>
+                                                class="bi bi-arrow-down-up arrow-icon"></i>Link</h2>
                                         <a class="nombre_enlace">{{ element.data.nombre_enlace }} </a>
                                         <a :href="element.data.data" target="_blank"
                                             class="youtube-link enlace-youtube">{{
@@ -469,13 +469,13 @@ export default {
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
                                 <template v-if="element.tipo === 'imagen'">
                                     <div class="input-container">
-                                        <label>Duración:</label>
+                                        <label>Duration:</label>
                                         <div class="input-wrapper col-12 col-md-3 mb-2 mb-md-0">
                                             <input type="text" v-model="element.data.tiempo"
                                                 @input="validarDuracion(element)"
                                                 @focusout="editarImagen(element.data.imagen_id, element.data.tiempo)"
                                                 class="text-center input-duracion-imagen">
-                                            <span>Segundos</span>
+                                            <span>Seconds</span>
                                         </div>
                                     </div>
                                 </template>
@@ -494,54 +494,54 @@ export default {
             </div>
 
             <div v-else>
-                <p>No hay multimedia disponible para esta lista.</p>
+                <p>No multimedia available for this list.</p>
             </div>
         </div>
 
-        <!-- Modal para crear nueva multimedia -->
+        <!-- Modal to create new multimedia -->
         <div v-if="modalVisible" class="modal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <span class="close" @click="cerrarModal">&times;</span>
-                    <h2 class="modal-title">Crear Multimedia</h2>
+                    <h2 class="modal-title">Create Multimedia</h2>
                     <form @submit.prevent="crearMultimedia">
                         <div class="modal-body">
-                            <h3>Seleccionar archivo multimedia</h3>
-                            <!-- Campos para la multimedia -->
+                            <h3>Select multimedia file</h3>
+                            <!-- Fields for multimedia -->
                             <div class="form-group">
-                                <label for="tipo">Tipo:</label>
+                                <label for="tipo">Type:</label>
                                 <select class="form-control" v-model="nuevaMultimedia.tipo" id="tipo">
-                                    <option value="imagen">Imagen</option>
+                                    <option value="imagen">Image</option>
                                     <option value="video">Video</option>
-                                    <option value="enlace">Enlace</option>
+                                    <option value="enlace">Link</option>
                                 </select>
                             </div>
 
-                            <!-- Dependiendo del tipo de multimedia, mostrar campos específicos -->
+                            <!-- Depending on the type of multimedia, show specific fields -->
                             <template v-if="nuevaMultimedia.tipo === 'imagen'">
-                                <!-- Campos para cargar imagen -->
+                                <!-- Fields to upload image -->
                                 <div class="form-group">
-                                    <label for="nombreArchivoImagen">Nombre de archivo: </label>
+                                    <label for="nombreArchivoImagen">File name: </label>
                                     <input type="text" class="form-control rounded-pill"
                                         v-model="nuevaImagen.nombre_archivo" id="nombreArchivoImagen"
-                                        placeholder="Maximo 25 caracteres">
+                                        placeholder="Maximum 25 characters">
                                 </div>
                                 <div class="form-group">
-                                    <label for="tiempoImagen">Tiempo (segundos):</label>
+                                    <label for="tiempoImagen">Time (seconds):</label>
                                     <input type="number" class="form-control rounded-pill" v-model="nuevaImagen.tiempo"
                                         id="tiempoImagen">
                                 </div>
-                                <!-- Input para subir archivo de imagen -->
+                                <!-- Input to upload image file -->
                                 <div class="form-group">
-                                    <label for="subirImagen">Seleccionar imagen:</label>
+                                    <label for="subirImagen">Select image:</label>
                                     <input type="file" accept="image/*" class="form-control-file"
                                         @change="handleImagenSeleccionada" id="subirImagen">
                                     <span v-if="fileError" class="error-message">{{ fileError }}</span>
                                 </div>
 
-                                <!-- Barra de progreso -->
+                                <!-- Progress bar -->
                                 <div v-if="loading" class="form-group">
-                                    <label>Subiendo imagen:</label>
+                                    <label>Uploading image:</label>
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-striped progress-bar-animated"
                                             role="progressbar" :style="{ width: uploadProgress + '%' }"
@@ -549,29 +549,29 @@ export default {
                                             {{ uploadProgress }}%
                                         </div>
                                     </div>
-                                    <p>Cargando... {{ uploadProgress }}%</p>
+                                    <p>Loading... {{ uploadProgress }}%</p>
                                 </div>
                             </template>
 
                             <template v-if="nuevaMultimedia.tipo === 'video'">
-                                <!-- Campos para cargar video -->
+                                <!-- Fields to upload video -->
                                 <div class="form-group">
-                                    <label for="nombreArchivoVideo">Nombre de archivo:</label>
+                                    <label for="nombreArchivoVideo">File name:</label>
                                     <input type="text" class="form-control rounded-pill"
                                         v-model="nuevoVideo.nombre_archivo" id="nombreArchivoVideo"
-                                        placeholder="Maximo 25 caracteres">
+                                        placeholder="Maximum 25 characters">
                                 </div>
-                                <!-- Input para subir archivo de video -->
+                                <!-- Input to upload video file -->
                                 <div class="form-group">
-                                    <label for="subirVideo">Seleccionar video:</label>
+                                    <label for="subirVideo">Select video:</label>
                                     <input type="file" accept="video/*" class="form-control-file"
                                         @change="handleVideoSeleccionado" id="subirVideo">
                                     <span v-if="fileError" class="error-message">{{ fileError }}</span>
                                 </div>
 
-                                <!-- Barra de progreso -->
+                                <!-- Progress bar -->
                                 <div v-if="loading" class="form-group">
-                                    <label>Subiendo video:</label>
+                                    <label>Uploading video:</label>
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-striped progress-bar-animated"
                                             role="progressbar" :style="{ width: uploadProgress + '%' }"
@@ -579,25 +579,25 @@ export default {
                                             {{ uploadProgress }}%
                                         </div>
                                     </div>
-                                    <p>Cargando... {{ uploadProgress }}%</p>
+                                    <p>Loading... {{ uploadProgress }}%</p>
                                 </div>
                             </template>
 
                             <template v-if="nuevaMultimedia.tipo === 'enlace'">
-                                <!-- Campos para cargar enlace -->
+                                <!-- Fields to upload link -->
                                 <div class="form-group">
-                                    <label for="enlace">Nombre del Enlace:</label>
+                                    <label for="enlace">Link Name:</label>
                                     <input type="text" class="form-control rounded-pill"
                                         v-model="nuevoEnlace.nombre_enlace" id="nombreEnlace"
-                                        placeholder="Maximo 25 caracteres">
-                                    <label for="enlace">Enlace:</label>
+                                        placeholder="Maximum 25 characters">
+                                    <label for="enlace">Link:</label>
                                     <input type="text" class="form-control rounded-pill" v-model="nuevoEnlace.enlace"
-                                        id="enlace" placeholder="Ejemplo: https://www.youtube.com/watch?v=jNQXAC">
+                                        id="enlace" placeholder="Example: https://www.youtube.com/watch?v=jNQXAC">
                                 </div>
                             </template>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary guardar-btn">Agregar</button>
+                            <button type="submit" class="btn btn-primary guardar-btn">Add</button>
                         </div>
                     </form>
                 </div>

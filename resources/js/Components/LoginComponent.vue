@@ -1,31 +1,31 @@
 <script>
-import axios from 'axios'; // Importa la librería axios para realizar peticiones HTTP 
-
+import axios from "axios"; // Importa la librería axios para realizar peticiones HTTP
 
 export default {
-  name: 'LoginComponent', //Nombre del componente 
+  name: "LoginComponent", //Nombre del componente
 
-  mounted() { //Nada por ahora.
+  mounted() {
+    //Nada por ahora.
   },
 
   data() {
     return {
-      email: '', // Email del usuario para el login
-      password: '', // Contraseña del usuario para el login
+      email: "", // Email del usuario para el login
+      password: "", // Contraseña del usuario para el login
       errors: null, // Almacena los errores de autenticación (si existen)
-      token: '', // Token de autenticación recibido tras el login exitoso
+      token: "", // Token de autenticación recibido tras el login exitoso
       showPassword: false, // Indica si se muestra el campo contraseña en texto plano
-    }
+    };
   },
 
   methods: {
     async submitLogin() {
       // Intenta realizar el login del usuario
       try {
-        const response = await axios.post('/loginPOST', {
+        const response = await axios.post("/loginPOST", {
           email: this.email, // Envía el email del usuario
           password: this.password, // Envía la contraseña del usuario
-          token: this.token // **Revisar si 'token' es necesario enviarlo**
+          token: this.token, // **Revisar si 'token' es necesario enviarlo**
         });
 
         const isAuthenticated = response.data && response.data.autenticacion_correcta; // Verifica si la autenticación fue exitosa
@@ -33,46 +33,47 @@ export default {
         if (isAuthenticated) {
           // Login exitoso
           sessionStorage.clear(); // Limpia el almacenamiento de sesión
-          console.log('¡Inicio de sesión exitoso!');
-          this.$emit('login-success'); // Emite el evento 'login-success'
+          console.log("¡Inicio de sesión exitoso!");
+          this.$emit("login-success"); // Emite el evento 'login-success'
 
           // Guarda el token de autenticación
           this.token = response.data.token;
-          axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`; // Agrega el token al header de autorización por defecto de axios
-          sessionStorage.setItem('token', this.token); // Almacena el token en sessionStorage
+          axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`; // Agrega el token al header de autorización por defecto de axios
+          sessionStorage.setItem("token", this.token); // Almacena el token en sessionStorage
 
           // Redirecciona a la pantalla principal tras un login exitoso
-          axios.get('/api/pantallaprincipal')
-            .then(response => {
-              window.location.href = '/pantallaprincipal';
+          axios
+            .get("/api/pantallaprincipal")
+            .then((response) => {
+              window.location.href = "/pantallaprincipal";
             })
-            .catch(error => {
-              console.error('Error al acceder a pantallaprincipal:', error);
+            .catch((error) => {
+              console.error("Error al acceder a pantallaprincipal:", error);
             });
         } else {
           // Login fallido
-          this.errors = response.data.errors || ['Credenciales incorrectas']; // Muestra los errores de autenticación (si existen)
+          this.errors = response.data.errors || ["Credenciales incorrectas"]; // Muestra los errores de autenticación (si existen)
         }
       } catch (error) {
         // Manejo de errores durante la petición
         if (error.response) {
           if (error.response.status === 401) {
-            this.errors = ['Datos Invalidos']; // Error 401: credenciales no válidas
+            this.errors = ["Datos Invalidos"]; // Error 401: credenciales no válidas
           } else if (error.response.data && error.response.data.errors) {
             this.errors = error.response.data.errors; // Muestra los errores devueltos por el servidor
           } else {
-            console.error('Error en el inicio de sesión:', error.message); // Error inesperado
+            console.error("Error en el inicio de sesión:", error.message); // Error inesperado
           }
         } else {
-          console.error('Error en el inicio de sesión:', error.message); // Error de red u otro tipo
+          console.error("Error en el inicio de sesión:", error.message); // Error de red u otro tipo
         }
       }
     },
     togglePasswordVisibility() {
       // Cambia el estado para mostrar u ocultar la contraseña en texto plano
       this.showPassword = !this.showPassword;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -81,18 +82,17 @@ export default {
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col col-xl-10">
-          <div class="card" style="border-radius: 1rem;">
+          <div class="card" style="border-radius: 1rem">
             <div class="row g-0">
-              <div class="contenedor-imagen col-md-6 col-lg-5 d-none d-md-block">
-              </div>
+              <div class="contenedor-imagen col-md-6 col-lg-5 d-none d-md-block"></div>
               <div class="col-md-6 col-lg-7 d-flex align-items-center">
                 <div class="card-body p-4 p-lg-5 text-black">
-
                   <form @submit.prevent="submitLogin">
-
-                    <div class="d-flex align-items-center mb-3 pb-1">
-                      <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
-                      <img class="seal-logo" src="@/images/51Qqh-JOmGL._AC_UF1000,1000_QL80_.jpg" />
+                    <div class="d-flex align-items-center mb-3 pb-1 pl-10">
+                      <img
+                        class="seal-logo"
+                        src="@/images/51Qqh-JOmGL._AC_UF1000,1000_QL80_.jpg"
+                      />
                     </div>
 
                     <div class="text-danger" v-if="errors">
@@ -102,34 +102,53 @@ export default {
                     </div>
 
                     <!-- <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Entra a tu cuenta</h5> -->
-                    <br>
+                    <br />
 
                     <div class="form-outline mb-4">
-                      <input type="email" v-model="email" id="form2Example17" class="form-control form-control-lg"
-                        required />
-                      <label class="form-label" for="form2Example17">Direccion de correo electronico</label>
+                      <input
+                        type="email"
+                        v-model="email"
+                        id="form2Example17"
+                        class="form-control form-control-lg"
+                        required
+                      />
+                      <label class="form-label" for="form2Example17">Email</label>
                     </div>
 
                     <div class="form-outline mb-4 position-relative">
-                      <input :type="showPassword ? 'text' : 'password'" v-model="password" id="form2Example27"
-                        class="form-control form-control-lg" required />
-                      <label class="form-label" for="form2Example27">Contraseña</label>
-                      <i :class="showPassword ? 'fas fa-eye-slash eye-icon' : 'fas fa-eye eye-icon'"
-                        @click="togglePasswordVisibility"></i>
+                      <input
+                        :type="showPassword ? 'text' : 'password'"
+                        v-model="password"
+                        id="form2Example27"
+                        class="form-control form-control-lg"
+                        required
+                      />
+                      <label class="form-label" for="form2Example27">Password</label>
+                      <i
+                        :class="
+                          showPassword
+                            ? 'fas fa-eye-slash eye-icon'
+                            : 'fas fa-eye eye-icon'
+                        "
+                        @click="togglePasswordVisibility"
+                      ></i>
                     </div>
 
                     <div class="pt-1 mb-4">
-                      <button type="submit" class="color-boton login-boton btn btn-lg btn-block">Inicia sesión</button>
+                      <button
+                        type="submit"
+                        class="color-boton login-boton btn btn-lg btn-block"
+                      >
+                        Sign in
+                      </button>
                     </div>
 
                     <!-- <a class="small text-muted" href="#!">Olvidate tu contraseña?</a>
                     <br> -->
-                    <a href="#!" class="small text-muted">Terminos de uso y Política de privacidad</a>
+                    <a href="#!" class="small text-muted">Terms (no terms lmfao)</a>
                     <!-- <br>
                     <a href="#!" class="small text-muted">Politica de privacidad</a> -->
-
                   </form>
-
                 </div>
               </div>
             </div>
@@ -140,14 +159,13 @@ export default {
   </section>
 </template>
 
-
 <style>
 .contenedor-imagen {
   width: 400px;
   /* Ajusta el ancho según tus necesidades */
   height: 600px;
   /* Ajusta la altura según tus necesidades */
-  background-image: url('@/images/imagen_ejemplo.jpg');
+  background-image: url("@/images/sealvertical.png");
   /* Ruta de la imagen */
   background-size: cover;
   background-repeat: no-repeat;
@@ -197,7 +215,6 @@ export default {
 }
 
 @media (max-width: 1024px) {
-
   /* Oculta la imagen si las dimensiones son menores o iguales a 1029x800 */
   .contenedor-imagen {
     width: 300px;
@@ -207,7 +224,6 @@ export default {
 }
 
 @media (max-width: 768px) {
-
   /* Media query para dispositivos móviles */
   .seal-logo {
     margin-left: -40px;
@@ -218,7 +234,6 @@ export default {
 }
 
 @media (max-width: 480px) {
-
   /* Media query para smartphones */
   .seal-logo {
     margin-left: -40px;
@@ -633,5 +648,4 @@ export default {
     background: radial-gradient(circle at center, #75d1db, #33a4f7);
   }
 }
-
 </style>

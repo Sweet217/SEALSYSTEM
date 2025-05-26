@@ -56,54 +56,52 @@ export default {
                                         </div>
 
                                         <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">
-                                            Registrar Usuario
+                                            Register User
                                         </h5>
 
                                         <div data-mdb-input-init class="form-outline mb-4">
                                             <input type="text" id="nombre" v-model="nombre"
                                                 class="form-control form-control-lg" />
-                                            <label class="form-label" for="nombre">Nombre completo</label>
+                                            <label class="form-label" for="nombre">Full name</label>
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-4">
                                             <input type="text" id="telefono" v-model="telefono"
                                                 class="form-control form-control-lg" />
-                                            <label class="form-label" for="telefono">Num celular</label>
+                                            <label class="form-label" for="telefono">Phone number</label>
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-4">
                                             <input type="email" id="email" v-model="email"
                                                 class="form-control form-control-lg" />
-                                            <label class="form-label" for="email" autocomplete="new-email">Direccion de
-                                                correo
-                                                electronico</label>
+                                            <label class="form-label" for="email" autocomplete="new-email">Email</label>
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-4">
                                             <input type="password" id="password" v-model="password"
                                                 class="form-control form-control-lg" />
-                                            <label class="form-label" for="password">Contrasena</label>
+                                            <label class="form-label" for="password">Password</label>
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-4">
                                             <input type="password" id="confirmPassword" v-model="confirmPassword"
                                                 class="form-control form-control-lg" />
-                                            <label class="form-label" for="confirmPassword">Confirmar Contrasena</label>
+                                            <label class="form-label" for="confirmPassword">Confirm Password</label>
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-4">
                                             <select class="form-control form-control-lg" id="tipo_usuario"
                                                 v-model="tipo_usuario" aria-label="Tipo de Usuario">
-                                                <option value="Operador">Operador</option>
-                                                <option value="Administrador">Administrador</option>
+                                                <option value="Operador">Manager</option>
+                                                <option value="Administrador">Administrator</option>
                                             </select>
-                                            <label class="form-label" for="tipo_usuario">Tipo de Usuario</label>
+                                            <label class="form-label" for="tipo_usuario">User type</label>
                                         </div>
 
                                         <div class="pt-1 mb-4">
                                             <button data-mdb-button-init data-mdb-ripple-init
                                                 class="color-boton login-boton btn btn-lg btn-block" type="submit">
-                                                Registrate
+                                                Register
                                             </button>
                                         </div>
                                     </form>

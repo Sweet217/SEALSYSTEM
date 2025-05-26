@@ -103,12 +103,12 @@ export default {// Define el estado del componente
                 }
             })
             .catch(error => {
-                console.error('Error al obtener el usuario actual:', error);
+                console.error('Error getting the user', error);
                 // Redirigir a la página de inicio de sesión si no está autenticado
                 if (error.response && error.response.status === 401) {
                     window.location.href = '/';
                 } else {
-                    this.error = 'Error al obtener el usuario actual.';
+                    this.error = 'Error getting the user.';
                 }
             });
         axios.get('/todosusuarios')
@@ -116,7 +116,7 @@ export default {// Define el estado del componente
                 this.usuariosDisponibles = response.data;
 
             }).catch(error => {
-                console.error('Error al botener los usuarios:', error);
+                console.error('Error getting the user:', error);
             })
 
     },
@@ -127,7 +127,7 @@ export default {// Define el estado del componente
                     this.equiposUsuario = response.data.equipos;
                 })
                 .catch(error => {
-                    console.error('Error al obtener los equipos del usuario:', error);
+                    console.error('Error getting the user devices:', error);
                 });
         },
         filtrarEquipos() {
@@ -195,10 +195,10 @@ export default {// Define el estado del componente
             axios.delete(`/equiposDELETE/${equipo_id}`)
                 .then(() => {
                     Swal.fire({
-                        title: 'Dispositivo eliminado',
+                        title: 'Device deleted',
                         text: '',
                         icon: 'success',
-                        confirmButtonText: 'Aceptar'
+                        confirmButtonText: 'Ok'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             window.location.reload()
@@ -206,12 +206,12 @@ export default {// Define el estado del componente
                     });
                 })
                 .catch(error => {
-                    console.error('Error al eliminar el equipo:', error);
+                    console.error('Error deleting the device:', error);
                     Swal.fire({
-                        title: 'Dispositivo eliminado',
+                        title: 'Device deleted',
                         text: error.response.data.message,
                         icon: 'error',
-                        confirmButtonText: 'Aceptar'
+                        confirmButtonText: 'Ok'
                     }).then((result) => {
                         if (result.isConfirmed) {
                         }
@@ -222,10 +222,10 @@ export default {// Define el estado del componente
         editarEquipo(equipo_id) {
             if (!this.equipoSeleccionado.nombre || !this.equipoSeleccionado.nombre_usuario) {
                 Swal.fire({
-                    title: 'Error al editar el dispositivo',
-                    text: 'Por favor, complete los campos.',
+                    title: 'Error editing the device',
+                    text: 'Please complete all data',
                     icon: 'error',
-                    confirmButtonText: 'Aceptar'
+                    confirmButtonText: 'Ok'
                 });
                 return;
             }
@@ -237,10 +237,10 @@ export default {// Define el estado del componente
             })
                 .then(() => {
                     Swal.fire({
-                        title: 'Dispositivo editado',
+                        title: 'Device edited',
                         text: this.formattedLicensePeriod,
                         icon: 'success',
-                        confirmButtonText: 'Aceptar'
+                        confirmButtonText: 'Ok'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             this.cerrarModal();
@@ -252,10 +252,10 @@ export default {// Define el estado del componente
                     if (error.response && error.response.data.message) {
 
                         Swal.fire({
-                            title: 'Dispositivo no editado',
+                            title: 'Device not edited',
                             text: error.response.data.message,
                             icon: 'error',
-                            confirmButtonText: 'Aceptar'
+                            confirmButtonText: 'Ok'
                         }).then((result) => {
                             if (result.isConfirmed) {
                             }
@@ -263,10 +263,10 @@ export default {// Define el estado del componente
                     } else {
 
                         Swal.fire({
-                            title: 'Error al editar el dispositivo',
+                            title: 'Error while editing the device',
                             text: '',
                             icon: 'error',
-                            confirmButtonText: 'Aceptar'
+                            confirmButtonText: 'Ok'
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 this.cerrarModal();
@@ -278,10 +278,10 @@ export default {// Define el estado del componente
         crearEquipo() {
             if (!this.nuevoEquipo.nombre) {
                 Swal.fire({
-                    title: 'Error al crear el dispositivo',
-                    text: 'Por favor, nombre el dispositivo.',
+                    title: 'Error while registering the device',
+                    text: 'Please name the device',
                     icon: 'error',
-                    confirmButtonText: 'Aceptar'
+                    confirmButtonText: 'Ok'
                 });
                 return;
             }
@@ -290,10 +290,10 @@ export default {// Define el estado del componente
 
             if (equipoExistente) {
                 Swal.fire({
-                    title: 'Error al crear el dispositivo',
-                    text: 'Ya tienes un dispositivo registrado con este nombre',
+                    title: 'Error while registering the device',
+                    text: 'Theres a device already using this name',
                     icon: 'error',
-                    confirmButtonText: 'Aceptar'
+                    confirmButtonText: 'Ok'
                 });
                 return;
             }
@@ -307,10 +307,10 @@ export default {// Define el estado del componente
             })
                 .then(response => {
                     Swal.fire({
-                        title: 'Dispositivo agregado',
+                        title: 'Device added',
                         text: '',
                         icon: 'success',
-                        confirmButtonText: 'Aceptar'
+                        confirmButtonText: 'Ok'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             this.cerrarCrearModal();
@@ -319,16 +319,16 @@ export default {// Define el estado del componente
                     });
                 })
                 .catch(error => {
-                    let errorMessage = 'Ocurrió un error al procesar la solicitud.';
+                    let errorMessage = 'WHOOPS! There was an error';
                     if (error.response && error.response.data && error.response.data.message) {
                         errorMessage = error.response.data.message;
                     }
 
                     Swal.fire({
-                        title: 'Error al crear el dispositivo',
+                        title: 'Error while creating the device',
                         text: errorMessage,
                         icon: 'error',
-                        confirmButtonText: 'Aceptar'
+                        confirmButtonText: 'Ok'
                     });
                 });
         },
@@ -337,10 +337,10 @@ export default {// Define el estado del componente
             console.log(this.equipoSeleccionado.mac)
             if (!this.validarFormatoMAC(this.desencriptarMac(this.equipoSeleccionado.mac))) {
                 Swal.fire({
-                    title: 'MAC inválida',
-                    text: 'El formato de la dirección MAC es incorrecto. Debe tener el formato XX:XX:XX:XX:XX:XX.',
+                    title: 'Invalid Device Key',
+                    text: 'Copy again the device key or contact support!',
                     icon: 'error',
-                    confirmButtonText: 'Aceptar'
+                    confirmButtonText: 'Ok'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         this.cerrarModalGenerarLicencia();
@@ -356,13 +356,13 @@ export default {// Define el estado del componente
             })
                 .then(response => {
                     Swal.fire({
-                        title: 'Licencia Generada Correctamente',
+                        title: 'License Generated!',
                         text: this.licenciaGenerada,
                         html: `${this.licenciaGenerada} <button id="copyButton" class="btn btn-outline-secondary rounded" type="button">
                     <i class="bi bi-clipboard"></i>
                 </button>`,
                         icon: 'success',
-                        confirmButtonText: 'Aceptar'
+                        confirmButtonText: 'Ok'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             this.cerrarModalGenerarLicencia();
@@ -378,7 +378,7 @@ export default {// Define el estado del componente
                                 button.classList.add('btn-outline-success');
                             }
                         }).catch(err => {
-                            Swal.fire('Error', 'No se pudo copiar la licencia', 'error');
+                            Swal.fire('Error', 'WHOOPS! Error copying the license', 'error');
                         });
                     });
                 })
@@ -388,7 +388,7 @@ export default {// Define el estado del componente
                         title: 'Server Key',
                         text: error.response.data.message,
                         icon: 'error',
-                        confirmButtonText: 'Aceptar'
+                        confirmButtonText: 'Ok'
                     }).then((result) => {
                         if (result.isConfirmed) {
                         }
@@ -432,7 +432,7 @@ export default {// Define el estado del componente
                 // Intentar copiar el texto al portapapeles
                 navigator.clipboard.writeText(licenciaInput.value);
             } catch (err) {
-                console.error('Error al copiar al portapapeles:', err);
+                console.error('Erorr copying to the clipboard', err);
             }
         },
         desencriptarMac(mac) {
@@ -493,10 +493,10 @@ export default {// Define el estado del componente
             <h1 class="text-2xl font-bold mb-4" v-for="usuario in usuariosResponsables" :key="usuario">
                 Dispositivos de {{ usuario }}
             </h1>
-            <button class="btn morado-btn" @click="abrirCrearModal">Crear Nuevo Dispositivo</button>
+            <button class="btn morado-btn" @click="abrirCrearModal">Register device</button>
 
             <div v-if="equipos.length === 0" class="text-gray-500">
-                No hay dispositivos disponibles.
+                No devices.
             </div>
 
             <div v-else>
@@ -521,9 +521,8 @@ export default {// Define el estado del componente
                             </div>
                             <div class="flex space-x-2">
                                 <button v-if="showGenerarLicencia" class="btn generar-licencia-btn"
-                                    @click="abrirModalGenerarLicencia(equipo)">Generar
-                                    Licencia</button>
-                                <button class="btn editar-btn" @click="abrirModal(equipo)">Editar</button>
+                                    @click="abrirModalGenerarLicencia(equipo)">Generate license</button>
+                                <button class="btn editar-btn" @click="abrirModal(equipo)">Edit</button>
                                 <button class="btn btn-danger btn-trash bi-trash"
                                     @click="eliminarEquipo(equipo.equipo_id)"></button>
                             </div>
@@ -537,22 +536,21 @@ export default {// Define el estado del componente
         <div v-if="modalVisible" class="modal">
             <div class="modal-content">
                 <span class="close" @click="cerrarModal">&times;</span>
-                <h2>Editar Dispositivo</h2>
+                <h2>Edit device</h2>
                 <form @submit.prevent="editarEquipo(equipoSeleccionado.equipo_id)">
-                    <label for="nombre">Nombre del Dispositivo:</label>
+                    <label for="nombre">Device name</label>
                     <input type="text" v-model="equipoSeleccionado.nombre" id="nombre"
                         class="form-control rounded-pill">
                     <!-- <label for="numero_licencia">Número de Licencia:</label>
                     <input type="text" v-model="equipoSeleccionado.numero_licencia" id="numero_licencia"
                         class="form-control rounded-pill"> -->
-                    <label for="periodo">Periodo:</label>
+                    <label for="periodo">Type:</label>
                     <input type="text" :value="equipoSeleccionado.periodo" id="periodo"
                         class="form-control rounded-pill" disabled />
-                    <label for="Vigencia">Vigencia:</label>
+                    <label for="Vigencia">Period:</label>
                     <input type="text" :value="formattedLicensePeriod" id="vigencia" class="form-control rounded-pill"
                         disabled />
-                    <label for="nombre_usuario" v-show="tipoUsuario == 'Administrador'">Nombre del Usuario
-                        Responsable:</label>
+                    <label for="nombre_usuario" v-show="tipoUsuario == 'Administrador'">Owner:</label>
                     <select v-model="equipoSeleccionado.nombre_usuario" id="nombre_usuario"
                         class="form-control rounded-pill" v-show="tipoUsuario == 'Administrador'">
                         <option v-for=" usuario  in  usuariosDisponibles " :value="usuario.nombre" :key="usuario.id">
@@ -560,7 +558,7 @@ export default {// Define el estado del componente
                         </option>
                     </select>
                     <div class="text-center">
-                        <button type="submit">Guardar</button>
+                        <button type="submit">Save</button>
                     </div>
                 </form>
             </div>
@@ -570,15 +568,14 @@ export default {// Define el estado del componente
         <div v-if="crearModalVisible" class="modal">
             <div class="modal-content">
                 <span class="close" @click="cerrarCrearModal">&times;</span>
-                <h2>Agregar Nuevo Dispositivo</h2>
+                <h2>Register device</h2>
                 <form @submit.prevent="crearEquipo">
-                    <label for="nombre">Nombre del Dispositivo:</label>
+                    <label for="nombre">Device name:</label>
                     <input type="text" v-model="nuevoEquipo.nombre" id="nombre" class="form-control rounded-pill">
                     <!-- <label for="numero_licencia">Número de Licencia:</label>
                     <input type="text" v-model="nuevoEquipo.numero_licencia" id="numero_licencia"
                         class="form-control rounded-pill"> -->
-                    <label for="nombre_usuario" v-show="tipoUsuario == 'Administrador'">Nombre del Usuario
-                        Responsable:</label>
+                    <label for="nombre_usuario" v-show="tipoUsuario == 'Administrador'">Owner:</label>
                     <select v-model="nuevoEquipo.nombre_usuario" id="nombre_usuario" class="form-control rounded-pill"
                         v-show="tipoUsuario == 'Administrador'">
                         <option v-for=" usuario  in  usuariosDisponibles " :value="usuario.nombre" :key="usuario.id">
@@ -586,7 +583,7 @@ export default {// Define el estado del componente
                         </option>
                     </select>
                     <div class=" text-center">
-                        <button type="submit">Agregar</button>
+                        <button type="submit">Add</button>
                     </div>
                 </form>
             </div>
@@ -595,7 +592,7 @@ export default {// Define el estado del componente
         <div v-if="generarLicenciaModalVisible" class="modal">
             <div class="modal-content">
                 <span class="close" @click="cerrarModalGenerarLicencia">&times;</span>
-                <h2>Generar Licencia</h2>
+                <h2>Create License</h2>
                 <form @submit.prevent="guardarServerKey(equipoSeleccionado.equipo_id)">
                     <div class="campo">
                         <label for="mac">Device Key:</label>
@@ -607,7 +604,7 @@ export default {// Define el estado del componente
                             v-model="equipoSeleccionado.server_key" disabled>
                     </div>
                     <div class="campo">
-                        <label for="periodo">Periodo:</label>
+                        <label for="periodo">Type:</label>
                         <select v-model="periodoSeleccionado" id="periodo" class="form-control rounded-pill">
                             <option value="PRUEBA">Prueba</option>
                             <option value="MENSUAL">Mensual</option>
@@ -617,7 +614,7 @@ export default {// Define el estado del componente
                         </select>
                     </div>
                     <div class="text-center">
-                        <button type="submit">Generar licencia</button>
+                        <button type="submit">Save</button>
                     </div>
                 </form>
             </div>

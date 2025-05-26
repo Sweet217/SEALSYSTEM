@@ -47,12 +47,12 @@ export default {
         this.tipoUsuario = response.data.tipo_usuario; // Asigna el tipo de usuario actual
       })
       .catch(error => {
-        console.error('Error al obtener el usuario actual:', error); // Muestra un error en la consola
+        console.error('Error getting the user:', error); // Muestra un error en la consola
         // Redirige a la página de inicio de sesión si el usuario no está autenticado
         if (error.response && error.response.status === 401) {
           window.location.href = '/';
         } else {
-          this.error = 'Error al obtener el usuario actual.'; // Asigna un mensaje de error
+          this.error = 'Error getting the user'; // Asigna un mensaje de error
         }
       });
   },
@@ -114,10 +114,10 @@ export default {
       })
         .then(() => {
           Swal.fire({
-            title: 'Lista eliminada',
+            title: 'List deleted',
             text: '',
             icon: 'success',
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Ok'
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload(); // Recarga la página
@@ -125,12 +125,12 @@ export default {
           }); // Muestra una alerta de éxito
         })
         .catch(error => {
-          console.error('Error al eliminar la lista:', error); // Muestra un error en la consola
+          console.error('Error deleting the list:', error); // Muestra un error en la consola
           Swal.fire({
-            title: 'Error al eliminar la Lista',
+            title: 'Error deleting the list',
             text: error.response.data.message,
             icon: 'error',
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Ok'
           })
         });
     },
@@ -138,10 +138,10 @@ export default {
     editarLista(id_lista) {
       if (!this.listaSeleccionada.nombre || !this.listaSeleccionada.equipo_id) {
         Swal.fire({
-          title: 'Error al editar la lista',
-          text: 'Por favor, complete todos los campos.',
+          title: 'Error editing the list',
+          text: 'Please fullfill all required fields.',
           icon: 'error',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Ok'
         });
         return;
       }
@@ -152,10 +152,10 @@ export default {
       })
         .then(() => {
           Swal.fire({
-            title: 'Lista editada',
+            title: 'List edited',
             text: '',
             icon: 'success',
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Ok'
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload()
@@ -163,12 +163,12 @@ export default {
           });
         })
         .catch(error => {
-          console.error('Error al editar la lista:', error); // Muestra un error en la consola
+          console.error('Error editing the list:', error); // Muestra un error en la consola
           Swal.fire({
-            title: 'Error al editar la lista',
+            title: 'Error editing the list',
             text: error.response.data.error,
             icon: 'error',
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Ok'
           }).then((result) => {
             if (result.isConfirmed) {
             }
@@ -180,10 +180,10 @@ export default {
       console.log(this.nuevoNombre, this.listaSeleccionada.equipo_id);
       if (!this.nuevoNombre || !this.listaSeleccionada.equipo_id) {
         Swal.fire({
-          title: 'Error al crear la lista',
-          text: 'Por favor, complete todos los campos.',
+          title: 'Error creating the list',
+          text: 'Please fullfill all required fields.',
           icon: 'error',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Ok'
         });
         return;
       }
@@ -194,10 +194,10 @@ export default {
       })
         .then(() => {
           Swal.fire({
-            title: 'Lista creada',
+            title: 'List created',
             text: '',
             icon: 'success',
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Ok'
           }).then((result) => {
             if (result.isConfirmed) {
               this.cerrarModalCrear(); // Cierra el modal de creación
@@ -206,12 +206,12 @@ export default {
           });
         })
         .catch(error => {
-          console.error('Error al crear la lista:', error); // Muestra un error en la consola
+          console.error('Error creating the list:', error); // Muestra un error en la consola
           Swal.fire({
-            title: 'Error al crear la lista',
+            title: 'Error creating the list',
             text: error.response.data.error,
             icon: 'error',
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Ok'
           }).then((result) => {
             if (result.isConfirmed) {
             }
@@ -234,19 +234,19 @@ export default {
             lista.seleccionado = lista.id_lista === id_lista;
           });
           Swal.fire({
-            title: 'Lista seleccionada',
+            title: 'List selected',
             text: response.data.message,
             icon: 'success',
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Ok'
           });
         })
         .catch(error => {
-          console.error('Error al seleccionar la lista:', error);
+          console.error('Error selecting the list', error);
           Swal.fire({
-            title: 'Error al seleccionar la lista',
-            text: 'No se pudo seleccionar la lista.',
+            title: 'Error selecting the list',
+            text: 'We couldnt select the list, please try again.',
             icon: 'error',
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Ok'
           });
         });
     }
@@ -265,12 +265,12 @@ export default {
       </span>
       <input type="text" v-model="busqueda" class="form-control" placeholder="Buscar por nombre de lista" />
     </div>
-    <h1 class="text-2xl font-bold mb-4">Todas las Listas</h1>
+    <h1 class="text-2xl font-bold mb-4">Lists</h1>
 
-    <button class="btn morado-btn" @click="abrirModalCrear">Crear Nueva Lista</button>
+    <button class="btn morado-btn" @click="abrirModalCrear">Create list</button>
 
     <div v-if="listas.length === 0" class="text-gray-500">
-      No hay listas disponibles.
+      No list available yet.
     </div>
 
     <div v-else>
@@ -282,10 +282,10 @@ export default {
             </button>
             <div class="dispositivo-container">
               <a v-if="lista.equipo_id !== null" class="equipo-text">{{ lista.equipo.nombre }}</a>
-              <a v-else class="equipo-text">Lista global en tus dispositivos</a>
+              <a v-else class="equipo-text">Global list</a>
             </div>
             <div class="flex space-x-2 items-center">
-              <button class="btn editar-btn" @click="abrirModal(lista)">Editar</button>
+              <button class="btn editar-btn" @click="abrirModal(lista)">Edit</button>
               <button class="btn btn-danger btn-trash bi-trash" @click="eliminarLista(lista.id_lista)">
               </button>
 
@@ -310,19 +310,19 @@ export default {
     <div v-if="modalVisible" class="modal">
       <div class="modal-content">
         <span class="close" @click="cerrarModal">&times;</span>
-        <h2>Editar Lista</h2>
+        <h2>Edit list</h2>
         <form @submit.prevent="editarLista(listaSeleccionada.id_lista)">
-          <label for="nombre">Nombre:</label>
+          <label for="nombre">Name:</label>
           <input type="text" v-model="listaSeleccionada.nombre" id="nombre" class="form-control rounded-pill">
-          <label for="equipo">Dispositivo:</label>
+          <label for="equipo">Device:</label>
           <select v-model="listaSeleccionada.equipo_id" id="equipoSeleccionado" class="form-control rounded-pill">
-            <option value="todos">Todos mis dispositivos</option>
+            <option value="todos">All my devices</option>
             <option v-for="equipo in equiposDisponibles" :value="equipo.equipo_id" :key="equipo.equipo_id">
               {{ equipo.nombre }}
             </option>
           </select>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary rounded-pill">Guardar</button>
+            <button type="submit" class="btn btn-primary rounded-pill">Save</button>
           </div>
         </form>
       </div>
@@ -332,23 +332,23 @@ export default {
     <div v-if="modalCrearVisible" class="modal">
       <div class="modal-content">
         <span class="close" @click="cerrarModalCrear">&times;</span>
-        <h2>Crear Lista</h2>
+        <h2>Create list</h2>
         <form @submit.prevent="crearLista">
           <div class="mb-3">
-            <label for="nuevoNombre">Nombre de la Lista:</label>
+            <label for="nuevoNombre">List name:</label>
             <input type="text" v-model="nuevoNombre" id="nuevoNombre" class="form-control rounded-pill">
           </div>
           <div class="mb-3">
             <label for="equipoSeleccionado">Dispositivo:</label>
             <select v-model="listaSeleccionada.equipo_id" id="equipoSeleccionado" class="form-control rounded-pill">
-              <option value="todos">Todos mis dispositivos</option>
+              <option value="todos">Device:</option>
               <option v-for="equipo in equiposDisponibles" :value="equipo.equipo_id" :key="equipo.equipo_id">
                 {{ equipo.nombre }}
               </option>
             </select>
           </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary rounded-pill">Agregar</button>
+            <button type="submit" class="btn btn-primary rounded-pill">Add</button>
           </div>
         </form>
       </div>

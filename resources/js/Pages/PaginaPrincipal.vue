@@ -16,7 +16,7 @@ import HeaderComponent from '@/Components/HeaderComponent.vue'
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-        <title>Home - SOLYTEC</title>
+        <title>Home - SEAL</title>
         <!-- Configuración inicial del documento HTML -->
     </head>
 

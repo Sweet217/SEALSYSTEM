@@ -32,7 +32,7 @@ export default {
                     this.loading = false;
                 })
                 .catch(error => {
-                    console.error('Error al obtener los equipos del usuario:', error);
+                    console.error('Error getting the devices:', error);
                     this.loading = false;
                 });
         }

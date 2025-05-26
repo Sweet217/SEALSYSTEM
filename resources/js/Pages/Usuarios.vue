@@ -213,6 +213,11 @@ export default {
                 return; // Salimos de la función si las contraseñas no coinciden
             }
 
+            if (this.nuevoUsuario.password.length < 8) {
+                this.error = 'La contraseña debe tener al menos 8 caracteres.';
+                return; // Salimos de la función si la contraseña es menor a 8 caracteres
+            }
+            
             // Validar formato del correo electrónico
             if (!/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/.test(this.nuevoUsuario.email)) {
                 this.error = 'Por favor ingresa un correo electrónico válido.';
