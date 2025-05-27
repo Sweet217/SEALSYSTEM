@@ -1,69 +1,104 @@
- Sistema de Gestión de Publicidad ✨
-Descripción del proyecto:
+🦭 Seal Content Management System
+✨ Project Description
+This project is all about seals. That's right — I freaking love seals, and now you can too.
 
-Este proyecto te permite gestionar y mostrar publicidad en equipos remotos de forma fácil y efectiva.
+With this system, you can upload and manage content like seal videos, seal images, and even YouTube links about seals, then send them to remote devices (screens) for playback. Whether it's a single screen or an entire army of seal-devoted devices, you're covered.
 
-Tecnologías utilizadas:
+Soon, a companion app will be released to make it easier to register devices — so stay tuned.
 
+SEALS ROCK. LET'S SPREAD THE LOVE.
+
+🛠️ Tech Stack
 Backend:
-Laravel 11 
+Laravel 11
 
-Frontend: ✨
-Vue 3 Imagen de Vue 3 logo
+Frontend:
+Vue 3
 
-Paquetes adicionales: npm
+Additional Packages:
 @inertiajs/vue3
+
 @tailwindcss/forms
+
 @tailwindcss/typography
+
 @vitejs/plugin-vue
+
 autoprefixer
+
 axios
+
 laravel-vite-plugin
+
 postcss
+
 tailwindcss
+
 vite
+
 vue
+
 bootstrap-icons
+
 crypto-js
+
 mkcert
+
 nss
+
 sanctum
+
 sortablejs
+
 sweetalert2
+
 vmodal
+
 vue-router
+
 vuedraggable
+
 ziggy-js
-Funcionalidades:
 
-Sistema de Gestión de Publicidad: ‍
+🔥 Features
+User Authentication
 
-Autenticación de usuarios
-Registro de usuarios ✍️
-Correo
-Contraseña
-Estado activo/inactivo ☑️/❌
-Tipo de usuario (Administrador/Operador) ‍‍
-Registro y edición de usuarios (solo administradores) ✏️
-Registro de equipos ️
-Configuración de la orientación de la pantalla
-Creación y configuración de listas de reproducción para cada equipo
-Selección del tipo de presentación ️/fullscreen ️
-Activación/desactivación del sensor de presencia ️
-Carga de imágenes (JPEG, PNG, BMP 1080x1960) con especificación del tiempo de visualización Maximo de 100MB ⏳
-Carga de videos (MP4, WMV, AVI, WEBM 1080x1960) Maximo de 100MB
-Carga y Reproducción de enlaces de YouTube
+Email, password, and active/inactive status
 
+Admin/Operator roles
 
-Licencia: ⚖️
+User Management (Admins only)
 
-Este proyecto está bajo la licencia MIT.
+Device Registration (aka your Seal Screens 🖥️)
 
-Información adicional: ℹ️
+Set screen orientation
 
-Próximos pasos:
+Playlist Creation
 
-Completar la implementación de las funcionalidades del sistema ️
-Realizar pruebas exhaustivas para garantizar el correcto funcionamiento
-Implementar un sistema de documentación completo
-Publicar el proyecto a un servidor
+Assign playlists to devices
+
+Choose display type (windowed/fullscreen)
+
+Enable/disable presence sensor
+
+Media Upload
+
+Images (JPEG, PNG, BMP - 1080x1960) ⏳ with display duration
+
+Videos (MP4, WMV, AVI, WEBM - 1080x1960) max 100MB
+
+YouTube link support 🎥
+
+All to show your favorite seal content whenever, wherever.
+
+⚖️ License
+MIT License
+
+🔮 What's Next?
+Finish all core functionalities ✅
+
+Run thorough testing 🧪
+
+Write full documentation 📘
+
+Deploy the app to a public server ☁️
