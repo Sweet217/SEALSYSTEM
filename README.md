@@ -54,15 +54,6 @@ Carga de imágenes (JPEG, PNG, BMP 1080x1960) con especificación del tiempo de 
 Carga de videos (MP4, WMV, AVI, WEBM 1080x1960) Maximo de 100MB
 Carga y Reproducción de enlaces de YouTube
 
-Sistema de Publicidad Para kisokos SOLYTEC: ✨
-Autenticación de usuarios
-Descarga de listas de reproducción y tipo de presentación
-Visualización en pantalla de la publicidad programada
-Opción de desactivación mediante sensor de presencia o touch ✋
-Licenciamiento mensual o anual
-Almacenamiento de contenido sin necesidad de internet
-Utilizable en equipos con Windows 10 o superior ️A traves de un navegador web
-Utilizable en equipos Andorid y iOS a traves de un navegador web
 
 Licencia: ⚖️
 
